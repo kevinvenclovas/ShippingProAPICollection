@@ -20,16 +20,16 @@ Before requesting shipping labels, you must first set up your specific shipping 
 
 #### GLS ShipIT
  
-    ShipITSettings shipItSettings = new ShipITSettings()
-     {   
-         // Define your desired label result format
-         LabelFormat = ShipITLabelFormat.PDF,
-
+	ShipITSettings shipItSettings = new ShipITSettings()
+	{   
+		 // Define your desired label result format
+		 LabelFormat = ShipITLabelFormat.PDF,
+	
 		 // PLEASE GET IN TOUCH WITH YOUR GLS CONTACT TO GET THE FOLLOWING INFORMATIONS
-         
-         // Api domain is the XXXXXXX part of your GLS-ShipIT api url => https://shipit-wbm-XXXXXXX.gls-group.eu:443/backend/rs
-         ApiDomain = "test01",         
-         ContactID = "276a45fkqM",       
+	 
+		 // Api domain is the XXXXXXX part of your GLS-ShipIT api url => https://shipit-wbm-XXXXXXX.gls-group.eu:443/backend/rs
+		 ApiDomain = "test01",         
+		 ContactID = "276a45fkqM",       
 		 Username = "276a45fkqM"
-         Password = "lXZBIF7uRccyK7Ohr64d",       
-     };
+		 Password = "lXZBIF7uRccyK7Ohr64d",       
+	};
