@@ -1,11 +1,22 @@
-﻿using ShippingProAPICollection.Models.Error;
+﻿using ShippingProAPICollection.Models.Entities;
+using ShippingProAPICollection.Models.Error;
 using System.ComponentModel.DataAnnotations;
 
 namespace ShippingProAPICollection.Models
 {
     public abstract class RequestShipmentBase
     {
-        public DateTime ShippingTime { get; set; } = DateTime.Now;
+        /// <summary>
+        /// Typ des Versandanbieters |
+        /// Type of the shipping provider
+        /// </summary>
+        public abstract ProviderType Provider { get;}
+
+        /// <summary>
+        /// Datum wann das Paket frühestens geliefert werden soll |
+        /// Earliest delivery date for the package
+        /// </summary>
+        public DateTime EarliestDeliveryDate { get; set; } = DateTime.Now;
 
         /// <summary>
         /// Adresszeile 1 des Empfängers |
@@ -128,8 +139,8 @@ namespace ShippingProAPICollection.Models
 
         public virtual void Validate()
         {
-            if (LabelCount <= 0) throw new ShipmentRequestException("Labelcount must be greater than zero.");
-            if (Weight <= 0) throw new ShipmentRequestException("Weight must be greater than zero.");
+            if (LabelCount <= 0) throw new ProviderException("Labelcount must be greater than zero.");
+            if (Weight <= 0) throw new ProviderException("Weight must be greater than zero.");
             if (Country.Length != 2) throw new ShipmentRequestNoValidStringLengthException("Country", 2, 2);
         }
     }

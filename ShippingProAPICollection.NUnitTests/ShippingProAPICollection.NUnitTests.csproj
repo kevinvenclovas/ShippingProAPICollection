@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ShippingProAPICollection.ShipIT\ShippingProAPICollection.ShipIT.csproj" />
+    <ProjectReference Include="..\ShippingProAPICollection\ShippingProAPICollection.csproj" />
   </ItemGroup>
 
 </Project>

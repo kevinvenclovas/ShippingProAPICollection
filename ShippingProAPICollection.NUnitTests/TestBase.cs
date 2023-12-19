@@ -29,7 +29,7 @@ namespace ShippingProAPICollection.NUnitTests
             };
             services.AddSingleton<ShipITSettings>(shipItSettings);
 
-            services.AddSingleton<ShipITShipmentService>();
+            services.AddScoped<ShippingProAPICollectionService>();
 
             _serviceProvider = services.BuildServiceProvider();
         }

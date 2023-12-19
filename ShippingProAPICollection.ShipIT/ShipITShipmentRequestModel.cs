@@ -3,11 +3,14 @@ using ShippingProAPICollection.ShipIT.Entities;
 using System.ComponentModel.DataAnnotations;
 using ShippingProAPICollection.Models.Utils;
 using ShippingProAPICollection.Models.Error;
+using ShippingProAPICollection.Models.Entities;
 
 namespace ShippingProAPICollection.ShipIT
 {
     public class ShipITShipmentRequestModel : RequestShipmentBase
     {
+        public override ProviderType Provider => ProviderType.SHIPIT;
+
         /// <summary>
         /// Mit Email Notification an den Kunden -> Email muss dafür angegeben werden |
         /// Should the shipping provider notify the customer on status changes? If TRUE the Email address musst be set

@@ -1,6 +1,6 @@
 ﻿namespace ShippingProAPICollection.Models
 {
-    public class ShippingLabelResponse
+    public class RequestShippingLabelResponse
     {
         /// <summary>
         /// Id um das Label zu Löschen |

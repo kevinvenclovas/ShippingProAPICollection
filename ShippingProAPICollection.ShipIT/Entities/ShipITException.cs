@@ -2,11 +2,11 @@
 
 namespace ShippingProAPICollection.ShipIT.Entities
 {
-    public class ShipITShipmentRequestException : ShipmentRequestException
+    public class ShipITException : ProviderException
     {
         public string ErrorCode { get; set; }
         
-        public ShipITShipmentRequestException(string message, string errorcode) : base(message)
+        public ShipITException(string message, string errorcode) : base(message)
         {
             ErrorCode = errorcode;
         }

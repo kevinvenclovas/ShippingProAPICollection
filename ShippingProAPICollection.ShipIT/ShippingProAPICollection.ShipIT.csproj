@@ -24,8 +24,4 @@
     <PackageReference Include="System.ServiceModel.Security" Version="6.0.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Connected Services\" />
-  </ItemGroup>
-
 </Project>

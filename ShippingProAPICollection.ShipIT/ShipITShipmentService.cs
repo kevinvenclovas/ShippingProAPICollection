@@ -2,7 +2,9 @@
 using RestSharp;
 using RestSharp.Authenticators;
 using ShippingProAPICollection.Models;
+using ShippingProAPICollection.Models.Entities;
 using ShippingProAPICollection.ShipIT.Entities;
+using ShippingProAPICollection.ShipIT.Entities.Cancel;
 using ShippingProAPICollection.ShipIT.Entities.Create;
 using ShippingProAPICollection.ShipIT.Entities.Create.Response;
 using ShippingProAPICollection.ShipIT.Entities.Create.Services;
@@ -10,7 +12,7 @@ using ShippingProAPICollection.ShipIT.Entities.Create.Services;
 
 namespace ShippingProAPICollection.ShipIT
 {
-    public class ShipITShipmentService : IShippingProviderService<ShipITShipmentRequestModel>
+    public class ShipITShipmentService : IShippingProviderService
     {
         private string apiContentType = "application/glsVersion1+json";
         private ShipITSettings providerSettings = null!;
@@ -23,9 +25,10 @@ namespace ShippingProAPICollection.ShipIT
         }
 
 
-        public async Task<List<ShippingLabelResponse>> CreateLabel(ShipITShipmentRequestModel request, CancellationToken cancelToken = default)
+        public async Task<List<RequestShippingLabelResponse>> RequestLabel(RequestShipmentBase request, CancellationToken cancelToken = default)
         {
-            
+            var shipITRequest = request as ShipITShipmentRequestModel;
+
             #region Build request
 
             // Define printing options
@@ -40,44 +43,44 @@ namespace ShippingProAPICollection.ShipIT
 
             // Calculate single package weight
             // Share weight if more than one label requested
-            double singlePackageWeight = request.Weight / request.LabelCount;
+            double singlePackageWeight = shipITRequest.Weight / shipITRequest.LabelCount;
             // Minimum weight 1 Kg
             if (singlePackageWeight < 1) singlePackageWeight = 1;
 
             List<ShipmentUnit> units = new List<ShipmentUnit>();
 
             // Create shipment units
-            for (int i = 0; i < request.LabelCount; i++)
+            for (int i = 0; i < shipITRequest.LabelCount; i++)
             {
                 units.Add(new ShipmentUnit()
                 {
                     Weight = Convert.ToDecimal(singlePackageWeight),
-                    Note1 = request.Note1 ?? "",
-                    Note2 = request.Note2 ?? "",
-                    ShipmentUnitReference = String.IsNullOrEmpty(request.ShipmentReference) ? null : new List<string>() { request.ShipmentReference }.ToArray(),
+                    Note1 = shipITRequest.Note1 ?? "",
+                    Note2 = shipITRequest.Note2 ?? "",
+                    ShipmentUnitReference = String.IsNullOrEmpty(shipITRequest.ShipmentReference) ? null : new List<string>() { shipITRequest.ShipmentReference }.ToArray(),
                 });
             }
 
             // Create shipment
             Shipment shipment = new Shipment()
             {
-                IncotermCode = request.IncotermCode?.ToString() ?? null,
-                ShippingDate = request.ShippingTime.ToString("yyyy-MM-dd"),
-                Product = request.ServiceProduct,
+                IncotermCode = shipITRequest.IncotermCode?.ToString() ?? null,
+                ShippingDate = shipITRequest.EarliestDeliveryDate.ToString("yyyy-MM-dd"),
+                Product = shipITRequest.ServiceProduct,
                 Consignee = new Consignee()
                 {
                     Address = new Address()
                     {
-                        Name1 = request.Adressline1,
-                        Name2 = request.Adressline2,
-                        Name3 = request.Adressline3,
-                        CountryCode = request.Country,
-                        ZIPCode = request.ZIPCode,
-                        City = request.City,
-                        Street = request.Street,
-                        StreetNumber = request.StreetNumber ?? "-",
-                        EMail = request.WithEmailNotification ? request.EMail : null,
-                        MobilePhoneNumber = request.Phone,
+                        Name1 = shipITRequest.Adressline1,
+                        Name2 = shipITRequest.Adressline2,
+                        Name3 = shipITRequest.Adressline3,
+                        CountryCode = shipITRequest.Country,
+                        ZIPCode = shipITRequest.ZIPCode,
+                        City = shipITRequest.City,
+                        Street = shipITRequest.Street,
+                        StreetNumber = shipITRequest.StreetNumber ?? "-",
+                        EMail = shipITRequest.WithEmailNotification ? shipITRequest.EMail : null,
+                        MobilePhoneNumber = shipITRequest.Phone,
                     }
                 },
 
@@ -88,7 +91,7 @@ namespace ShippingProAPICollection.ShipIT
                 },
 
                 ShipmentUnit = units.ToArray(),
-                Service = ResolveShipITShipmentService(request),
+                Service = ResolveShipITShipmentService(shipITRequest),
             };
 
 
@@ -125,30 +128,27 @@ namespace ShippingProAPICollection.ShipIT
 
             clientRequest.AddJsonBody(json, apiContentType);
 
-            RestResponse<CreatedShipmentResponse> response = await client.ExecuteAsync<CreatedShipmentResponse>(clientRequest).ConfigureAwait(false);
+            RestResponse<CreatedShipmentResponse> response = await client.ExecuteAsync<CreatedShipmentResponse>(clientRequest, cancelToken).ConfigureAwait(false);
 
             if (response.StatusCode != System.Net.HttpStatusCode.OK)
             {
                 var errorCode   = response.Headers?.ToList().FirstOrDefault(x => x.Name != null && x.Name.Equals("error"))?.Value?.ToString() ?? "Unknow";
                 var message     = response.Headers?.ToList().FirstOrDefault(x => x.Name != null && x.Name.Equals("message"))?.Value?.ToString() ?? "Unknow";
-                throw new ShipITShipmentRequestException(errorCode, message);
+                throw new ShipITException(errorCode, message);
             }
             
-            List<ShippingLabelResponse> createdLabels = new List<ShippingLabelResponse>();
+            List<RequestShippingLabelResponse> createdLabels = new List<RequestShippingLabelResponse>();
 
-            if (response.Data != null)
+            if (response.Data == null) throw new ShipITException("No Data available in response", "NO_RESPONSE_DATA");
+
+            for (int i = 0; i < response.Data.CreatedShipment.ParcelData.Count(); i++)
             {
-                string requestId = Guid.NewGuid().ToString();
-
-                for (int i = 0; i < response.Data.CreatedShipment.ParcelData.Count(); i++)
+                createdLabels.Add(new RequestShippingLabelResponse()
                 {
-                    createdLabels.Add(new ShippingLabelResponse()
-                    {
-                        CancelId = response.Data.CreatedShipment.ParcelData[i].TrackID,
-                        ParcelNumber = response.Data.CreatedShipment.ParcelData[i].ParcelNumber,
-                        Label = response.Data.CreatedShipment.PrintData[i].Data,
-                    });
-                }
+                    CancelId = response.Data.CreatedShipment.ParcelData[i].TrackID,
+                    ParcelNumber = response.Data.CreatedShipment.ParcelData[i].ParcelNumber,
+                    Label = response.Data.CreatedShipment.PrintData[i].Data,
+                });
             }
 
             return createdLabels;
@@ -156,8 +156,6 @@ namespace ShippingProAPICollection.ShipIT
             #endregion
 
         }
-
-
 
         private ShipmentService[]? ResolveShipITShipmentService(ShipITShipmentRequestModel request)
         {
@@ -201,11 +199,47 @@ namespace ShippingProAPICollection.ShipIT
             return new ShipmentService[] { service };
         }
 
-
-
-        public Task<bool> DeleteLabel(string cancelId)
+        public async Task<CancelResult> CancelLabel(string cancelId, CancellationToken cancelToken = default)
         {
-            throw new NotImplementedException();
+
+            var clientOptions = new RestClientOptions(new Uri(string.Format("https://shipit-wbm-{0}.gls-group.eu:443/backend/rs/shipments/cancel/{1}", this.providerSettings.ApiDomain, cancelId)))
+            {
+                RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true,
+                Authenticator = new HttpBasicAuthenticator(providerSettings.Username, providerSettings.Password)
+            };
+
+            RestClient client = new RestClient(clientOptions);
+
+            var clientRequest = new RestRequest()
+            {
+                Method = Method.Post
+            };
+
+            clientRequest.AddHeader("Content-Type", apiContentType);
+            clientRequest.AddHeader("Accept", apiContentType);
+
+            RestResponse<CancelShipmentResponse> response = await client.ExecuteAsync<CancelShipmentResponse>(clientRequest, cancelToken).ConfigureAwait(false);
+
+            if (response.StatusCode != System.Net.HttpStatusCode.OK)
+            {
+                var errorCode = response.Headers?.ToList().FirstOrDefault(x => x.Name != null && x.Name.Equals("error"))?.Value?.ToString() ?? "Unknow";
+                var message = response.Headers?.ToList().FirstOrDefault(x => x.Name != null && x.Name.Equals("message"))?.Value?.ToString() ?? "Unknow";
+                throw new ShipITException(errorCode, message);
+            }
+
+            if(response.Data == null) throw new ShipITException("No Data available in response", "NO_RESPONSE_DATA");
+
+            switch (response.Data.Result)
+            {
+                case "CANCELLED":
+                case "CANCELLATION_PENDING":
+                    return CancelResult.CANCLED;
+                case "SCANNED":
+                    return CancelResult.ALREADY_IN_USE;
+                default:
+                    throw new ShipITException(response.Data.Result, "UNKNOW_CANCEL_RESULT");
+            }
+
         }
     }
 }
