@@ -16,7 +16,7 @@ namespace ShippingProAPICollection.NUnitTests
         {
             ShippingProAPICollectionService shippingCollection = _serviceProvider.GetRequiredService<ShippingProAPICollectionService>();
 
-            var request = new ShipITShipmentRequestModel()
+            var request = new ShipITShipmentRequestModel("GLS")
             {
                 ServiceProduct = ShipITProductType.PARCEL,
                 Weight = 0.5,
@@ -50,7 +50,7 @@ namespace ShippingProAPICollection.NUnitTests
         {
             ShippingProAPICollectionService shippingCollection = _serviceProvider.GetRequiredService<ShippingProAPICollectionService>();
 
-            var request = new ShipITShipmentRequestModel()
+            var request = new ShipITShipmentRequestModel("GLS")
             {
                 ServiceProduct = ShipITProductType.PARCEL,
                 Weight = 1,
@@ -72,7 +72,7 @@ namespace ShippingProAPICollection.NUnitTests
 
             foreach (var label in createResult)
             {
-                var cancelResult = (await shippingCollection.CancelLabel(ProviderType.SHIPIT, label.CancelId));
+                var cancelResult = (await shippingCollection.CancelLabel("GLS", label.CancelId));
                 Assert.That(cancelResult == CancelResult.CANCLED);
             }
 

@@ -7,15 +7,28 @@ namespace ShippingProAPICollection
     public class ShippingProAPICollectionService
     {
 
-        Dictionary<ProviderType, IShippingProviderService> providerServices;
+        Dictionary<string, IShippingProviderService> providerServices = new Dictionary<string, IShippingProviderService>();
 
-        public ShippingProAPICollectionService(ShippingProAPIAccountSettings accountSettings, ShipITSettings providerSettings)
+        public ShippingProAPICollectionService(ShippingProAPIAccountSettings accountSettings, ShippingProAPICollectionSettings providerSettings)
         {
-            providerServices = new Dictionary<ProviderType, IShippingProviderService>()
+            Dictionary<string, ProviderSettings> providers = providerSettings.GetProviders();
+
+            foreach (KeyValuePair<string, ProviderSettings> provider in providers)
             {
-                 { ProviderType.SHIPIT , new ShipITShipmentService( accountSettings, providerSettings ) },
-            };
+                providerServices.Add(provider.Key, BuildProviderService(accountSettings, provider.Value));
+            }
         }
+
+        private IShippingProviderService BuildProviderService(ShippingProAPIAccountSettings accountSettings, ProviderSettings settings)
+        {
+            switch (settings)
+            {
+                case ShipITSettings shipITSettings:
+                    return new ShipITShipmentService(accountSettings, shipITSettings);
+                default:  throw new Exception("provider not available");
+            }
+        }
+
 
         public async Task<List<RequestShippingLabelResponse>> RequestLabel(RequestShipmentBase request, CancellationToken ct = default)
         {
@@ -29,7 +42,7 @@ namespace ShippingProAPICollection
             throw new InvalidOperationException("Unknown shipping provider");
         }
 
-        public async Task<CancelResult> CancelLabel(ProviderType provider, string cancelId, CancellationToken ct = default)
+        public async Task<CancelResult> CancelLabel(string provider, string cancelId, CancellationToken ct = default)
         {
             
             if (providerServices.TryGetValue(provider, out var service))

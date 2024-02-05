@@ -3,13 +3,15 @@ using ShippingProAPICollection.ShipIT.Entities;
 using System.ComponentModel.DataAnnotations;
 using ShippingProAPICollection.Models.Utils;
 using ShippingProAPICollection.Models.Error;
-using ShippingProAPICollection.Models.Entities;
 
 namespace ShippingProAPICollection.ShipIT
 {
     public class ShipITShipmentRequestModel : RequestShipmentBase
     {
-        public override ProviderType Provider => ProviderType.SHIPIT;
+        public ShipITShipmentRequestModel(string provider) : base(provider)
+        {
+          
+        }
 
         /// <summary>
         /// Mit Email Notification an den Kunden -> Email muss dafür angegeben werden |

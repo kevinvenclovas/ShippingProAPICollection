@@ -2,7 +2,6 @@
 using ShippingProAPICollection.Models;
 using ShippingProAPICollection.ShipIT;
 using ShippingProAPICollection.ShipIT.Entities;
-using System;
 
 namespace ShippingProAPICollection.NUnitTests
 {
@@ -19,6 +18,8 @@ namespace ShippingProAPICollection.NUnitTests
             ShippingProAPIAccountSettings accountSettins = new ShippingProAPIAccountSettings();
             services.AddSingleton<ShippingProAPIAccountSettings>(accountSettins);
 
+            ShippingProAPICollectionSettings providerSettings = new ShippingProAPICollectionSettings();
+
             ShipITSettings shipItSettings = new ShipITSettings()
             {
                 ApiDomain = "test01",
@@ -27,7 +28,10 @@ namespace ShippingProAPICollection.NUnitTests
                 Password = "lXZBIF7uRccyK7Ohr64d",
                 Username = "276a45fkqM"
             };
-            services.AddSingleton<ShipITSettings>(shipItSettings);
+
+            providerSettings.AddSettings("GLS", shipItSettings);
+
+            services.AddSingleton(providerSettings);
 
             services.AddScoped<ShippingProAPICollectionService>();
 

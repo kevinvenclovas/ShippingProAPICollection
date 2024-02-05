@@ -1,16 +1,21 @@
-﻿using ShippingProAPICollection.Models.Entities;
-using ShippingProAPICollection.Models.Error;
+﻿using ShippingProAPICollection.Models.Error;
 using System.ComponentModel.DataAnnotations;
 
 namespace ShippingProAPICollection.Models
 {
     public abstract class RequestShipmentBase
     {
+
+        public RequestShipmentBase(string provider)
+        {
+            Provider = provider;
+        }
+
         /// <summary>
         /// Typ des Versandanbieters |
         /// Type of the shipping provider
         /// </summary>
-        public abstract ProviderType Provider { get;}
+        public string Provider { get;}
 
         /// <summary>
         /// Datum wann das Paket frühestens geliefert werden soll |
