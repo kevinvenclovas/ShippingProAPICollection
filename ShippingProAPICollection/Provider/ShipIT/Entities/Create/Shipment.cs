@@ -1,8 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.ComponentModel.DataAnnotations;
-using ShippingProAPICollection.Provider.ShipIT.Entities;
-using ShippingProAPICollection.Provider.ShipIT.Entities.Create;
 
 namespace ShippingProAPICollection.Provider.ShipIT.Entities.Create
 {

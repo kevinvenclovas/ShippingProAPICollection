@@ -7,6 +7,7 @@ using ShippingProAPICollection.Models.Entities;
 using ShippingProAPICollection.Models.Error;
 using ShippingProAPICollection.Models.Utils;
 using ShippingProAPICollection.Provider.DHL.Entities;
+using ShippingProAPICollection.Provider.ShipIT.Entities.Validation;
 
 namespace ShippingProAPICollection.Provider.DHL
 {
@@ -209,7 +210,16 @@ namespace ShippingProAPICollection.Provider.DHL
 
         }
 
-
+        /// <summary>
+        /// Validate a shipping label request
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancelToken"></param>
+        /// <returns></returns>
+        public Task<ValidationReponse> ValidateLabel(RequestShipmentBase request, CancellationToken cancelToken)
+        {
+            throw new DHLException(ErrorCode.NOT_AVAILABLE, "Validation not available for DHL");
+        }
 
         /// <summary>
         /// Create the DHL request body informations

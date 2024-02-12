@@ -1,6 +1,6 @@
 ﻿using ShippingProAPICollection.Models;
 using ShippingProAPICollection.Models.Entities;
-using ShippingProAPICollection.Provider;
+using ShippingProAPICollection.Provider.ShipIT.Entities.Validation;
 
 namespace ShippingProAPICollection.Provider
 {
@@ -23,6 +23,14 @@ namespace ShippingProAPICollection.Provider
         /// <param name="cancelToken"></param>
         /// <returns></returns>
         public Task<CancelResult> CancelLabel(string cancelId, CancellationToken cancelToken);
+
+        /// <summary>
+        /// Prüfe einen Versandlabel request |
+        /// Validate a shippint label request
+        /// </summary>
+        /// <param name=""></param>
+        /// <returns></returns>
+        public Task<ValidationReponse> ValidateLabel(RequestShipmentBase request, CancellationToken cancelToken);
 
     }
 }

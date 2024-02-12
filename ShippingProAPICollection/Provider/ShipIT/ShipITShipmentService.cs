@@ -4,14 +4,12 @@ using RestSharp.Authenticators;
 using ShippingProAPICollection.Models;
 using ShippingProAPICollection.Models.Entities;
 using ShippingProAPICollection.Models.Error;
-using ShippingProAPICollection.Provider;
-using ShippingProAPICollection.Provider.ShipIT;
 using ShippingProAPICollection.Provider.ShipIT.Entities;
 using ShippingProAPICollection.Provider.ShipIT.Entities.Cancel;
 using ShippingProAPICollection.Provider.ShipIT.Entities.Create;
 using ShippingProAPICollection.Provider.ShipIT.Entities.Create.Response;
 using ShippingProAPICollection.Provider.ShipIT.Entities.Create.Services;
-
+using ShippingProAPICollection.Provider.ShipIT.Entities.Validation;
 
 namespace ShippingProAPICollection.Provider.ShipIT
 {
@@ -38,7 +36,22 @@ namespace ShippingProAPICollection.Provider.ShipIT
         {
             var shipITRequest = request as ShipITShipmentRequestModel;
 
-            var requestBody = CreateRequestModel(shipITRequest);
+            // Define printing options
+            PrintingOptions printOptions = new PrintingOptions();
+
+            printOptions.ReturnLabels = new ReturnLabels()
+            {
+                LabelFormat = ShipITLabelDocFormat.PDF,
+                TemplateSet = ShipITTemplateSet.NONE
+            };
+
+            var shipment = CreateRequestModel(shipITRequest);
+
+            var shipmentRequest = new ShipmentRequestData()
+            {
+                Shipment = shipment,
+                PrintingOptions = printOptions
+            };
 
             var clientOptions = new RestClientOptions(new Uri(string.Format("https://shipit-wbm-{0}.gls-group.eu:443/backend/rs/shipments", providerSettings.ApiDomain)))
             {
@@ -56,7 +69,7 @@ namespace ShippingProAPICollection.Provider.ShipIT
             clientRequest.AddHeader("Content-Type", apiContentType);
             clientRequest.AddHeader("Accept", apiContentType);
 
-            string json = JsonConvert.SerializeObject(requestBody, Formatting.Indented, new JsonSerializerSettings
+            string json = JsonConvert.SerializeObject(shipmentRequest, Formatting.Indented, new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore,
             });
@@ -65,7 +78,7 @@ namespace ShippingProAPICollection.Provider.ShipIT
 
             RestResponse<CreatedShipmentResponse> response = await client.ExecuteAsync<CreatedShipmentResponse>(clientRequest, cancelToken).ConfigureAwait(false);
 
-            if (response.Data == null) throw new ShipITException(ErrorCode.UNKNOW, "No Data available in response", requestBody);
+            if (response.Data == null) throw new ShipITException(ErrorCode.UNKNOW, "No Data available in response", shipmentRequest);
 
             if (response.StatusCode != System.Net.HttpStatusCode.OK)
             {
@@ -91,7 +104,7 @@ namespace ShippingProAPICollection.Provider.ShipIT
                     errorCode = ErrorCode.INTERNAL_SERVER_ERROR;
                 }
 
-                throw new ShipITException(errorCode, message, requestBody);
+                throw new ShipITException(errorCode, message, shipmentRequest);
             }
 
             List<RequestShippingLabelResponse> createdLabels = new List<RequestShippingLabelResponse>();
@@ -180,24 +193,109 @@ namespace ShippingProAPICollection.Provider.ShipIT
 
         }
 
+        /// <summary>
+        /// Validate shipping request
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancelToken"></param>
+        /// <returns></returns>
+        /// <exception cref="ShipITException"></exception>
+        public async Task<ValidationReponse> ValidateLabel(RequestShipmentBase request, CancellationToken cancelToken)
+        {
+            var shipITRequest = request as ShipITShipmentRequestModel;
 
+            var shipment = CreateRequestModel(shipITRequest);
+
+            var clientOptions = new RestClientOptions(new Uri(string.Format("https://shipit-wbm-{0}.gls-group.eu:443/backend/rs/shipments/validate", providerSettings.ApiDomain)))
+            {
+                RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true,
+                Authenticator = new HttpBasicAuthenticator(providerSettings.Username, providerSettings.Password)
+            };
+
+            RestClient client = new RestClient(clientOptions);
+
+            var clientRequest = new RestRequest()
+            {
+                Method = Method.Post
+            };
+
+            clientRequest.AddHeader("Content-Type", apiContentType);
+            clientRequest.AddHeader("Accept", apiContentType);
+
+            var requestBody = new ValidateShipmentRequestData() { Shipment = shipment };
+
+            string json = JsonConvert.SerializeObject(new ValidateShipmentRequestData() { Shipment = shipment }, Formatting.Indented, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+            });
+
+            clientRequest.AddJsonBody(json, apiContentType);
+
+            RestResponse<ValidateParcelsResponse> response = await client.ExecuteAsync<ValidateParcelsResponse>(clientRequest, cancelToken).ConfigureAwait(false);
+
+            if (!response.IsSuccessful) throw new ShipITException(ErrorCode.UNKNOW, response.ErrorMessage + "<------>" + response.Content, requestBody);
+           
+            if (response.Data == null) throw new ShipITException(ErrorCode.UNKNOW, "No content data found on validation reponse");
+
+            if (response.Data.Success == true) return new ValidationReponse() { Success = true };
+           
+            List<ValidationReponseIssue> reponseIssues = new List<ValidationReponseIssue>();
+            Dictionary<string, ValidationIssue> validationErrors = new Dictionary<string, ValidationIssue>();
+
+            response.Data.ValidationResult?.Issues?.ForEach(x => validationErrors.Add(x.Rule ?? "", x));
+
+            foreach (KeyValuePair<string, ValidationIssue> validationErrorKey in validationErrors)
+            {
+                switch (validationErrorKey.Key)
+                {
+                    case "SHIPMENT_VALID_INCOTERM_IF_NEEDED":
+                        reponseIssues.Add(new ValidationReponseIssue() { ErrorCode = ErrorCode.GLS_INCOTERM_ERROR, Message = "Es wird ein gültiger Incoterm für die Sendung benötigt." });
+                        break;
+                    case "ARTICLES_PRODUCT_MUST_BE_SET":
+                        reponseIssues.Add(new ValidationReponseIssue() { ErrorCode = ErrorCode.GLS_PRODUCT_CANNOT_USE_ERROR, Message = "GLS-Produkt kann für die Lieferadresse nicht angewandt werden." });
+                        break;
+                    case "ARTICLES_EXPRESS_SATURDAY":
+                        reponseIssues.Add(new ValidationReponseIssue() { ErrorCode = ErrorCode.GLS_NEXT_DAY_NOT_SATURDAY_ERROR, Message = "Nächster Werktag ist nicht Samstag. Service kann heute nicht gebucht werden." });
+                        break;
+                    case "SHIPMENT_VALID_ROUTING":
+                        reponseIssues.Add(new ValidationReponseIssue() { ErrorCode = ErrorCode.GLS_ROUTING_ERROR, Message = "Kein gültiges Routing mit GLS möglich: " + validationErrorKey.Value.Parameters[0] });
+                        break;
+                    case "ADDRESS_VALID_ZIPCODE":
+                        reponseIssues.Add(new ValidationReponseIssue() { ErrorCode = ErrorCode.GLS_POSTCODE_ERROR, Message = "Keine gültige Postleitzahl vorhanden." });
+                        break;
+                    case "ARTICLES_PRODUCT_WEIGHT":
+                        reponseIssues.Add(new ValidationReponseIssue() { ErrorCode = ErrorCode.GLS_WEIGHT_ERROR, Message = "Gewicht ist zu gering oder zu hoch für dieses Produkt." });
+                        break;
+                    case "ARTICLE_COMBINATIONS":
+                        reponseIssues.Add(new ValidationReponseIssue() { ErrorCode = ErrorCode.GLS_ARTICLE_COMBINATIONS_ERROR, Message = "GLS-Produktkombination können nicht zusammen gebucht werden." });
+                        break;
+                    case "ARTICLES_DESTINATION_EXCLUSIONS":
+                        reponseIssues.Add(new ValidationReponseIssue() { ErrorCode = ErrorCode.GLS_ARTICLE_DESTINATION_EXCLUSION_ERROR, Message = "GLS-Service und Produkt sind zur Lieferadresse nicht möglich" });
+                        break;
+                    case "COMMON":
+                        reponseIssues.Add(new ValidationReponseIssue() { ErrorCode = ErrorCode.GLS_COMMON_ERROR, Message = $"GLS-Labeldruck einfacher Fehler aufgetreten: Location: {validationErrorKey.Value.Location} Message: {validationErrorKey.Value.Parameters[0]}" });
+                        break;
+                    case "ARTICLES_VALID_FOR_COUNTRY":
+                        reponseIssues.Add(new ValidationReponseIssue() { ErrorCode = ErrorCode.GLS_ARTICLE_COMBINATIONS_ERROR, Message = $"Artikelkombination ist in diesem Land nicht verfügbar" });
+                        break;
+                    default:
+                        reponseIssues.Add(new ValidationReponseIssue() { ErrorCode = ErrorCode.UNKNOW, Message = "GLS-Labeldruck nicht abgedeckter Fehler entdeckt: " + validationErrorKey.Key });
+                        break;
+                }
+            }
+
+            return new ValidationReponse() { Success = true, ValidationIssues = reponseIssues };
+
+        }
 
         /// <summary>
         /// Create the GLS request body informations
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        private ShipmentRequestData CreateRequestModel(ShipITShipmentRequestModel request)
+        private Shipment CreateRequestModel(ShipITShipmentRequestModel request)
         {
-            // Define printing options
-            PrintingOptions printOptions = new PrintingOptions();
-
-            printOptions.ReturnLabels = new ReturnLabels()
-            {
-                LabelFormat = ShipITLabelDocFormat.PDF,
-                TemplateSet = ShipITTemplateSet.NONE
-            };
-
+            
             // Calculate single package weight
             // Share weight if more than one label requested
             double singlePackageWeight = request.Weight / request.LabelCount;
@@ -254,12 +352,8 @@ namespace ShippingProAPICollection.Provider.ShipIT
             };
 
 
-            return new ShipmentRequestData()
-            {
-                Shipment = shipment,
-                PrintingOptions = printOptions
-            };
-
+            return shipment;
+           
         }
 
         /// <summary>

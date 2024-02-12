@@ -12,7 +12,7 @@ namespace ShippingProAPICollection.NUnitTests
         /// </summary>
         /// <returns></returns>
         [Test]
-        public async Task RequestSingleLabel()
+        public async Task CreateSingleShippingLabel()
         {
             ShippingProAPICollectionService shippingCollection = _serviceProvider.GetRequiredService<ShippingProAPICollectionService>();
 
@@ -44,7 +44,7 @@ namespace ShippingProAPICollection.NUnitTests
         /// </summary>
         /// <returns></returns>
         [Test]
-        public async Task RequestMultipleLabels()
+        public async Task CreateMultipleShippingLabel()
         {
             ShippingProAPICollectionService shippingCollection = _serviceProvider.GetRequiredService<ShippingProAPICollectionService>();
 
@@ -76,7 +76,7 @@ namespace ShippingProAPICollection.NUnitTests
         /// </summary>
         /// <returns></returns>
         [Test]
-        public async Task RequestLabelWithDepositService()
+        public async Task CreateShippingLabelWithDepositService()
         {
             ShippingProAPICollectionService shippingCollection = _serviceProvider.GetRequiredService<ShippingProAPICollectionService>();
 
@@ -108,7 +108,7 @@ namespace ShippingProAPICollection.NUnitTests
         /// </summary>
         /// <returns></returns>
         [Test]
-        public async Task RequestLabelReturnService()
+        public async Task CreateShippingLabelWithReturnService()
         {
             ShippingProAPICollectionService shippingCollection = _serviceProvider.GetRequiredService<ShippingProAPICollectionService>();
 
@@ -134,12 +134,43 @@ namespace ShippingProAPICollection.NUnitTests
             Assert.That(result.FirstOrDefault()?.Label.Length > 0);
         }
 
+
+        /// <summary>
+        /// Create label with return service
+        /// </summary>
+        /// <returns></returns>
+        [Test]
+        public async Task ValidateShippingLabel()
+        {
+            ShippingProAPICollectionService shippingCollection = _serviceProvider.GetRequiredService<ShippingProAPICollectionService>();
+
+            var request = new ShipITShipmentRequestModel("GLS")
+            {
+                ServiceProduct = ShipITProductType.PARCEL,
+                Weight = 1f,
+                LabelCount = 1,
+                Adressline1 = "Max Mustermann",
+                Country = "DE",
+                City = "Ellwangen",
+                Street = "Maxstraﬂe 10",
+                PostCode = "73479",
+                InvoiceReference = "RE-123456",
+                Phone = "0123456789",
+                ServiceType = ShipITServiceType.SHOPRETURN,
+            };
+            request.Validate();
+
+            var result = (await shippingCollection.ValidateLabel(request));
+
+            Assert.That(result.Success);
+        }
+
         /// <summary>
         /// Create 2 labels with deposit service and cancel both
         /// </summary>
         /// <returns></returns>
         [Test]
-        public async Task CancelLabel()
+        public async Task CancelShippingLabel()
         {
             ShippingProAPICollectionService shippingCollection = _serviceProvider.GetRequiredService<ShippingProAPICollectionService>();
 

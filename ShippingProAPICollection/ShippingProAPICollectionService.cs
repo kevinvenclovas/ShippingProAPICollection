@@ -5,6 +5,7 @@ using ShippingProAPICollection.Provider;
 using ShippingProAPICollection.Provider.DHL;
 using ShippingProAPICollection.Provider.DPD;
 using ShippingProAPICollection.Provider.ShipIT;
+using ShippingProAPICollection.Provider.ShipIT.Entities.Validation;
 
 namespace ShippingProAPICollection
 {
@@ -37,7 +38,6 @@ namespace ShippingProAPICollection
             }
         }
 
-
         public async Task<List<RequestShippingLabelResponse>> RequestLabel(RequestShipmentBase request, CancellationToken ct = default)
         {
             request.Validate();
@@ -45,6 +45,18 @@ namespace ShippingProAPICollection
             if (providerServices.TryGetValue(request.ContractID, out var service))
             {
                 return await service.RequestLabel(request, ct);
+            }
+
+            throw new InvalidOperationException("Unknown shipping provider");
+        }
+
+        public async Task<ValidationReponse> ValidateLabel(RequestShipmentBase request, CancellationToken ct = default)
+        {
+            request.Validate();
+
+            if (providerServices.TryGetValue(request.ContractID, out var service))
+            {
+                return await service.ValidateLabel(request, ct);
             }
 
             throw new InvalidOperationException("Unknown shipping provider");
@@ -60,5 +72,6 @@ namespace ShippingProAPICollection
 
             throw new InvalidOperationException("Unknown shipping provider");
         }
+    
     }
 }

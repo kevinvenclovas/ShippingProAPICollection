@@ -6,7 +6,9 @@ using ShippingProAPICollection.Models;
 using ShippingProAPICollection.Models.Entities;
 using ShippingProAPICollection.Models.Error;
 using ShippingProAPICollection.Models.Utils;
+using ShippingProAPICollection.Provider.DHL.Entities;
 using ShippingProAPICollection.Provider.DPD.Entities;
+using ShippingProAPICollection.Provider.ShipIT.Entities.Validation;
 
 namespace ShippingProAPICollection.Provider.DPD
 {
@@ -23,7 +25,13 @@ namespace ShippingProAPICollection.Provider.DPD
             _cache = cache;
         }
 
-
+        /// <summary>
+        /// Request DPD shipping label
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancelToken"></param>
+        /// <returns></returns>
+        /// <exception cref="DPDException"></exception>
         public async Task<List<RequestShippingLabelResponse>> RequestLabel(RequestShipmentBase request, CancellationToken cancelToken = default)
         {
             var DPDRequest = request as DPDShipmentRequestModel;
@@ -80,12 +88,28 @@ namespace ShippingProAPICollection.Provider.DPD
             
         }
 
+        /// <summary>
+        /// Cancel DPD shipping label
+        /// </summary>
+        /// <param name="cancelId"></param>
+        /// <param name="cancelToken"></param>
+        /// <returns></returns>
         public async Task<CancelResult> CancelLabel(string cancelId, CancellationToken cancelToken = default)
         {
             // DPD is fucking crazy and we not need to cancel any labels :)
             return CancelResult.CANCLED;
         }
 
+        /// <summary>
+        /// Validate a shipping label request
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancelToken"></param>
+        /// <returns></returns>
+        public Task<ValidationReponse> ValidateLabel(RequestShipmentBase request, CancellationToken cancelToken)
+        {
+            throw new DHLException(ErrorCode.NOT_AVAILABLE, "Validation not available for DPD");
+        }
 
         private storeOrders CreateRequestModel(DPDShipmentRequestModel request)
         {

@@ -13,7 +13,7 @@ namespace ShippingProAPICollection.NUnitTests
         /// </summary>
         /// <returns></returns>
         [Test]
-        public async Task RequestSingleLabel()
+        public async Task CreateSingleShippingLabel()
         {
             ShippingProAPICollectionService shippingCollection = _serviceProvider.GetRequiredService<ShippingProAPICollectionService>();
 
@@ -44,7 +44,7 @@ namespace ShippingProAPICollection.NUnitTests
         /// </summary>
         /// <returns></returns>
         [Test]
-        public async Task RequestMultipleLabels()
+        public async Task CreateMultipleShippingLabel()
         {
             ShippingProAPICollectionService shippingCollection = _serviceProvider.GetRequiredService<ShippingProAPICollectionService>();
 
@@ -76,7 +76,7 @@ namespace ShippingProAPICollection.NUnitTests
         /// </summary>
         /// <returns></returns>
         [Test]
-        public async Task CancelLabel()
+        public async Task CancelShippingLabel()
         {
             ShippingProAPICollectionService shippingCollection = _serviceProvider.GetRequiredService<ShippingProAPICollectionService>();
 
