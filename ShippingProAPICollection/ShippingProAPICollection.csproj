@@ -7,6 +7,30 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\DHLClient.yaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <OpenApiReference Include="Resources\DHLClient.yaml" Namespace="ShippingProAPICollection._Provider.DHL">
+      <CodeGenerator>NSwagCSharp</CodeGenerator>
+      <ClassName>DHLClient</ClassName>
+    </OpenApiReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="itext7" Version="7.2.5"/>
+    <PackageReference Include="JsonSubTypes" Version="2.0.1" />
+    <PackageReference Include="Microsoft.Extensions.ApiDescription.Client" Version="7.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="8.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="NSwag.ApiDescription.Client" Version="13.18.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="RestSharp" Version="110.2.0" />
     <PackageReference Include="System.ServiceModel.Duplex" Version="6.0.0" />
     <PackageReference Include="System.ServiceModel.Federation" Version="6.2.0" />
     <PackageReference Include="System.ServiceModel.Http" Version="6.2.0" />
@@ -16,7 +40,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ShippingProAPICollection.ShipIT\ShippingProAPICollection.ShipIT.csproj" />
+    <None Update="Provider\DHL\Resources\DHLClient.yaml">
+      <CodeGenerator>NSwagCSharp</CodeGenerator>
+      <ClassName>DHLClient</ClassName>
+    </None>
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,10 @@
-﻿using ShippingProAPICollection.Models;
+﻿using Microsoft.Extensions.Caching.Memory;
+using ShippingProAPICollection.Models;
 using ShippingProAPICollection.Models.Entities;
-using ShippingProAPICollection.ShipIT;
+using ShippingProAPICollection.Provider;
+using ShippingProAPICollection.Provider.DHL;
+using ShippingProAPICollection.Provider.DPD;
+using ShippingProAPICollection.Provider.ShipIT;
 
 namespace ShippingProAPICollection
 {
@@ -9,22 +13,26 @@ namespace ShippingProAPICollection
 
         Dictionary<string, IShippingProviderService> providerServices = new Dictionary<string, IShippingProviderService>();
 
-        public ShippingProAPICollectionService(ShippingProAPIAccountSettings accountSettings, ShippingProAPICollectionSettings providerSettings)
+        public ShippingProAPICollectionService(IMemoryCache _cache, ShippingProAPIAccountSettings accountSettings, ShippingProAPICollectionSettings providerSettings)
         {
             Dictionary<string, ProviderSettings> providers = providerSettings.GetProviders();
 
             foreach (KeyValuePair<string, ProviderSettings> provider in providers)
             {
-                providerServices.Add(provider.Key, BuildProviderService(accountSettings, provider.Value));
+                providerServices.Add(provider.Key, BuildProviderService(_cache, accountSettings, provider.Value));
             }
         }
 
-        private IShippingProviderService BuildProviderService(ShippingProAPIAccountSettings accountSettings, ProviderSettings settings)
+        private IShippingProviderService BuildProviderService(IMemoryCache _cache, ShippingProAPIAccountSettings accountSettings, ProviderSettings settings)
         {
             switch (settings)
             {
-                case ShipITSettings shipITSettings:
-                    return new ShipITShipmentService(accountSettings, shipITSettings);
+                case ShipITSettings providerSettings:
+                    return new ShipITShipmentService(accountSettings, providerSettings);
+                case DHLSettings providerSettings:
+                    return new DHLShipmentService(accountSettings, providerSettings);
+                case DPDSettings providerSettings:
+                    return new DPDShipmentService(accountSettings, providerSettings, _cache);
                 default:  throw new Exception("provider not available");
             }
         }
@@ -34,7 +42,7 @@ namespace ShippingProAPICollection
         {
             request.Validate();
 
-            if (providerServices.TryGetValue(request.Provider, out var service))
+            if (providerServices.TryGetValue(request.ContractID, out var service))
             {
                 return await service.RequestLabel(request, ct);
             }

@@ -1,11 +1,11 @@
 using Microsoft.Extensions.DependencyInjection;
 using ShippingProAPICollection.Models.Entities;
-using ShippingProAPICollection.Provider.ShipIT;
-using ShippingProAPICollection.Provider.ShipIT.Entities;
+using ShippingProAPICollection.Provider.DHL;
+using ShippingProAPICollection.Provider.DHL.Entities;
 
 namespace ShippingProAPICollection.NUnitTests
 {
-    public class ShipITTests : TestBase
+    public class DHLTests : TestBase
     {
         /// <summary>
         /// Create one label with 0.5 Kg
@@ -16,9 +16,9 @@ namespace ShippingProAPICollection.NUnitTests
         {
             ShippingProAPICollectionService shippingCollection = _serviceProvider.GetRequiredService<ShippingProAPICollectionService>();
 
-            var request = new ShipITShipmentRequestModel("GLS")
+            var request = new DHLShipmentRequestModel("DHL")
             {
-                ServiceProduct = ShipITProductType.PARCEL,
+                ServiceProduct = DHLProductType.V01PAK,
                 Weight = 0.5f,
                 LabelCount = 1,
                 Adressline1 = "Max Mustermann",
@@ -28,10 +28,9 @@ namespace ShippingProAPICollection.NUnitTests
                 PostCode = "73479",
                 InvoiceReference = "RE-123456",
                 Phone = "0123456789",
-                ServiceType = ShipITServiceType.NONE,
+                ServiceType = DHLServiceType.NONE,
             };
             request.Validate();
-
 
             var result = (await shippingCollection.RequestLabel(request));
 
@@ -48,10 +47,10 @@ namespace ShippingProAPICollection.NUnitTests
         {
             ShippingProAPICollectionService shippingCollection = _serviceProvider.GetRequiredService<ShippingProAPICollectionService>();
 
-            var request = new ShipITShipmentRequestModel("GLS")
+            var request = new DHLShipmentRequestModel("DHL")
             {
-                ServiceProduct = ShipITProductType.PARCEL,
-                Weight = 1f,
+                ServiceProduct = DHLProductType.V01PAK,
+                Weight = 2f,
                 LabelCount = 2,
                 Adressline1 = "Max Mustermann",
                 Country = "DE",
@@ -60,10 +59,9 @@ namespace ShippingProAPICollection.NUnitTests
                 PostCode = "73479",
                 InvoiceReference = "RE-123456",
                 Phone = "0123456789",
-                ServiceType = ShipITServiceType.NONE,
+                ServiceType = DHLServiceType.NONE,
             };
             request.Validate();
-
 
             var result = (await shippingCollection.RequestLabel(request));
 
@@ -80,9 +78,9 @@ namespace ShippingProAPICollection.NUnitTests
         {
             ShippingProAPICollectionService shippingCollection = _serviceProvider.GetRequiredService<ShippingProAPICollectionService>();
 
-            var request = new ShipITShipmentRequestModel("GLS")
+            var request = new DHLShipmentRequestModel("DHL")
             {
-                ServiceProduct = ShipITProductType.PARCEL,
+                ServiceProduct = DHLProductType.V01PAK,
                 Weight = 1f,
                 LabelCount = 1,
                 Adressline1 = "Max Mustermann",
@@ -92,7 +90,7 @@ namespace ShippingProAPICollection.NUnitTests
                 PostCode = "73479",
                 InvoiceReference = "RE-123456",
                 Phone = "0123456789",
-                ServiceType = ShipITServiceType.DEPOSIT,
+                ServiceType = DHLServiceType.DEPOSIT,
                 PlaceOfDeposit = "Garden"
             };
             request.Validate();
@@ -104,17 +102,17 @@ namespace ShippingProAPICollection.NUnitTests
         }
 
         /// <summary>
-        /// Create label with return service
+        /// Create label to postoffice
         /// </summary>
         /// <returns></returns>
         [Test]
-        public async Task RequestLabelReturnService()
+        public async Task RequestLabelToPostOffice()
         {
             ShippingProAPICollectionService shippingCollection = _serviceProvider.GetRequiredService<ShippingProAPICollectionService>();
 
-            var request = new ShipITShipmentRequestModel("GLS")
+            var request = new DHLShipmentRequestModel("DHL")
             {
-                ServiceProduct = ShipITProductType.PARCEL,
+                ServiceProduct = DHLProductType.V01PAK,
                 Weight = 1f,
                 LabelCount = 1,
                 Adressline1 = "Max Mustermann",
@@ -124,7 +122,13 @@ namespace ShippingProAPICollection.NUnitTests
                 PostCode = "73479",
                 InvoiceReference = "RE-123456",
                 Phone = "0123456789",
-                ServiceType = ShipITServiceType.SHOPRETURN,
+                ServiceType = DHLServiceType.POSTOFFICE,
+                PostOffice = new ShippingProAPICollection.Provider.DHL.Entities.DHLPostOfficeData() { 
+                    City = "Ellwangen",
+                    PostCode = "73479",
+                    PostfilialeNumber = "564",
+                    PostNumber = "943864414",
+                }
             };
             request.Validate();
 
@@ -143,11 +147,11 @@ namespace ShippingProAPICollection.NUnitTests
         {
             ShippingProAPICollectionService shippingCollection = _serviceProvider.GetRequiredService<ShippingProAPICollectionService>();
 
-            var request = new ShipITShipmentRequestModel("GLS")
+            var request = new DHLShipmentRequestModel("DHL")
             {
-                ServiceProduct = ShipITProductType.PARCEL,
-                Weight = 1,
-                LabelCount = 2,
+                ServiceProduct = DHLProductType.V01PAK,
+                Weight = 1f,
+                LabelCount = 1,
                 Adressline1 = "Max Mustermann",
                 Country = "DE",
                 City = "Ellwangen",
@@ -155,8 +159,14 @@ namespace ShippingProAPICollection.NUnitTests
                 PostCode = "73479",
                 InvoiceReference = "RE-123456",
                 Phone = "0123456789",
-                ServiceType = ShipITServiceType.DEPOSIT,
-                PlaceOfDeposit = "Behind the gardenhouse",
+                ServiceType = DHLServiceType.POSTOFFICE,
+                PostOffice = new ShippingProAPICollection.Provider.DHL.Entities.DHLPostOfficeData()
+                {
+                    City = "Ellwangen",
+                    PostCode = "73479",
+                    PostfilialeNumber = "564",
+                    PostNumber = "943864414",
+                }
             };
             request.Validate();
 
@@ -164,7 +174,7 @@ namespace ShippingProAPICollection.NUnitTests
 
             foreach (var label in createResult)
             {
-                var cancelResult = (await shippingCollection.CancelLabel("GLS", label.CancelId));
+                var cancelResult = (await shippingCollection.CancelLabel("DHL", label.CancelId));
                 Assert.That(cancelResult == CancelResult.CANCLED);
             }
 
