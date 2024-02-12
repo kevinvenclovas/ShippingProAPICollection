@@ -20,11 +20,9 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 7.0.x
-    - name: Build
-      run: dotnet build --no-restore
     - name: Setup Secrets
       run: dotnet user-secrets init
     - name: Add Secrets
       run: dotnet user-secrets set "DHLAPIKey" ${{ secrets.DHLAPIKEY }}
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test --no-build --verbosity --no-restore normal
