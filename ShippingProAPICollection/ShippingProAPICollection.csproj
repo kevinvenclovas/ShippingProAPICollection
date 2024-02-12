@@ -7,18 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resources\DHLClient.yaml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <OpenApiReference Include="Resources\DHLClient.yaml" Namespace="ShippingProAPICollection._Provider.DHL">
-      <CodeGenerator>NSwagCSharp</CodeGenerator>
-      <ClassName>DHLClient</ClassName>
-    </OpenApiReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="itext7" Version="7.2.5"/>
+    <PackageReference Include="itext7" Version="7.2.5" />
     <PackageReference Include="JsonSubTypes" Version="2.0.1" />
     <PackageReference Include="Microsoft.Extensions.ApiDescription.Client" Version="7.0.2">
       <PrivateAssets>all</PrivateAssets>
@@ -42,6 +31,9 @@
   <ItemGroup>
     <None Update="Provider\DHL\Resources\DHLClient.yaml">
       <CodeGenerator>NSwagCSharp</CodeGenerator>
+      <ClassName>DHLClient</ClassName>
+    </None>
+    <None Update="Resources\DHLClient.yaml">
       <ClassName>DHLClient</ClassName>
     </None>
   </ItemGroup>
