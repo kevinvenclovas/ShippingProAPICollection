@@ -4,7 +4,34 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Title>ShippingProAPICollection</Title>
+    <Authors>Kevin Venclovas</Authors>
+    <Company>CodeKev Innovations</Company>
+    <Description>This project provides a unified interface for GLS ShipIT, DHL, and DPD, simplifying the shipping process for developers and businesses. With easy integration, you can now manage rates, track shipments, and handle logistics across different carriers seamlessly. Ideal for enhancing efficiency in e-commerce and logistics operations.</Description>
+    <PackageProjectUrl>https://github.com/kevinvenclovas/ShippingProAPICollection</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/kevinvenclovas/ShippingProAPICollection</RepositoryUrl>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageTags>Api;GLS;DHL;DPD;Germany;Interface;Schnittstelle</PackageTags>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Copyright>MIT</Copyright>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\..\Desktop\icon.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="itext7" Version="8.0.3" />
