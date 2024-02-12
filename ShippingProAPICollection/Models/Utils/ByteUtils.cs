@@ -3,14 +3,14 @@ using iText.Kernel.Utils;
 
 namespace ShippingProAPICollection.Models.Utils
 {
-    public static class ByteUtils
+    internal static class ByteUtils
     {
         /// <summary>
         /// Combinate multiple pdfs to one
         /// </summary>
         /// <param name="pdfs"></param>
         /// <returns></returns>
-        public static byte[] MergePDFByteToOnePDF(List<byte[]> pdfs)
+        internal static byte[] MergePDFByteToOnePDF(List<byte[]> pdfs)
         {
             using (var writerMemoryStream = new MemoryStream())
             {

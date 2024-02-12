@@ -1,6 +1,6 @@
 ﻿namespace ShippingProAPICollection.Models.Utils
 {
-    public static class StringUtils
+    internal static class StringUtils
     {
         /// <summary>
         /// Is string between min and max length
@@ -9,7 +9,7 @@
         /// <param name="minLength"></param>
         /// <param name="maxLength"></param>
         /// <returns></returns>
-        public static bool RangeLenghtValidation(this string? value, int minLength, int maxLength)
+        internal static bool RangeLenghtValidation(this string? value, int minLength, int maxLength)
         {
             if (value == null)
             {
@@ -26,7 +26,7 @@
         /// <param name="value"></param>
         /// <param name="maxLength"></param>
         /// <returns></returns>
-        public static bool MaxLenghtValidation(this string? value, int maxLength)
+        internal static bool MaxLenghtValidation(this string? value, int maxLength)
         {
 
             if (value == null) return true;

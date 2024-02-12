@@ -4,7 +4,7 @@ using ShippingProAPICollection.Provider.ShipIT.Entities.Validation;
 
 namespace ShippingProAPICollection.Provider
 {
-    public interface IShippingProviderService
+    internal interface IShippingProviderService
     {
         /// <summary>
         /// Erstellen ein Versandlabels |

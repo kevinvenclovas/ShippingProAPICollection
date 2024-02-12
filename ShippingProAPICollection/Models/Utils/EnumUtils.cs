@@ -1,6 +1,6 @@
 ﻿namespace ShippingProAPICollection.Models.Utils
 {
-    public static class EnumUtils
+    internal static class EnumUtils
     {
         /// <summary>
         /// Convert string to enum, if enum not exist, return default enum
@@ -9,7 +9,7 @@
         /// <param name="value"></param>
         /// <param name="defaultValue"></param>
         /// <returns></returns>
-        public static T ToEnum<T>(this string value, T defaultValue) where T : struct
+        internal static T ToEnum<T>(this string value, T defaultValue) where T : struct
         {
             try
             {
