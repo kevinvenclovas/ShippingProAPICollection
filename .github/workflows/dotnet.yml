@@ -27,6 +27,6 @@ jobs:
     - name: Setup Secrets
       run: dotnet user-secrets init
     - name: Add Secrets
-      run: dotnet user-secrets set "DHLAPIKey" ${{ sesecrets.DHLAPIKEY }}
+      run: dotnet user-secrets set "DHLAPIKey" ${{ secrets.DHLAPIKEY }}
     - name: Test
       run: dotnet test --no-build --verbosity normal
