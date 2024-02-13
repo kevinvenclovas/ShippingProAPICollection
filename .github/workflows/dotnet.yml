@@ -17,7 +17,7 @@ env:
 jobs:
   build:
 
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout
@@ -29,15 +29,17 @@ jobs:
         dotnet-version: 8.0.x
         
     - name: Restore dependencies
-      run: dotnet restore ${{ env.PROJECT_PATH }}
+      run: dotnet restore
       
     - name: Build
-      run: dotnet build ${{ env.PROJECT_PATH }} --no-restore --configuration Release
+      run: dotnet build--no-restore --configuration Release
       
     - name: Setup Secrets
-      run: dotnet user-secrets init --project ${{ secrets.PROJECT_NUNIT }}
+      run: dotnet user-secrets init --project ${{ env.PROJECT_NUNIT }}
+      
     - name: Add Secrets
-      run: dotnet user-secrets set "DHLAPIKey" ${{ secrets.DHLAPIKEY }} --project ${{ secrets.PROJECT_NUNIT }}
+      run: dotnet user-secrets set "DHLAPIKey" ${{ secrets.DHLAPIKEY }} --project ${{ env.PROJECT_NUNIT }}
+      
     - name: Test
       run: dotnet test --project ${{ secrets.PROJECT_NUNIT }} --no-build --no-restore --verbosity normal
       
