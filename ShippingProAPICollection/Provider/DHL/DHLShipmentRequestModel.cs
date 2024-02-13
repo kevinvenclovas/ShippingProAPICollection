@@ -13,7 +13,7 @@ namespace ShippingProAPICollection.Provider.DHL
 
         }
 
-        public DHLShipmentRequestModel() : base("DHL")
+        public DHLShipmentRequestModel() : base(ProviderType.DHL.ToString())
         {
 
         }

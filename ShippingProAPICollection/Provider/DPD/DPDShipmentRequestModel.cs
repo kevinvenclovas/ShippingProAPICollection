@@ -13,7 +13,7 @@ namespace ShippingProAPICollection.Provider.DPD
 
         }
 
-        public DPDShipmentRequestModel() : base("DPD")
+        public DPDShipmentRequestModel() : base(ProviderType.DPD.ToString())
         {
 
         }

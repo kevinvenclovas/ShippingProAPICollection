@@ -62,10 +62,10 @@ namespace ShippingProAPICollection
             throw new InvalidOperationException("Unknown shipping provider");
         }
 
-        public async Task<CancelResult> CancelLabel(string provider, string cancelId, CancellationToken ct = default)
+        public async Task<CancelResult> CancelLabel(string contractID, string cancelId, CancellationToken ct = default)
         {
             
-            if (providerServices.TryGetValue(provider, out var service))
+            if (providerServices.TryGetValue(contractID, out var service))
             {
                 return await service.CancelLabel(cancelId, ct);
             }
@@ -73,5 +73,13 @@ namespace ShippingProAPICollection
             throw new InvalidOperationException("Unknown shipping provider");
         }
     
+        public void ResetDPDAutToken()
+        {
+            foreach (var item in providerServices.Where(x => x.Value.GetType() == typeof(DPDShipmentService)).Select(x => x.Value as DPDShipmentService))
+            {
+                item.ResetDPDAutToken();
+            }
+        }
+
     }
 }

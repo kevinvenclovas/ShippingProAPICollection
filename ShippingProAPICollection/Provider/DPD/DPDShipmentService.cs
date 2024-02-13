@@ -112,6 +112,14 @@ namespace ShippingProAPICollection.Provider.DPD
             throw new DHLException(ErrorCode.NOT_AVAILABLE, "Validation not available for DPD");
         }
 
+        /// <summary>
+        /// Remove the cachen auth token
+        /// </summary>
+        public void ResetDPDAutToken()
+        {
+            _cache.Remove("DPD_AUTH_TOKEN_" + providerSettings.ContractID);
+        }
+
         private storeOrders CreateRequestModel(DPDShipmentRequestModel request)
         {
             var order = new storeOrders();

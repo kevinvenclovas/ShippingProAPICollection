@@ -13,7 +13,7 @@ namespace ShippingProAPICollection.Provider.ShipIT
 
         }
 
-        public ShipITShipmentRequestModel() : base("GLS")
+        public ShipITShipmentRequestModel() : base(ProviderType.GLS.ToString())
         {
 
         }
