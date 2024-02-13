@@ -10,30 +10,35 @@ on:
     branches: [ "master" ]
 
 env:
-  NuGetDirectory: ${{ github.workspace }}/nuget
-  
+    PROJECT_PATH : 'ShippingProAPICollection/ShippingProAPICollection.csproj'
+    PACKAGE_OUTPUT_DIRECTORY: ${{ github.workspace }}\output
+    
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
+    - name: Checkout
     - uses: actions/checkout@v3
+    
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 8.0.x
+        
     - name: Restore dependencies
-      run: dotnet restore
-
+      run: dotnet restore ${{ env.PROJECT_PATH }}
+      
+    - name: Build
+      run: dotnet build ${{ env.PROJECT_PATH }} --no-restore --configuration Release
+      
     - name: Setup Secrets
       run: dotnet user-secrets init --project ShippingProAPICollection.NUnitTests/ShippingProAPICollection.NUnitTests.csproj
     - name: Add Secrets
       run: dotnet user-secrets set "DHLAPIKey" ${{ secrets.DHLAPIKEY }} --project ShippingProAPICollection.NUnitTests/ShippingProAPICollection.NUnitTests.csproj
-    
-    - name: Build
-      run: dotnet build --no-restore --configuration Release --output ${{ env.NuGetDirectory }}
     - name: Test
-      run: dotnet test --configuration Release --no-build --verbosity normal
-     
-    
+      run: dotnet test --no-build --verbosity normal
+      
+    - name: Create nuget
+      run: dotnet pack ${{ env.PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
