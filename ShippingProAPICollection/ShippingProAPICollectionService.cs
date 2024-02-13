@@ -14,13 +14,13 @@ namespace ShippingProAPICollection
 
         Dictionary<string, IShippingProviderService> providerServices = new Dictionary<string, IShippingProviderService>();
 
-        public ShippingProAPICollectionService(IMemoryCache _cache, ShippingProAPIAccountSettings accountSettings, ShippingProAPICollectionSettings providerSettings)
+        public ShippingProAPICollectionService(IMemoryCache _cache, ShippingProAPICollectionSettings providerSettings)
         {
             Dictionary<string, ProviderSettings> providers = providerSettings.GetProviders();
 
             foreach (KeyValuePair<string, ProviderSettings> provider in providers)
             {
-                providerServices.Add(provider.Key, BuildProviderService(_cache, accountSettings, provider.Value));
+                providerServices.Add(provider.Key, BuildProviderService(_cache, providerSettings.AccountSettings, provider.Value));
             }
         }
 

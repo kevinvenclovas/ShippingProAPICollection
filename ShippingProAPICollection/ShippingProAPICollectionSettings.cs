@@ -1,4 +1,5 @@
-﻿using ShippingProAPICollection.Provider;
+﻿using ShippingProAPICollection.Models;
+using ShippingProAPICollection.Provider;
 using ShippingProAPICollection.Provider.DHL;
 using ShippingProAPICollection.Provider.DPD;
 using ShippingProAPICollection.Provider.ShipIT;
@@ -7,10 +8,12 @@ namespace ShippingProAPICollection
 {
     public class ShippingProAPICollectionSettings
     {
+        public ShippingProAPIAccountSettings AccountSettings { get; private set; }
         private Dictionary<string, ProviderSettings> providerSettings { get; set; } = new Dictionary<string, ProviderSettings>();
 
-        public ShippingProAPICollectionSettings()
+        public ShippingProAPICollectionSettings(ShippingProAPIAccountSettings accountSettings)
         {
+            this.AccountSettings = accountSettings;
         }
 
         public Dictionary<string, ProviderSettings> GetProviders()
