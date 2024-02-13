@@ -116,6 +116,7 @@ namespace ShippingProAPICollection.Provider.ShipIT
                     CancelId = response.Data.CreatedShipment.ParcelData[i].TrackID,
                     ParcelNumber = response.Data.CreatedShipment.ParcelData[i].ParcelNumber,
                     Label = response.Data.CreatedShipment.PrintData[i].Data,
+                    LabelType = shipITRequest.ServiceType == ShipITServiceType.SHOPRETURN ? LabelType.SHOPRETURN : LabelType.NORMAL,
                 });
             }
 

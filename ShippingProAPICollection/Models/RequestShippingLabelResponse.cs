@@ -1,4 +1,6 @@
-﻿namespace ShippingProAPICollection.Models
+﻿using ShippingProAPICollection.Models.Entities;
+
+namespace ShippingProAPICollection.Models
 {
     public class RequestShippingLabelResponse
     {
@@ -19,5 +21,11 @@
         /// Shippinglabel in byte[] format
         /// </summary> 
         public required byte[] Label { get; set; }
+
+        /// <summary>
+        /// Art des Labels, Normaler versand oder Retourenlabel
+        /// Kind of the label, normal shipment or shop return
+        /// </summary>
+        public required LabelType LabelType { get; set; }
     }
 }

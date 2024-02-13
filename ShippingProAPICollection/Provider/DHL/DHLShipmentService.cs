@@ -92,7 +92,8 @@ namespace ShippingProAPICollection.Provider.DHL
                         {
                             Label = Convert.FromBase64String(c.Label.B64),
                             ParcelNumber = c.ShipmentNo,
-                            CancelId = c.ShipmentNo
+                            CancelId = c.ShipmentNo,
+                            LabelType = LabelType.NORMAL,
                         });
                     }
 

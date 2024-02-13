@@ -79,6 +79,7 @@ namespace ShippingProAPICollection.Provider.DPD
                             ParcelNumber = i.parcelLabelNumber,
                             CancelId = i.parcelLabelNumber,
                             Label = ByteUtils.MergePDFByteToOnePDF(i.output.Select(x => x.content).ToList()),
+                            LabelType = DPDRequest.ServiceType == DPDServiceType.SHOPRETURN ? LabelType.SHOPRETURN : LabelType.NORMAL,
                         });
                     }
                 }
