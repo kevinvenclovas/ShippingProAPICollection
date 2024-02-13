@@ -41,7 +41,7 @@ jobs:
       run: dotnet user-secrets set "DHLAPIKey" ${{ secrets.DHLAPIKEY }} --project ${{ env.PROJECT_NUNIT }}
       
     - name: Test
-      run: dotnet test --project ${{ secrets.PROJECT_NUNIT }} --no-build --no-restore --verbosity normal
+      run: dotnet test --project ${{ env.PROJECT_NUNIT }} --no-build --no-restore --verbosity normal
       
     - name: Create nuget
       run: dotnet pack ${{ env.PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
