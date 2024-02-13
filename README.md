@@ -1,5 +1,4 @@
-
-[![Build](https://github.com/kevinvenclovas/ShippingProAPICollection/actions/workflows/dotnet.yml/badge.svg)](https://github.com/kevinvenclovas/ShippingProAPICollection/actions/workflows/dotnet.yml)
+[![Build&Test](https://github.com/kevinvenclovas/ShippingProAPICollection/actions/workflows/dotnet.yml/badge.svg)](https://github.com/kevinvenclovas/ShippingProAPICollection/actions/workflows/dotnet.yml)
 [![NuGet](https://img.shields.io/nuget/v/ShippingProAPICollection.svg)](https://www.nuget.org/packages/ShippingProAPICollection/)
 # Shipping Pro API Collection
 Welcome to our C# library, designed to integrate multiple shipping service APIs into one streamlined solution. This project provides a unified interface for GLS Shipit, DHL, and DPD, simplifying the shipping process for developers and businesses. With easy integration, you can handle logistics across different carriers seamlessly. Ideal for enhancing efficiency in e-commerce and logistics operations.
