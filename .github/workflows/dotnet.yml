@@ -11,6 +11,7 @@ on:
 
 env:
     PROJECT_PATH : 'ShippingProAPICollection/ShippingProAPICollection.csproj'
+    PROJECT_NUNIT : 'ShippingProAPICollection.NUnitTests/ShippingProAPICollection.NUnitTests.csproj'
     PACKAGE_OUTPUT_DIRECTORY: ${{ github.workspace }}\output
     
 jobs:
@@ -34,11 +35,11 @@ jobs:
       run: dotnet build ${{ env.PROJECT_PATH }} --no-restore --configuration Release
       
     - name: Setup Secrets
-      run: dotnet user-secrets init --project ShippingProAPICollection.NUnitTests/ShippingProAPICollection.NUnitTests.csproj
+      run: dotnet user-secrets init --project ${{ secrets.PROJECT_NUNIT }}
     - name: Add Secrets
-      run: dotnet user-secrets set "DHLAPIKey" ${{ secrets.DHLAPIKEY }} --project ShippingProAPICollection.NUnitTests/ShippingProAPICollection.NUnitTests.csproj
+      run: dotnet user-secrets set "DHLAPIKey" ${{ secrets.DHLAPIKEY }} --project ${{ secrets.PROJECT_NUNIT }}
     - name: Test
-      run: dotnet test --no-build --no-restore --verbosity normal
+      run: dotnet test --project ${{ secrets.PROJECT_NUNIT }} --no-build --no-restore --verbosity normal
       
     - name: Create nuget
       run: dotnet pack ${{ env.PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
