@@ -4,10 +4,10 @@
 name: Test
 
 on:
-  push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+  workflow_run:
+    workflows: ["Build"]
+    types:
+      - completed
 
 env:
     PROJECT_NUNIT : 'ShippingProAPICollection.NUnitTests/ShippingProAPICollection.NUnitTests.csproj'
