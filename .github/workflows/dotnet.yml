@@ -31,11 +31,9 @@ jobs:
     - name: Add Secrets
       run: dotnet user-secrets set "DHLAPIKey" ${{ secrets.DHLAPIKEY }} --project ShippingProAPICollection.NUnitTests/ShippingProAPICollection.NUnitTests.csproj
     
-    - name: Test
-      run: dotnet test --configuration Release --no-build --verbosity normal
-      
     - name: Build
       run: dotnet build --no-restore --configuration Release --output ${{ env.NuGetDirectory }}
-      
-    
+    - name: Test
+      run: dotnet test --configuration Release --no-build --verbosity normal
+     
     
