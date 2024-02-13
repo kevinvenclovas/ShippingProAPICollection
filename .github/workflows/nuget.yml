@@ -24,7 +24,13 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
-    
+
+    - name: Set Version Variable
+      if: ${{ github.ref_type == 'tag' }}
+      env:
+        TAG: ${{ github.ref_name }}
+      run: echo "VERSION=${TAG#v}" >> $GITHUB_ENV
+      
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
@@ -32,9 +38,9 @@ jobs:
         
     - name: Restore dependencies
       run: dotnet restore
-      
+   
     - name: Build
-      run: dotnet build --no-restore --configuration Release
+      run: dotnet build --no-restore /p:Version=$VERSION --configuration Release
       
     - name: Setup Secrets
       run: dotnet user-secrets init --project ${{ env.PROJECT_NUNIT }}
@@ -46,4 +52,8 @@ jobs:
       run: dotnet test --no-restore
       
     - name: Create nuget
-      run: dotnet pack ${{ env.PROJECT_PATH }} --no-restore --no-build --configuration Release --include-symbols --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
+      run: dotnet pack ${{ env.PROJECT_PATH }} --configuration Release /p:Version=$VERSION
+    
+    - name: Upload nuget package
+      if: github.ref_type == 'tag' && startsWith(github.ref, 'refs/tags/v')
+      run: dotnet nuget push nupkgs/*.nupkg -k ${{ secrets.NUGETAPIKEY }} -s https://api.nuget.org/v3/index.json
