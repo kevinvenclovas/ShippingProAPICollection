@@ -34,9 +34,7 @@ namespace ShippingProAPICollection.NUnitTests
                 PostCode = "73479"
             };
 
-            services.AddSingleton<ShippingProAPIAccountSettings>(accountSettings);
-
-            ShippingProAPICollectionSettings providerSettings = new ShippingProAPICollectionSettings();
+            ShippingProAPICollectionSettings providerSettings = new ShippingProAPICollectionSettings(accountSettings);
 
             ShipITSettings shipItSettings = new ShipITSettings()
             {
