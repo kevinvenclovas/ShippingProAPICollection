@@ -32,7 +32,7 @@ jobs:
       run: dotnet restore
       
     - name: Build
-      run: dotnet build--no-restore --configuration Release
+      run: dotnet build --no-restore --configuration Release
       
     - name: Setup Secrets
       run: dotnet user-secrets init --project ${{ env.PROJECT_NUNIT }}
