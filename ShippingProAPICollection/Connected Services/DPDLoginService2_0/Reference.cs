@@ -125,7 +125,7 @@ namespace DPDLoginService2_0
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.ServiceModel.ServiceContractAttribute(Namespace="http://dpd.com/common/service/LoginService/2.0", ConfigurationName="DPDLoginService2_0.LoginService")]
-    public interface LoginService
+    internal interface LoginService
     {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://dpd.com/common/service/LoginService/2.0/getAuth", ReplyAction="*")]
@@ -138,7 +138,7 @@ namespace DPDLoginService2_0
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="getAuth", WrapperNamespace="http://dpd.com/common/service/types/LoginService/2.0", IsWrapped=true)]
-    public partial class getAuthRequest
+    internal partial class getAuthRequest
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://dpd.com/common/service/types/LoginService/2.0", Order=0)]
@@ -169,7 +169,7 @@ namespace DPDLoginService2_0
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="getAuthResponse", WrapperNamespace="http://dpd.com/common/service/types/LoginService/2.0", IsWrapped=true)]
-    public partial class getAuthResponse
+    internal partial class getAuthResponse
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://dpd.com/common/service/types/LoginService/2.0", Order=0)]
@@ -187,13 +187,13 @@ namespace DPDLoginService2_0
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
-    public interface LoginServiceChannel : DPDLoginService2_0.LoginService, System.ServiceModel.IClientChannel
+    internal interface LoginServiceChannel : DPDLoginService2_0.LoginService, System.ServiceModel.IClientChannel
     {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
-    public partial class LoginServiceClient : System.ServiceModel.ClientBase<DPDLoginService2_0.LoginService>, DPDLoginService2_0.LoginService
+    internal partial class LoginServiceClient : System.ServiceModel.ClientBase<DPDLoginService2_0.LoginService>, DPDLoginService2_0.LoginService
     {
         
         /// <summary>

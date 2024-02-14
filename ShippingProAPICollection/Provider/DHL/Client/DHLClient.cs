@@ -32,7 +32,7 @@ namespace ShippingProAPICollection._Provider.DHL
     using System = global::System;
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class DHLClient
+    internal partial class DHLClient
     {
         private string _baseUrl = "https://api-eu.dhl.com/parcel/de/shipping/v2";
         private System.Net.Http.HttpClient _httpClient;
@@ -1453,7 +1453,7 @@ namespace ShippingProAPICollection._Provider.DHL
     /// Response for the API version endpoint detailing version information.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class ServiceInformation
+    internal partial class ServiceInformation
     {
         [Newtonsoft.Json.JsonProperty("amp", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Amp Amp { get; set; }
@@ -1476,7 +1476,7 @@ namespace ShippingProAPICollection._Provider.DHL
     /// Encoded document. All types of labels and documents.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class Document
+    internal partial class Document
     {
         /// <summary>
         /// The Base64 encoded byte stream
@@ -1525,7 +1525,7 @@ namespace ShippingProAPICollection._Provider.DHL
     /// General status description for the attached response or response item.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class RequestStatus
+    internal partial class RequestStatus
     {
         [Newtonsoft.Json.JsonProperty("title", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
@@ -1559,7 +1559,7 @@ namespace ShippingProAPICollection._Provider.DHL
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class LabelDataResponse
+    internal partial class LabelDataResponse
     {
         [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public RequestStatus Status { get; set; }
@@ -1585,7 +1585,7 @@ namespace ShippingProAPICollection._Provider.DHL
     /// Response for a single shipment containing status, numbers and labels
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class ResponseItem
+    internal partial class ResponseItem
     {
         [Newtonsoft.Json.JsonProperty("shipmentNo", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(50)]
@@ -1636,7 +1636,7 @@ namespace ShippingProAPICollection._Provider.DHL
     /// Representation of a validation message of a shipment container containing the most important information.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class ValidationMessageItem
+    internal partial class ValidationMessageItem
     {
         /// <summary>
         /// The property that is affected by the validation message.
@@ -1668,7 +1668,7 @@ namespace ShippingProAPICollection._Provider.DHL
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class GetManifestData
+    internal partial class GetManifestData
     {
         /// <summary>
         /// The encoded byte stream
@@ -1714,7 +1714,7 @@ namespace ShippingProAPICollection._Provider.DHL
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class SingleManifestResponse
+    internal partial class SingleManifestResponse
     {
         [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public RequestStatus Status { get; set; }
@@ -1740,7 +1740,7 @@ namespace ShippingProAPICollection._Provider.DHL
     /// Response of the POST /manifests endpoint containing an overall request status and detailed shipment status.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class MultipleManifestResponse
+    internal partial class MultipleManifestResponse
     {
         [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public RequestStatus Status { get; set; }
@@ -1763,7 +1763,7 @@ namespace ShippingProAPICollection._Provider.DHL
     /// Response for a single shipment element not containing labels.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class ShortResponseItem
+    internal partial class ShortResponseItem
     {
         [Newtonsoft.Json.JsonProperty("shipmentNo", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [System.ComponentModel.DataAnnotations.StringLength(50)]
@@ -1788,7 +1788,7 @@ namespace ShippingProAPICollection._Provider.DHL
     /// List of shipments which shall be manifested.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class ShipmentManifestingRequest
+    internal partial class ShipmentManifestingRequest
     {
         [Newtonsoft.Json.JsonProperty("profile", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
@@ -1824,7 +1824,7 @@ namespace ShippingProAPICollection._Provider.DHL
     /// Bank account data used for CoD (Cash on Delivery).
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class BankAccount
+    internal partial class BankAccount
     {
         [Newtonsoft.Json.JsonProperty("accountHolder", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
@@ -1860,7 +1860,7 @@ namespace ShippingProAPICollection._Provider.DHL
     /// <br/>The HS Code and the country of origin are optional.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class Commodity
+    internal partial class Commodity
     {
         /// <summary>
         /// A text that describes the commodity item. Only the first 50 characters of the description text is printed on the customs declaration form CN23.
@@ -1913,7 +1913,7 @@ namespace ShippingProAPICollection._Provider.DHL
     /// Consignee address information. Either a doorstep address (contact address) including contact information or a droppoint address. One of packstation (parcel locker), or post office (postfiliale/retail shop).
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class Consignee
+    internal partial class Consignee
     {
 
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
@@ -1931,7 +1931,7 @@ namespace ShippingProAPICollection._Provider.DHL
     /// For international shipments, this section contains information necessary for customs about the exported goods. ExportDocument can contain one or more positions as child element. This data is also transferred as electronic declaration to customs. The custom details are mandatory depending on whether the parcel will go to a country outside the European Customs Union. For DHL Parcel International (V53WPAK) CN23 will returned as a separate document, while for Warenpost International the customs information will be printed onto the shipment label (CN22).
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class CustomsDetails
+    internal partial class CustomsDetails
     {
         /// <summary>
         /// Invoice number
@@ -2035,7 +2035,7 @@ namespace ShippingProAPICollection._Provider.DHL
     /// Physical dimensions (aka 'Gurtmass') of the parcel. If you provide the dimension information, all attributes need to be provided. You cannot provide just the height, for example. If you provide length, width, and height in millimeters, they will be rounded to full cm.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class Dimensions
+    internal partial class Dimensions
     {
         /// <summary>
         /// Unit of metric, applies to all dimensions contained.
@@ -2069,7 +2069,7 @@ namespace ShippingProAPICollection._Provider.DHL
     /// Only usable for German Packstation, international lockers cannot be addressed directly. If your customer wishes for international delivery to a droppoint, please use DHL Parcel International (V53WPAK) with the delivery type "Closest Droppoint".
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class Locker
+    internal partial class Locker
     {
         /// <summary>
         /// Name
@@ -2130,7 +2130,7 @@ namespace ShippingProAPICollection._Provider.DHL
     /// Only usable for German post offices or retail outlets (Paketshops), international postOffices or retail outlets cannot be addressed directly. If your customer wishes for international delivery to a droppoint, please use DHL Parcel International (V53WPAK) with the delivery type "Closest Droppoint".
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class PostOffice
+    internal partial class PostOffice
     {
         /// <summary>
         /// Name
@@ -2198,7 +2198,7 @@ namespace ShippingProAPICollection._Provider.DHL
     /// Alternative destination - P.O. Box (Postfach)
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class POBox
+    internal partial class POBox
     {
         /// <summary>
         /// Name1. Line 1 of name information
@@ -2274,7 +2274,7 @@ namespace ShippingProAPICollection._Provider.DHL
     /// Container for all shipments. Mixed shipment products per request are supported. Each shipment has a dedicated shipper address (or shipper reference, or both).
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class Shipment
+    internal partial class Shipment
     {
         /// <summary>
         /// Determines the DHL Paket product to be used.
@@ -2354,7 +2354,7 @@ namespace ShippingProAPICollection._Provider.DHL
     /// Details for the shipment, such as dimensions, content
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class ShipmentDetails
+    internal partial class ShipmentDetails
     {
         [Newtonsoft.Json.JsonProperty("dim", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Dimensions Dim { get; set; }
@@ -2378,7 +2378,7 @@ namespace ShippingProAPICollection._Provider.DHL
     /// Complex request structure used to create, update, and validate shipment data. Note that most elements are part of the array of shipment items.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class ShipmentOrderRequest
+    internal partial class ShipmentOrderRequest
     {
         [Newtonsoft.Json.JsonProperty("profile", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
@@ -2409,7 +2409,7 @@ namespace ShippingProAPICollection._Provider.DHL
     /// Shipper information, including contact information and address.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class Shipper
+    internal partial class Shipper
     {
         /// <summary>
         /// Name1. Line 1 of name information
@@ -2501,7 +2501,7 @@ namespace ShippingProAPICollection._Provider.DHL
     /// Contains a reference to the Shipper data configured in GKP(GeschÃ¤ftskundenportal - Business Costumer Portal). Can be used instead of a detailed shipper address. The shipper reference can be used to print a company logo which is configured in GKP onto the label.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class ShipperReference
+    internal partial class ShipperReference
     {
         /// <summary>
         /// Reference string to the shipper data configured in GKP(GeschÃ¤ftskundenportal - Business Costumer Portal).
@@ -2526,7 +2526,7 @@ namespace ShippingProAPICollection._Provider.DHL
     /// Value added services. Please note that services are specific to products and geographies and/or may require individual setup and billing numbers. Please test and contact your account representative in case of questions.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class VAS
+    internal partial class VAS
     {
         /// <summary>
         /// Preferred neighbour. Can be specified as text.
@@ -2646,7 +2646,7 @@ namespace ShippingProAPICollection._Provider.DHL
     /// Cash on delivery (Nachnahme). Currency must be Euro. Either bank account information or account reference (from customer profile) must be provided. Transfernote1 + 2 are references transmitted during bank transfer. Providing account information explicitly requires elevated privileges.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class VASCashOnDelivery
+    internal partial class VASCashOnDelivery
     {
         [Newtonsoft.Json.JsonProperty("amount", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Value Amount { get; set; }
@@ -2684,7 +2684,7 @@ namespace ShippingProAPICollection._Provider.DHL
     /// Requests return label (aka 'retoure') to be provided. Also requires returnAddress and return billing number. Neither weight nor dimension need to be specified for the retoure (flat rate service).
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class VASDhlRetoure
+    internal partial class VASDhlRetoure
     {
         [Newtonsoft.Json.JsonProperty("billingNumber", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
@@ -2713,7 +2713,7 @@ namespace ShippingProAPICollection._Provider.DHL
     /// Check the identity of the recipient via name (firstname, lastname), date of birth or age. This uses firstName and lastName as separate attributes since for identity check an automatic split of a one-line name is not considered reliable enough.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class VASIdentCheck
+    internal partial class VASIdentCheck
     {
         [Newtonsoft.Json.JsonProperty("firstName", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required]
@@ -3496,7 +3496,7 @@ namespace ShippingProAPICollection._Provider.DHL
     /// Currency and numeric value.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class Value
+    internal partial class Value
     {
         /// <summary>
         /// iso 4217 3 character currency code accepted. Recommended to use EUR where possible
@@ -3528,7 +3528,7 @@ namespace ShippingProAPICollection._Provider.DHL
     /// Weight of item or shipment. Both uom and value are required.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class Weight
+    internal partial class Weight
     {
         /// <summary>
         /// metric unit for weight
@@ -3770,7 +3770,7 @@ namespace ShippingProAPICollection._Provider.DHL
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class Amp
+    internal partial class Amp
     {
         /// <summary>
         /// name of api
@@ -3808,7 +3808,7 @@ namespace ShippingProAPICollection._Provider.DHL
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class Backend
+    internal partial class Backend
     {
         /// <summary>
         /// environment
@@ -4606,7 +4606,7 @@ namespace ShippingProAPICollection._Provider.DHL
 
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class ApiException : System.Exception
+    internal partial class ApiException : System.Exception
     {
         public int StatusCode { get; private set; }
 
@@ -4629,7 +4629,7 @@ namespace ShippingProAPICollection._Provider.DHL
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class ApiException<TResult> : ApiException
+    internal partial class ApiException<TResult> : ApiException
     {
         public TResult Result { get; private set; }
 
