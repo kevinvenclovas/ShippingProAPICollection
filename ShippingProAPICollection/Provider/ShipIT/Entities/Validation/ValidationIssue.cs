@@ -5,6 +5,6 @@ namespace ShippingProAPICollection.Provider.ShipIT.Entities.Validation
     {
         public required string Rule { get; set; }
         public required string Location { get; set; }
-        public required string[] Parameters { get; set; }
+        public string[]? Parameters { get; set; }
     }
 }

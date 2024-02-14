@@ -23,13 +23,6 @@ namespace ShippingProAPICollection.Provider.DHL
             this.providerSettings = providerSettings;
         }
 
-        /// <summary>
-        /// Request DHL shipping label
-        /// </summary>
-        /// <param name="request"></param>
-        /// <param name="cancelToken"></param>
-        /// <returns></returns>
-        /// <exception cref="DHLException"></exception>
         public async Task<List<RequestShippingLabelResponse>> RequestLabel(RequestShipmentBase request, CancellationToken cancelToken = default)
         {
             var DHLRequest = request as DHLShipmentRequestModel;
@@ -74,7 +67,7 @@ namespace ShippingProAPICollection.Provider.DHL
 
                 clientRequest.AddBody(requestJson);
 
-                RestResponse response = await client.ExecuteAsync(clientRequest, cancelToken);
+                RestResponse response = await client.ExecuteAsync(clientRequest, cancelToken).ConfigureAwait(false);
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK || response.StatusCode == System.Net.HttpStatusCode.MultiStatus)
                 {
@@ -130,13 +123,6 @@ namespace ShippingProAPICollection.Provider.DHL
 
         }
 
-        /// <summary>
-        /// Cancel DHL shipping label
-        /// </summary>
-        /// <param name="cancelId"></param>
-        /// <param name="cancelToken"></param>
-        /// <returns></returns>
-        /// <exception cref="DHLException"></exception>
         public async Task<CancelResult> CancelLabel(string cancelId, CancellationToken cancelToken = default)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
@@ -169,7 +155,7 @@ namespace ShippingProAPICollection.Provider.DHL
                     clientRequest.AddHeader("Accept-Language", providerSettings.APILanguage);
                 };
 
-                RestResponse response = await client.ExecuteAsync(clientRequest, cancelToken);
+                RestResponse response = await client.ExecuteAsync(clientRequest, cancelToken).ConfigureAwait(false);
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK || response.StatusCode == System.Net.HttpStatusCode.MultiStatus)
                 {
@@ -210,16 +196,15 @@ namespace ShippingProAPICollection.Provider.DHL
             }
 
         }
-
-        /// <summary>
-        /// Validate a shipping label request
-        /// </summary>
-        /// <param name="request"></param>
-        /// <param name="cancelToken"></param>
-        /// <returns></returns>
+        
         public Task<ValidationReponse> ValidateLabel(RequestShipmentBase request, CancellationToken cancelToken)
         {
-            throw new DHLException(ErrorCode.NOT_AVAILABLE, "Validation not available for DHL");
+            throw new DHLException(ErrorCode.NOT_AVAILABLE, "Feature not available for DHL");
+        }
+
+        public Task<uint> GetEstimatedDeliveryDays(RequestShipmentBase request, CancellationToken cancelToken)
+        {
+            throw new DHLException(ErrorCode.NOT_AVAILABLE, "Feature not available for DHL");
         }
 
         /// <summary>

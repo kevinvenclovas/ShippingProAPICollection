@@ -62,6 +62,18 @@ namespace ShippingProAPICollection
             throw new InvalidOperationException("Unknown shipping provider");
         }
 
+        public async Task<uint> GetEstimatedDeliveryDays(RequestShipmentBase request, CancellationToken ct = default)
+        {
+            request.Validate();
+
+            if (providerServices.TryGetValue(request.ContractID, out var service))
+            {
+                return await service.GetEstimatedDeliveryDays(request, ct);
+            }
+
+            throw new InvalidOperationException("Unknown shipping provider");
+        }
+
         public async Task<CancelResult> CancelLabel(string contractID, string cancelId, CancellationToken ct = default)
         {
             

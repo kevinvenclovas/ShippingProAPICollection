@@ -200,5 +200,36 @@ namespace ShippingProAPICollection.NUnitTests
             }
 
         }
+
+        /// <summary>
+        /// Create 2 labels with deposit service and cancel both
+        /// </summary>
+        /// <returns></returns>
+        [Test]
+        public async Task GetEstimatedDeliveryDays()
+        {
+            ShippingProAPICollectionService shippingCollection = _serviceProvider.GetRequiredService<ShippingProAPICollectionService>();
+
+            var request = new ShipITShipmentRequestModel("GLS")
+            {
+                ServiceProduct = ShipITProductType.PARCEL,
+                Weight = 1,
+                LabelCount = 2,
+                Adressline1 = "Max Mustermann",
+                Country = "DE",
+                City = "Ellwangen",
+                Street = "Maxstraﬂe 10",
+                PostCode = "73479",
+                InvoiceReference = "RE-123456",
+                Phone = "0123456789",
+                ServiceType = ShipITServiceType.DEPOSIT,
+                PlaceOfDeposit = "Behind the gardenhouse",
+            };
+            request.Validate();
+
+            var days = (await shippingCollection.GetEstimatedDeliveryDays(request));
+
+        }
+        
     }
 }

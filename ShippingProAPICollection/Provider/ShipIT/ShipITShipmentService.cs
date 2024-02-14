@@ -9,6 +9,7 @@ using ShippingProAPICollection.Provider.ShipIT.Entities.Cancel;
 using ShippingProAPICollection.Provider.ShipIT.Entities.Create;
 using ShippingProAPICollection.Provider.ShipIT.Entities.Create.Response;
 using ShippingProAPICollection.Provider.ShipIT.Entities.Create.Services;
+using ShippingProAPICollection.Provider.ShipIT.Entities.EstimatedDeliveryDays;
 using ShippingProAPICollection.Provider.ShipIT.Entities.Validation;
 
 namespace ShippingProAPICollection.Provider.ShipIT
@@ -25,24 +26,17 @@ namespace ShippingProAPICollection.Provider.ShipIT
             this.providerSettings = providerSettings;
         }
 
-        /// <summary>
-        /// Request GLS Shipping label
-        /// </summary>
-        /// <param name="request"></param>
-        /// <param name="cancelToken"></param>
-        /// <returns></returns>
-        /// <exception cref="ShipITException"></exception>
         public async Task<List<RequestShippingLabelResponse>> RequestLabel(RequestShipmentBase request, CancellationToken cancelToken = default)
         {
             var shipITRequest = request as ShipITShipmentRequestModel;
 
-            // Define printing options
-            PrintingOptions printOptions = new PrintingOptions();
-
-            printOptions.ReturnLabels = new ReturnLabels()
+            PrintingOptions printOptions = new PrintingOptions()
             {
-                LabelFormat = ShipITLabelDocFormat.PDF,
-                TemplateSet = ShipITTemplateSet.NONE
+                ReturnLabels = new ReturnLabels()
+                {
+                    LabelFormat = ShipITLabelDocFormat.PDF,
+                    TemplateSet = ShipITTemplateSet.NONE
+                }
             };
 
             var shipment = CreateRequestModel(shipITRequest);
@@ -53,59 +47,12 @@ namespace ShippingProAPICollection.Provider.ShipIT
                 PrintingOptions = printOptions
             };
 
-            var clientOptions = new RestClientOptions(new Uri(string.Format("https://shipit-wbm-{0}.gls-group.eu:443/backend/rs/shipments", providerSettings.ApiDomain)))
-            {
-                RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true,
-                Authenticator = new HttpBasicAuthenticator(providerSettings.Username, providerSettings.Password)
-            };
-
-            RestClient client = new RestClient(clientOptions);
-
-            var clientRequest = new RestRequest()
-            {
-                Method = Method.Post
-            };
-
-            clientRequest.AddHeader("Content-Type", apiContentType);
-            clientRequest.AddHeader("Accept", apiContentType);
-
-            string json = JsonConvert.SerializeObject(shipmentRequest, Formatting.Indented, new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore,
-            });
-
-            clientRequest.AddJsonBody(json, apiContentType);
-
-            RestResponse<CreatedShipmentResponse> response = await client.ExecuteAsync<CreatedShipmentResponse>(clientRequest, cancelToken).ConfigureAwait(false);
-
-            if (response.Data == null) throw new ShipITException(ErrorCode.UNKNOW, "No Data available in response", shipmentRequest);
-
-            if (response.StatusCode != System.Net.HttpStatusCode.OK)
-            {
-                //var glsErrorCode = response.Headers?.ToList().FirstOrDefault(x => x.Name != null && x.Name.Equals("error"))?.Value?.ToString() ?? "Unknow";
-                var message = response.Headers?.ToList().FirstOrDefault(x => x.Name != null && x.Name.Equals("message"))?.Value?.ToString() ?? "Unknow";
-
-                ErrorCode errorCode = ErrorCode.UNKNOW;
-
-                if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
-                {
-                    errorCode = ErrorCode.BAD_REQUEST_ERROR;
-                }
-                else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-                {
-                    errorCode = ErrorCode.UNAUTHORIZED;
-                }
-                else if (response.StatusCode == System.Net.HttpStatusCode.TooManyRequests)
-                {
-                    errorCode = ErrorCode.TO_MANY_REQUESTS;
-                }
-                else if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
-                {
-                    errorCode = ErrorCode.INTERNAL_SERVER_ERROR;
-                }
-
-                throw new ShipITException(errorCode, message, shipmentRequest);
-            }
+            RestResponse<CreatedShipmentResponse> response = await CallApi<CreatedShipmentResponse>(
+                new Uri(string.Format("https://shipit-wbm-{0}.gls-group.eu:443/backend/rs/shipments", providerSettings.ApiDomain)),
+                Method.Post,
+                shipmentRequest,
+                cancelToken
+                );
 
             List<RequestShippingLabelResponse> createdLabels = new List<RequestShippingLabelResponse>();
 
@@ -124,62 +71,14 @@ namespace ShippingProAPICollection.Provider.ShipIT
 
         }
 
-        /// <summary>
-        /// Cancel GLS shipping label
-        /// </summary>
-        /// <param name="cancelId"></param>
-        /// <param name="cancelToken"></param>
-        /// <returns></returns>
-        /// <exception cref="ShipITException"></exception>
         public async Task<CancelResult> CancelLabel(string cancelId, CancellationToken cancelToken = default)
         {
-
-            var clientOptions = new RestClientOptions(new Uri(string.Format("https://shipit-wbm-{0}.gls-group.eu:443/backend/rs/shipments/cancel/{1}", providerSettings.ApiDomain, cancelId)))
-            {
-                RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true,
-                Authenticator = new HttpBasicAuthenticator(providerSettings.Username, providerSettings.Password)
-            };
-
-            RestClient client = new RestClient(clientOptions);
-
-            var clientRequest = new RestRequest()
-            {
-                Method = Method.Post
-            };
-
-            clientRequest.AddHeader("Content-Type", apiContentType);
-            clientRequest.AddHeader("Accept", apiContentType);
-
-            RestResponse<CancelShipmentResponse> response = await client.ExecuteAsync<CancelShipmentResponse>(clientRequest, cancelToken).ConfigureAwait(false);
-
-            if (response.Data == null) throw new ShipITException(ErrorCode.UNKNOW, "No Data available in response", cancelId);
-
-            if (response.StatusCode != System.Net.HttpStatusCode.OK)
-            {
-                //var glsErrorCode = response.Headers?.ToList().FirstOrDefault(x => x.Name != null && x.Name.Equals("error"))?.Value?.ToString() ?? "Unknow";
-                var message = response.Headers?.ToList().FirstOrDefault(x => x.Name != null && x.Name.Equals("message"))?.Value?.ToString() ?? "Unknow";
-
-                ErrorCode errorCode = ErrorCode.UNKNOW;
-
-                if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
-                {
-                    errorCode = ErrorCode.BAD_REQUEST_ERROR;
-                }
-                else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-                {
-                    errorCode = ErrorCode.UNAUTHORIZED;
-                }
-                else if (response.StatusCode == System.Net.HttpStatusCode.TooManyRequests)
-                {
-                    errorCode = ErrorCode.TO_MANY_REQUESTS;
-                }
-                else if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
-                {
-                    errorCode = ErrorCode.INTERNAL_SERVER_ERROR;
-                }
-
-                throw new ShipITException(errorCode, message, new { payload = cancelId, respone = response });
-            }
+            RestResponse<CancelShipmentResponse> response = await CallApi<CancelShipmentResponse>(
+                new Uri(string.Format("https://shipit-wbm-{0}.gls-group.eu:443/backend/rs/shipments/cancel/{1}", providerSettings.ApiDomain, cancelId)),
+                Method.Post,
+                cancelId,
+                cancelToken
+                );
 
             switch (response.Data.Result)
             {
@@ -194,49 +93,21 @@ namespace ShippingProAPICollection.Provider.ShipIT
 
         }
 
-        /// <summary>
-        /// Validate shipping request
-        /// </summary>
-        /// <param name="request"></param>
-        /// <param name="cancelToken"></param>
-        /// <returns></returns>
-        /// <exception cref="ShipITException"></exception>
         public async Task<ValidationReponse> ValidateLabel(RequestShipmentBase request, CancellationToken cancelToken)
         {
             var shipITRequest = request as ShipITShipmentRequestModel;
 
             var shipment = CreateRequestModel(shipITRequest);
 
-            var clientOptions = new RestClientOptions(new Uri(string.Format("https://shipit-wbm-{0}.gls-group.eu:443/backend/rs/shipments/validate", providerSettings.ApiDomain)))
-            {
-                RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true,
-                Authenticator = new HttpBasicAuthenticator(providerSettings.Username, providerSettings.Password)
-            };
-
-            RestClient client = new RestClient(clientOptions);
-
-            var clientRequest = new RestRequest()
-            {
-                Method = Method.Post
-            };
-
-            clientRequest.AddHeader("Content-Type", apiContentType);
-            clientRequest.AddHeader("Accept", apiContentType);
-
             var requestBody = new ValidateShipmentRequestData() { Shipment = shipment };
 
-            string json = JsonConvert.SerializeObject(new ValidateShipmentRequestData() { Shipment = shipment }, Formatting.Indented, new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore,
-            });
+            RestResponse<ValidateParcelsResponse> response = await CallApi<ValidateParcelsResponse>(
+               new Uri(string.Format("https://shipit-wbm-{0}.gls-group.eu:443/backend/rs/shipments/validate", providerSettings.ApiDomain)),
+               Method.Post,
+               requestBody,
+               cancelToken
+               );
 
-            clientRequest.AddJsonBody(json, apiContentType);
-
-            RestResponse<ValidateParcelsResponse> response = await client.ExecuteAsync<ValidateParcelsResponse>(clientRequest, cancelToken).ConfigureAwait(false);
-
-            if (!response.IsSuccessful) throw new ShipITException(ErrorCode.UNKNOW, response.ErrorMessage + "<------>" + response.Content, requestBody);
-           
-            if (response.Data == null) throw new ShipITException(ErrorCode.UNKNOW, "No content data found on validation reponse");
 
             if (response.Data.Success == true) return new ValidationReponse() { Success = true };
            
@@ -287,6 +158,135 @@ namespace ShippingProAPICollection.Provider.ShipIT
 
             return new ValidationReponse() { Success = true, ValidationIssues = reponseIssues };
 
+        }
+
+        public async Task<uint> GetEstimatedDeliveryDays(RequestShipmentBase request, CancellationToken cancelToken)
+        {
+           
+            EstimatedDeliveryDaysAddress senderAddress = new EstimatedDeliveryDaysAddress()
+            {
+                City = accountSettings.City,
+                CountryCode = accountSettings.CountryIsoA2Code,
+                ZIPCode = accountSettings.PostCode,
+                Street = accountSettings.Street,
+            };
+            senderAddress.Validate();
+
+            EstimatedDeliveryDaysAddress destinationAddress = new EstimatedDeliveryDaysAddress()
+            {
+                City = request.City,
+                CountryCode = request.Country,
+                ZIPCode = request.PostCode,
+                Street = request.Street,
+                StreetNumber = request.StreetNumber,
+            };
+            destinationAddress.Validate();
+
+            var requestBody = new
+            {
+                Source = new
+                {
+                    Address = senderAddress,
+                },
+                Destination = new
+                {
+                    Address = destinationAddress,
+                }
+            };
+
+            RestResponse<EstimatedDeliveryDaysResponse> response = await CallApi<EstimatedDeliveryDaysResponse>(
+              new Uri(string.Format("https://shipit-wbm-{0}.gls-group.eu:443/backend/rs/timeframe/deliverydays", providerSettings.ApiDomain)),
+              Method.Post,
+              requestBody,
+              cancelToken
+              );
+
+            return 0;
+        }
+
+
+        /// <summary>
+        /// Call GLS API and check HTTP Reponse
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="url"></param>
+        /// <param name="method"></param>
+        /// <param name="body"></param>
+        /// <param name="cancelToken"></param>
+        /// <returns></returns>
+        private async Task<RestResponse<T>> CallApi<T>(Uri url, Method method, object body, CancellationToken cancelToken)
+        {
+            var clientOptions = new RestClientOptions(url)
+            {
+                RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true,
+                Authenticator = new HttpBasicAuthenticator(providerSettings.Username, providerSettings.Password)
+            };
+
+            RestClient client = new RestClient(clientOptions);
+
+            var clientRequest = new RestRequest()
+            {
+                Method = method
+            };
+
+            clientRequest.AddHeader("Content-Type", apiContentType);
+            clientRequest.AddHeader("Accept", apiContentType);
+
+            string json = JsonConvert.SerializeObject(body, Formatting.Indented, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+            });
+            clientRequest.AddJsonBody(json, apiContentType);
+
+            var response = await client.ExecuteAsync<T>(clientRequest, cancelToken).ConfigureAwait(false);
+
+            CheckHttpResponse<T>(json, response);
+
+            return response;
+
+        }
+
+        /// <summary>
+        /// Check the http reponse status
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="payload"></param>
+        /// <param name="response"></param>
+        /// <exception cref="ShipITException"></exception>
+        private void CheckHttpResponse<T>(object payload, RestResponse<T> response)
+        {
+            if (response.StatusCode != System.Net.HttpStatusCode.OK)
+            {
+                //var glsErrorCode = response.Headers?.ToList().FirstOrDefault(x => x.Name != null && x.Name.Equals("error"))?.Value?.ToString() ?? "Unknow";
+                var message = response.Headers?.ToList().FirstOrDefault(x => x.Name != null && x.Name.Equals("message"))?.Value?.ToString() ?? "Unknow";
+
+                ErrorCode errorCode = ErrorCode.UNKNOW;
+
+                if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    errorCode = ErrorCode.BAD_REQUEST_ERROR;
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    errorCode = ErrorCode.UNAUTHORIZED;
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.TooManyRequests)
+                {
+                    errorCode = ErrorCode.TO_MANY_REQUESTS;
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+                {
+                    errorCode = ErrorCode.INTERNAL_SERVER_ERROR;
+                }
+                else
+                {
+                    throw new ShipITException(ErrorCode.UNKNOW, response.ErrorMessage + "<------>" + response.Content, payload);
+                }
+                 
+                throw new ShipITException(errorCode, message, payload);
+            }
+
+            if (response.Data == null) throw new ShipITException(ErrorCode.UNKNOW, "No Data available in response", payload);
         }
 
         /// <summary>
