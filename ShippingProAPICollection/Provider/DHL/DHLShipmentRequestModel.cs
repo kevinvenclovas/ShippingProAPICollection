@@ -13,12 +13,12 @@ namespace ShippingProAPICollection.Provider.DHL
 
         }
 
-        public DHLShipmentRequestModel() : base(ProviderType.DHL.ToString())
+        public DHLShipmentRequestModel() : base(ShippingProviderType.DHL.ToString())
         {
 
         }
 
-        public override ProviderType ProviderType { get; } = ProviderType.DHL;
+        public override ShippingProviderType ProviderType { get; } = ShippingProviderType.DHL;
 
         /// <summary>
         /// Mit Email Notification an den Kunden -> E-Mail muss dafür angegeben werden |

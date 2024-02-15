@@ -1,11 +1,11 @@
 [![Build&Test](https://github.com/kevinvenclovas/ShippingProAPICollection/actions/workflows/dotnet.yml/badge.svg)](https://github.com/kevinvenclovas/ShippingProAPICollection/actions/workflows/dotnet.yml)
 [![NuGet](https://img.shields.io/nuget/v/ShippingProAPICollection.svg)](https://www.nuget.org/packages/ShippingProAPICollection/)
 # Shipping Pro API Collection
-Welcome to our C# library, designed to integrate multiple shipping service APIs into one streamlined solution. This project provides a unified interface for GLS Shipit, DHL, and DPD, simplifying the shipping process for developers and businesses. With easy integration, you can handle logistics across different carriers seamlessly. Ideal for enhancing efficiency in e-commerce and logistics operations.
+Welcome to our C# library, designed to integrate multiple shipping service APIs into one streamlined solution. This project provides a unified interface for GLS GLS, DHL, and DPD, simplifying the shipping process for developers and businesses. With easy integration, you can handle logistics across different carriers seamlessly. Ideal for enhancing efficiency in e-commerce and logistics operations.
 
 ## Provider
 
-- [X] GLS ShipIT Germany ([API Documentation](https://shipit.gls-group.eu/webservices/3_2_9/doxygen/WS-REST-API/index.html))
+- [X] GLS GLS Germany ([API Documentation](https://GLS.gls-group.eu/webservices/3_2_9/doxygen/WS-REST-API/index.html))
 	- [X] Create Shipment
 	- [X] Cancel Shipment
 
@@ -26,22 +26,22 @@ To finalize the setup, register the ShippingProAPICollectionService as a scoped 
 	services.AddScoped<ShippingProAPICollectionService>();
 	ShippingProAPICollectionSettings providerSettings = new ShippingProAPICollectionSettings()
 	
-#### GLS ShipIT
+#### GLS GLS
  
-	ShipITSettings shipItSettings = new ShipITSettings()
+	GLSSettings GLSSettings = new GLSSettings()
 	{   
 		 // Define your desired label result format
-		 LabelFormat = ShipITLabelFormat.PDF,
+		 LabelFormat = GLSLabelFormat.PDF,
 	
 		 // PLEASE GET IN TOUCH WITH YOUR GLS CONTACT TO GET THE FOLLOWING INFORMATIONS
 	 
-		 // Api domain is the XXXXXXX part of your GLS-ShipIT api url => https://shipit-wbm-XXXXXXX.gls-group.eu:443/backend/rs
+		 // Api domain is the XXXXXXX part of your GLS-GLS api url => https://GLS-wbm-XXXXXXX.gls-group.eu:443/backend/rs
 		 ApiDomain = "test01",         
 		 ContactID = "276a45fkqM",       
 		 Username = "276a45fkqM"
 		 Password = "lXZBIF7uRccyK7Ohr64d",       
 	};
-	providerSettings.AddSettings(shipItSettings);
+	providerSettings.AddSettings(GLSSettings);
 
 #### DHL Parcel DE Shipping
 

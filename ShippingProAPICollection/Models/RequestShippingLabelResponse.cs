@@ -26,6 +26,6 @@ namespace ShippingProAPICollection.Models
         /// Art des Labels, Normaler versand oder Retourenlabel
         /// Kind of the label, normal shipment or shop return
         /// </summary>
-        public required LabelType LabelType { get; set; }
+        public required ShippingLabelType LabelType { get; set; }
     }
 }

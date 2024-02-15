@@ -4,8 +4,8 @@ using ShippingProAPICollection.Models.Entities;
 using ShippingProAPICollection.Provider;
 using ShippingProAPICollection.Provider.DHL;
 using ShippingProAPICollection.Provider.DPD;
-using ShippingProAPICollection.Provider.ShipIT;
-using ShippingProAPICollection.Provider.ShipIT.Entities.Validation;
+using ShippingProAPICollection.Provider.GLS;
+using ShippingProAPICollection.Provider.GLS.Entities.Validation;
 
 namespace ShippingProAPICollection
 {
@@ -28,8 +28,8 @@ namespace ShippingProAPICollection
         {
             switch (settings)
             {
-                case ShipITSettings providerSettings:
-                    return new ShipITShipmentService(accountSettings, providerSettings);
+                case GLSSettings providerSettings:
+                    return new GLSShipmentService(accountSettings, providerSettings);
                 case DHLSettings providerSettings:
                     return new DHLShipmentService(accountSettings, providerSettings);
                 case DPDSettings providerSettings:
@@ -74,7 +74,7 @@ namespace ShippingProAPICollection
             throw new InvalidOperationException("Unknown shipping provider");
         }
 
-        public async Task<CancelResult> CancelLabel(string contractID, string cancelId, CancellationToken ct = default)
+        public async Task<ShippingCancelResult> CancelLabel(string contractID, string cancelId, CancellationToken ct = default)
         {
             
             if (providerServices.TryGetValue(contractID, out var service))

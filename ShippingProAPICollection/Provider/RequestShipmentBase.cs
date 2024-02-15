@@ -5,17 +5,17 @@ using ShippingProAPICollection.Models.Entities;
 using ShippingProAPICollection.Models.Error;
 using ShippingProAPICollection.Provider.DHL;
 using ShippingProAPICollection.Provider.DPD;
-using ShippingProAPICollection.Provider.ShipIT;
+using ShippingProAPICollection.Provider.GLS;
 
 namespace ShippingProAPICollection.Provider
 {
     [JsonConverter(typeof(JsonSubtypes), nameof(ProviderType))]
-    [JsonSubtypes.KnownSubType(typeof(ShipITShipmentRequestModel), ProviderType.GLS)]
-    [JsonSubtypes.KnownSubType(typeof(DPDShipmentRequestModel), ProviderType.DPD)]
-    [JsonSubtypes.KnownSubType(typeof(DHLShipmentRequestModel), ProviderType.DHL)]
+    [JsonSubtypes.KnownSubType(typeof(GLSShipmentRequestModel), ShippingProviderType.GLS)]
+    [JsonSubtypes.KnownSubType(typeof(DPDShipmentRequestModel), ShippingProviderType.DPD)]
+    [JsonSubtypes.KnownSubType(typeof(DHLShipmentRequestModel), ShippingProviderType.DHL)]
     public abstract class RequestShipmentBase
     {
-        public abstract ProviderType ProviderType { get; }
+        public abstract ShippingProviderType ProviderType { get; }
 
         public RequestShipmentBase(string contractID)
         {

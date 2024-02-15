@@ -7,7 +7,7 @@ using ShippingProAPICollection.Models.Entities;
 using ShippingProAPICollection.Models.Error;
 using ShippingProAPICollection.Models.Utils;
 using ShippingProAPICollection.Provider.DHL.Entities;
-using ShippingProAPICollection.Provider.ShipIT.Entities.Validation;
+using ShippingProAPICollection.Provider.GLS.Entities.Validation;
 
 namespace ShippingProAPICollection.Provider.DHL
 {
@@ -74,7 +74,7 @@ namespace ShippingProAPICollection.Provider.DHL
                     var objectResponse_ = JsonConvert.DeserializeObject<LabelDataResponse>(response.Content);
                     if (objectResponse_ == null)
                     {
-                        throw new DHLException(ErrorCode.CANNOT_CONVERT_RESPONSE, "Cannot convert reponse to object", new { payload = requestBody, respone = response.Content });
+                        throw new DHLException(ShippingErrorCode.CANNOT_CONVERT_RESPONSE, "Cannot convert reponse to object", new { payload = requestBody, respone = response.Content });
                     }
 
                     List<RequestShippingLabelResponse> labels = new List<RequestShippingLabelResponse>();
@@ -86,7 +86,7 @@ namespace ShippingProAPICollection.Provider.DHL
                             Label = Convert.FromBase64String(c.Label.B64),
                             ParcelNumber = c.ShipmentNo,
                             CancelId = c.ShipmentNo,
-                            LabelType = LabelType.NORMAL,
+                            LabelType = ShippingLabelType.NORMAL,
                         });
                     }
 
@@ -97,33 +97,33 @@ namespace ShippingProAPICollection.Provider.DHL
                     var objectResponse_ = JsonConvert.DeserializeObject<LabelDataResponse>(response.Content);
                     if (objectResponse_ == null)
                     {
-                        throw new DHLException(ErrorCode.CANNOT_CONVERT_RESPONSE, "Cannot convert reponse to object", new { payload = requestBody, respone = response.Content });
+                        throw new DHLException(ShippingErrorCode.CANNOT_CONVERT_RESPONSE, "Cannot convert reponse to object", new { payload = requestBody, respone = response.Content });
                     }
 
-                    throw new DHLException(ErrorCode.BAD_REQUEST_ERROR, objectResponse_.Items?.FirstOrDefault()?.ValidationMessages.FirstOrDefault()?.ValidationMessage ?? "Unknow message", new { payload = requestBody, respone = response.Content });
+                    throw new DHLException(ShippingErrorCode.BAD_REQUEST_ERROR, objectResponse_.Items?.FirstOrDefault()?.ValidationMessages.FirstOrDefault()?.ValidationMessage ?? "Unknow message", new { payload = requestBody, respone = response.Content });
                 }
                 else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 {
-                    throw new DHLException(ErrorCode.UNAUTHORIZED, $"Request reponsed with HTTP status code {(int)response.StatusCode}", new { payload = requestBody, respone = response.Content });
+                    throw new DHLException(ShippingErrorCode.UNAUTHORIZED, $"Request reponsed with HTTP status code {(int)response.StatusCode}", new { payload = requestBody, respone = response.Content });
                 }
                 else if (response.StatusCode == System.Net.HttpStatusCode.TooManyRequests)
                 {
-                    throw new DHLException(ErrorCode.TO_MANY_REQUESTS, $"Request reponsed with HTTP status code {(int)response.StatusCode}", new { payload = requestBody, respone = response.Content });
+                    throw new DHLException(ShippingErrorCode.TO_MANY_REQUESTS, $"Request reponsed with HTTP status code {(int)response.StatusCode}", new { payload = requestBody, respone = response.Content });
                 }
                 else if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
                 {
-                    throw new DHLException(ErrorCode.INTERNAL_SERVER_ERROR, $"Request reponsed with HTTP status code {(int)response.StatusCode}", new { payload = requestBody, respone = response.Content });
+                    throw new DHLException(ShippingErrorCode.INTERNAL_SERVER_ERROR, $"Request reponsed with HTTP status code {(int)response.StatusCode}", new { payload = requestBody, respone = response.Content });
                 }
                 else
                 {
-                    throw new DHLException(ErrorCode.UNKNOW, "The HTTP status code of the response was not expected (" + (int)response.StatusCode + ").", new { payload = requestBody, respone = response.Content });
+                    throw new DHLException(ShippingErrorCode.UNKNOW, "The HTTP status code of the response was not expected (" + (int)response.StatusCode + ").", new { payload = requestBody, respone = response.Content });
                 }
 
             }
 
         }
 
-        public async Task<CancelResult> CancelLabel(string cancelId, CancellationToken cancelToken = default)
+        public async Task<ShippingCancelResult> CancelLabel(string cancelId, CancellationToken cancelToken = default)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             var baseUrl = string.Format("https://api-{0}.dhl.com/parcel/de/shipping/v2/", providerSettings.ApiDomain);
@@ -162,36 +162,36 @@ namespace ShippingProAPICollection.Provider.DHL
                     var objectResponse_ = JsonConvert.DeserializeObject<LabelDataResponse>(response.Content);
                     if (objectResponse_ == null)
                     {
-                        throw new DHLException(ErrorCode.CANNOT_CONVERT_RESPONSE, "Cannot convert reponse to object", new { payload = cancelId, respone = response.Content });
+                        throw new DHLException(ShippingErrorCode.CANNOT_CONVERT_RESPONSE, "Cannot convert reponse to object", new { payload = cancelId, respone = response.Content });
                     }
 
-                    return CancelResult.CANCLED;
+                    return ShippingCancelResult.CANCLED;
                 }
                 else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
                 {
                     var objectResponse_ = JsonConvert.DeserializeObject<LabelDataResponse>(response.Content);
                     if (objectResponse_ == null)
                     {
-                        throw new DHLException(ErrorCode.CANNOT_CONVERT_RESPONSE, "Cannot convert reponse to object", new { payload = cancelId, respone = response.Content });
+                        throw new DHLException(ShippingErrorCode.CANNOT_CONVERT_RESPONSE, "Cannot convert reponse to object", new { payload = cancelId, respone = response.Content });
                     }
 
-                    throw new DHLException(ErrorCode.BAD_REQUEST_ERROR, objectResponse_.Items?.FirstOrDefault()?.ValidationMessages.FirstOrDefault()?.ValidationMessage ?? "Unknow message", new { payload = cancelId, respone = response.Content });
+                    throw new DHLException(ShippingErrorCode.BAD_REQUEST_ERROR, objectResponse_.Items?.FirstOrDefault()?.ValidationMessages.FirstOrDefault()?.ValidationMessage ?? "Unknow message", new { payload = cancelId, respone = response.Content });
                 }
                 else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 {
-                    throw new DHLException(ErrorCode.UNAUTHORIZED, $"Request reponsed with HTTP status code {(int)response.StatusCode}", new { payload = cancelId, respone = response.Content });
+                    throw new DHLException(ShippingErrorCode.UNAUTHORIZED, $"Request reponsed with HTTP status code {(int)response.StatusCode}", new { payload = cancelId, respone = response.Content });
                 }
                 else if (response.StatusCode == System.Net.HttpStatusCode.TooManyRequests)
                 {
-                    throw new DHLException(ErrorCode.TO_MANY_REQUESTS, $"Request reponsed with HTTP status code {(int)response.StatusCode}", new { payload = cancelId, respone = response.Content });
+                    throw new DHLException(ShippingErrorCode.TO_MANY_REQUESTS, $"Request reponsed with HTTP status code {(int)response.StatusCode}", new { payload = cancelId, respone = response.Content });
                 }
                 else if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
                 {
-                    throw new DHLException(ErrorCode.INTERNAL_SERVER_ERROR, $"Request reponsed with HTTP status code {(int)response.StatusCode}", new { payload = cancelId, respone = response.Content });
+                    throw new DHLException(ShippingErrorCode.INTERNAL_SERVER_ERROR, $"Request reponsed with HTTP status code {(int)response.StatusCode}", new { payload = cancelId, respone = response.Content });
                 }
                 else
                 {
-                    throw new DHLException(ErrorCode.UNKNOW, "The HTTP status code of the response was not expected (" + (int)response.StatusCode + ").", new { payload = cancelId, respone = response.Content });
+                    throw new DHLException(ShippingErrorCode.UNKNOW, "The HTTP status code of the response was not expected (" + (int)response.StatusCode + ").", new { payload = cancelId, respone = response.Content });
                 }
             }
 
@@ -199,12 +199,12 @@ namespace ShippingProAPICollection.Provider.DHL
         
         public Task<ValidationReponse> ValidateLabel(RequestShipmentBase request, CancellationToken cancelToken)
         {
-            throw new DHLException(ErrorCode.NOT_AVAILABLE, "Feature not available for DHL");
+            throw new DHLException(ShippingErrorCode.NOT_AVAILABLE, "Feature not available for DHL");
         }
 
         public Task<uint> GetEstimatedDeliveryDays(RequestShipmentBase request, CancellationToken cancelToken)
         {
-            throw new DHLException(ErrorCode.NOT_AVAILABLE, "Feature not available for DHL");
+            throw new DHLException(ShippingErrorCode.NOT_AVAILABLE, "Feature not available for DHL");
         }
 
         /// <summary>

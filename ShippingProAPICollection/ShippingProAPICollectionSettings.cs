@@ -2,7 +2,7 @@
 using ShippingProAPICollection.Provider;
 using ShippingProAPICollection.Provider.DHL;
 using ShippingProAPICollection.Provider.DPD;
-using ShippingProAPICollection.Provider.ShipIT;
+using ShippingProAPICollection.Provider.GLS;
 
 namespace ShippingProAPICollection
 {
@@ -34,7 +34,7 @@ namespace ShippingProAPICollection
 
             switch (setting)
             {
-                case ShipITSettings:
+                case GLSSettings:
                     contractID = "GLS";
                     break;
                 case DHLSettings:

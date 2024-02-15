@@ -175,7 +175,7 @@ namespace ShippingProAPICollection.NUnitTests
             foreach (var label in createResult)
             {
                 var cancelResult = (await shippingCollection.CancelLabel("DHL", label.CancelId));
-                Assert.That(cancelResult == CancelResult.CANCLED);
+                Assert.That(cancelResult == ShippingCancelResult.CANCLED);
             }
 
         }

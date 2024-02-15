@@ -13,12 +13,12 @@ namespace ShippingProAPICollection.Provider.DPD
 
         }
 
-        public DPDShipmentRequestModel() : base(ProviderType.DPD.ToString())
+        public DPDShipmentRequestModel() : base(ShippingProviderType.DPD.ToString())
         {
 
         }
 
-        public override ProviderType ProviderType { get; } = ProviderType.DPD;
+        public override ShippingProviderType ProviderType { get; } = ShippingProviderType.DPD;
 
         /// <summary>
         /// Mit Email Notification an den Kunden -> Email muss dafür angegeben werden |

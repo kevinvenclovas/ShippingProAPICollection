@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ShippingProAPICollection.Models;
 using ShippingProAPICollection.Provider.DHL;
 using ShippingProAPICollection.Provider.DPD;
-using ShippingProAPICollection.Provider.ShipIT;
+using ShippingProAPICollection.Provider.GLS;
 using System.Reflection;
 
 namespace ShippingProAPICollection.NUnitTests
@@ -36,7 +36,7 @@ namespace ShippingProAPICollection.NUnitTests
 
             ShippingProAPICollectionSettings providerSettings = new ShippingProAPICollectionSettings(accountSettings);
 
-            ShipITSettings shipItSettings = new ShipITSettings()
+            GLSSettings GLSSettings = new GLSSettings()
             {
                 ApiDomain = "test01",
                 ContactID = "276a45fkqM",
@@ -44,7 +44,7 @@ namespace ShippingProAPICollection.NUnitTests
                 Username = "276a45fkqM"
             };
 
-            providerSettings.AddSettings("GLS", shipItSettings);
+            providerSettings.AddSettings("GLS", GLSSettings);
 
             DHLSettings dhlSettings = new DHLSettings()
             {

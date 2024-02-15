@@ -8,7 +8,7 @@ using ShippingProAPICollection.Models.Error;
 using ShippingProAPICollection.Models.Utils;
 using ShippingProAPICollection.Provider.DHL.Entities;
 using ShippingProAPICollection.Provider.DPD.Entities;
-using ShippingProAPICollection.Provider.ShipIT.Entities.Validation;
+using ShippingProAPICollection.Provider.GLS.Entities.Validation;
 
 namespace ShippingProAPICollection.Provider.DPD
 {
@@ -61,7 +61,7 @@ namespace ShippingProAPICollection.Provider.DPD
                 if (shipment.faults != null)
                 {
                     string errorMessage = String.Join(" - ", shipment.faults.Select(x => x.faultCode + " " + x.message));
-                    throw new DPDException(ErrorCode.DPD_SHIPMENT_REQUEST_ERROR, errorMessage, requestBody);
+                    throw new DPDException(ShippingErrorCode.DPD_SHIPMENT_REQUEST_ERROR, errorMessage, requestBody);
                 }
                 else
                 {
@@ -72,7 +72,7 @@ namespace ShippingProAPICollection.Provider.DPD
                             ParcelNumber = i.parcelLabelNumber,
                             CancelId = i.parcelLabelNumber,
                             Label = ByteUtils.MergePDFByteToOnePDF(i.output.Select(x => x.content).ToList()),
-                            LabelType = DPDRequest.ServiceType == DPDServiceType.SHOPRETURN ? LabelType.SHOPRETURN : LabelType.NORMAL,
+                            LabelType = DPDRequest.ServiceType == DPDServiceType.SHOPRETURN ? ShippingLabelType.SHOPRETURN : ShippingLabelType.NORMAL,
                         });
                     }
                 }
@@ -82,20 +82,20 @@ namespace ShippingProAPICollection.Provider.DPD
             
         }
 
-        public async Task<CancelResult> CancelLabel(string cancelId, CancellationToken cancelToken = default)
+        public async Task<ShippingCancelResult> CancelLabel(string cancelId, CancellationToken cancelToken = default)
         {
             // DPD is fucking crazy and we not need to cancel any labels :)
-            return CancelResult.CANCLED;
+            return ShippingCancelResult.CANCLED;
         }
 
         public Task<ValidationReponse> ValidateLabel(RequestShipmentBase request, CancellationToken cancelToken)
         {
-            throw new DPDException(ErrorCode.NOT_AVAILABLE, "Feature not available for DPD");
+            throw new DPDException(ShippingErrorCode.NOT_AVAILABLE, "Feature not available for DPD");
         }
 
         public Task<uint> GetEstimatedDeliveryDays(RequestShipmentBase request, CancellationToken cancelToken)
         {
-            throw new DPDException(ErrorCode.NOT_AVAILABLE, "Feature not available for DPD");
+            throw new DPDException(ShippingErrorCode.NOT_AVAILABLE, "Feature not available for DPD");
         }
 
         /// <summary>
@@ -227,7 +227,7 @@ namespace ShippingProAPICollection.Provider.DPD
                 if (dpdAuthToken != null) _cache.Set("DPD_AUTH_TOKEN_" + providerSettings.ContractID, dpdAuthToken, TimeSpan.FromSeconds(36000));
             }
 
-            if (String.IsNullOrEmpty(dpdAuthToken)) throw new DPDException(ErrorCode.UNAUTHORIZED, "Cannot find any dpd auth token");
+            if (String.IsNullOrEmpty(dpdAuthToken)) throw new DPDException(ShippingErrorCode.UNAUTHORIZED, "Cannot find any dpd auth token");
 
             return dpdAuthToken;
         }
@@ -237,7 +237,7 @@ namespace ShippingProAPICollection.Provider.DPD
         /// </summary>
         /// <param name="cancelToken"></param>
         /// <returns></returns>
-        /// <exception cref="ProviderException"></exception>
+        /// <exception cref="ShippingProviderException"></exception>
         private async Task<string> LoginToDPD(CancellationToken cancelToken = default)
         {
            
@@ -261,7 +261,7 @@ namespace ShippingProAPICollection.Provider.DPD
             }
             else
             {
-                throw new ProviderException(ErrorCode.UNKNOW, "No auth token available after dpd login");
+                throw new ShippingProviderException(ShippingErrorCode.UNKNOW, "No auth token available after dpd login");
             }
         }
 
@@ -314,7 +314,7 @@ namespace ShippingProAPICollection.Provider.DPD
             if (dpdExeption.Message.ToString().Length > 0 && !dpdExeption.Message.ToString().Contains("Fault occured"))
             {
                 getCoreErrorMessage = dpdExeption.Message.ToString();
-                return new DPDException(ErrorCode.DPD_LOGIN_ERROR, getCoreErrorMessage, request);
+                return new DPDException(ShippingErrorCode.DPD_LOGIN_ERROR, getCoreErrorMessage, request);
             }
             else
             {
@@ -324,11 +324,11 @@ namespace ShippingProAPICollection.Provider.DPD
                     if (pi != null)
                     {
                         object? name = (object?)(pi.GetValue(myObject, null));
-                        throw new DPDException(ErrorCode.DPD_LOGIN_ERROR, name?.ToString() ?? "Unknow", request);
+                        throw new DPDException(ShippingErrorCode.DPD_LOGIN_ERROR, name?.ToString() ?? "Unknow", request);
                     }
                 }
 
-                return new DPDException(ErrorCode.DPD_LOGIN_ERROR, "Unknow", request);
+                return new DPDException(ShippingErrorCode.DPD_LOGIN_ERROR, "Unknow", request);
             }
 
         }

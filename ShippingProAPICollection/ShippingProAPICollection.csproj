@@ -7,7 +7,7 @@
     <Title>ShippingProAPICollection</Title>
     <Authors>Kevin Venclovas</Authors>
     <Company>CodeKev Innovations</Company>
-    <Description>This project provides a unified interface for GLS ShipIT, DHL, and DPD, simplifying the shipping process for developers and businesses. With easy integration, you can now manage rates, track shipments, and handle logistics across different carriers seamlessly. Ideal for enhancing efficiency in e-commerce and logistics operations.</Description>
+    <Description>This project provides a unified interface for GLS GLS, DHL, and DPD, simplifying the shipping process for developers and businesses. With easy integration, you can now manage rates, track shipments, and handle logistics across different carriers seamlessly. Ideal for enhancing efficiency in e-commerce and logistics operations.</Description>
     <PackageProjectUrl>https://github.com/kevinvenclovas/ShippingProAPICollection</PackageProjectUrl>
     <RepositoryUrl>https://github.com/kevinvenclovas/ShippingProAPICollection</RepositoryUrl>
     <PackageTags>Api;GLS;DHL;DPD;Germany;Interface;Schnittstelle</PackageTags>

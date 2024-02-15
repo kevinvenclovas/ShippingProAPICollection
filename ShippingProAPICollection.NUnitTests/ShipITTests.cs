@@ -1,11 +1,11 @@
 using Microsoft.Extensions.DependencyInjection;
 using ShippingProAPICollection.Models.Entities;
-using ShippingProAPICollection.Provider.ShipIT;
-using ShippingProAPICollection.Provider.ShipIT.Entities;
+using ShippingProAPICollection.Provider.GLS;
+using ShippingProAPICollection.Provider.GLS.Entities;
 
 namespace ShippingProAPICollection.NUnitTests
 {
-    public class ShipITTests : TestBase
+    public class GLSTests : TestBase
     {
         /// <summary>
         /// Create one label with 0.5 Kg
@@ -16,9 +16,9 @@ namespace ShippingProAPICollection.NUnitTests
         {
             ShippingProAPICollectionService shippingCollection = _serviceProvider.GetRequiredService<ShippingProAPICollectionService>();
 
-            var request = new ShipITShipmentRequestModel("GLS")
+            var request = new GLSShipmentRequestModel("GLS")
             {
-                ServiceProduct = ShipITProductType.PARCEL,
+                ServiceProduct = GLSProductType.PARCEL,
                 Weight = 0.5f,
                 LabelCount = 1,
                 Adressline1 = "Max Mustermann",
@@ -28,7 +28,7 @@ namespace ShippingProAPICollection.NUnitTests
                 PostCode = "73479",
                 InvoiceReference = "RE-123456",
                 Phone = "0123456789",
-                ServiceType = ShipITServiceType.NONE,
+                ServiceType = GLSServiceType.NONE,
             };
             request.Validate();
 
@@ -48,9 +48,9 @@ namespace ShippingProAPICollection.NUnitTests
         {
             ShippingProAPICollectionService shippingCollection = _serviceProvider.GetRequiredService<ShippingProAPICollectionService>();
 
-            var request = new ShipITShipmentRequestModel("GLS")
+            var request = new GLSShipmentRequestModel("GLS")
             {
-                ServiceProduct = ShipITProductType.PARCEL,
+                ServiceProduct = GLSProductType.PARCEL,
                 Weight = 1f,
                 LabelCount = 2,
                 Adressline1 = "Max Mustermann",
@@ -60,7 +60,7 @@ namespace ShippingProAPICollection.NUnitTests
                 PostCode = "73479",
                 InvoiceReference = "RE-123456",
                 Phone = "0123456789",
-                ServiceType = ShipITServiceType.NONE,
+                ServiceType = GLSServiceType.NONE,
             };
             request.Validate();
 
@@ -80,9 +80,9 @@ namespace ShippingProAPICollection.NUnitTests
         {
             ShippingProAPICollectionService shippingCollection = _serviceProvider.GetRequiredService<ShippingProAPICollectionService>();
 
-            var request = new ShipITShipmentRequestModel("GLS")
+            var request = new GLSShipmentRequestModel("GLS")
             {
-                ServiceProduct = ShipITProductType.PARCEL,
+                ServiceProduct = GLSProductType.PARCEL,
                 Weight = 1f,
                 LabelCount = 1,
                 Adressline1 = "Max Mustermann",
@@ -92,7 +92,7 @@ namespace ShippingProAPICollection.NUnitTests
                 PostCode = "73479",
                 InvoiceReference = "RE-123456",
                 Phone = "0123456789",
-                ServiceType = ShipITServiceType.DEPOSIT,
+                ServiceType = GLSServiceType.DEPOSIT,
                 PlaceOfDeposit = "Garden"
             };
             request.Validate();
@@ -112,9 +112,9 @@ namespace ShippingProAPICollection.NUnitTests
         {
             ShippingProAPICollectionService shippingCollection = _serviceProvider.GetRequiredService<ShippingProAPICollectionService>();
 
-            var request = new ShipITShipmentRequestModel("GLS")
+            var request = new GLSShipmentRequestModel("GLS")
             {
-                ServiceProduct = ShipITProductType.PARCEL,
+                ServiceProduct = GLSProductType.PARCEL,
                 Weight = 1f,
                 LabelCount = 1,
                 Adressline1 = "Max Mustermann",
@@ -124,7 +124,7 @@ namespace ShippingProAPICollection.NUnitTests
                 PostCode = "73479",
                 InvoiceReference = "RE-123456",
                 Phone = "0123456789",
-                ServiceType = ShipITServiceType.SHOPRETURN,
+                ServiceType = GLSServiceType.SHOPRETURN,
             };
             request.Validate();
 
@@ -144,9 +144,9 @@ namespace ShippingProAPICollection.NUnitTests
         {
             ShippingProAPICollectionService shippingCollection = _serviceProvider.GetRequiredService<ShippingProAPICollectionService>();
 
-            var request = new ShipITShipmentRequestModel("GLS")
+            var request = new GLSShipmentRequestModel("GLS")
             {
-                ServiceProduct = ShipITProductType.PARCEL,
+                ServiceProduct = GLSProductType.PARCEL,
                 Weight = 1f,
                 LabelCount = 1,
                 Adressline1 = "Max Mustermann",
@@ -156,7 +156,7 @@ namespace ShippingProAPICollection.NUnitTests
                 PostCode = "73479",
                 InvoiceReference = "RE-123456",
                 Phone = "0123456789",
-                ServiceType = ShipITServiceType.SHOPRETURN,
+                ServiceType = GLSServiceType.SHOPRETURN,
             };
             request.Validate();
 
@@ -174,9 +174,9 @@ namespace ShippingProAPICollection.NUnitTests
         {
             ShippingProAPICollectionService shippingCollection = _serviceProvider.GetRequiredService<ShippingProAPICollectionService>();
 
-            var request = new ShipITShipmentRequestModel("GLS")
+            var request = new GLSShipmentRequestModel("GLS")
             {
-                ServiceProduct = ShipITProductType.PARCEL,
+                ServiceProduct = GLSProductType.PARCEL,
                 Weight = 1,
                 LabelCount = 2,
                 Adressline1 = "Max Mustermann",
@@ -186,7 +186,7 @@ namespace ShippingProAPICollection.NUnitTests
                 PostCode = "73479",
                 InvoiceReference = "RE-123456",
                 Phone = "0123456789",
-                ServiceType = ShipITServiceType.DEPOSIT,
+                ServiceType = GLSServiceType.DEPOSIT,
                 PlaceOfDeposit = "Behind the gardenhouse",
             };
             request.Validate();
@@ -196,7 +196,7 @@ namespace ShippingProAPICollection.NUnitTests
             foreach (var label in createResult)
             {
                 var cancelResult = (await shippingCollection.CancelLabel("GLS", label.CancelId));
-                Assert.That(cancelResult == CancelResult.CANCLED);
+                Assert.That(cancelResult == ShippingCancelResult.CANCLED);
             }
 
         }
@@ -210,9 +210,9 @@ namespace ShippingProAPICollection.NUnitTests
         {
             ShippingProAPICollectionService shippingCollection = _serviceProvider.GetRequiredService<ShippingProAPICollectionService>();
 
-            var request = new ShipITShipmentRequestModel("GLS")
+            var request = new GLSShipmentRequestModel("GLS")
             {
-                ServiceProduct = ShipITProductType.PARCEL,
+                ServiceProduct = GLSProductType.PARCEL,
                 Weight = 1,
                 LabelCount = 2,
                 Adressline1 = "Max Mustermann",
@@ -222,7 +222,7 @@ namespace ShippingProAPICollection.NUnitTests
                 PostCode = "73479",
                 InvoiceReference = "RE-123456",
                 Phone = "0123456789",
-                ServiceType = ShipITServiceType.DEPOSIT,
+                ServiceType = GLSServiceType.DEPOSIT,
                 PlaceOfDeposit = "Behind the gardenhouse",
             };
             request.Validate();

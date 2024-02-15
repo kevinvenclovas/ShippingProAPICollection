@@ -2,9 +2,9 @@
 
 namespace ShippingProAPICollection.Provider.DPD.Entities
 {
-    public class DPDException : ProviderException
+    public class DPDException : ShippingProviderException
     {
-        public DPDException(ErrorCode errorcode, string message, object? payload = null) : base(errorcode, message, payload)
+        public DPDException(ShippingErrorCode errorcode, string message, object? payload = null) : base(errorcode, message, payload)
         {
         }
     }
