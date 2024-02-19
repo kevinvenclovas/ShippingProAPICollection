@@ -1,7 +1,6 @@
 ﻿using JsonSubTypes;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
-using ShippingProAPICollection.Models.Entities;
 using ShippingProAPICollection.Models.Error;
 using ShippingProAPICollection.Provider.DHL;
 using ShippingProAPICollection.Provider.DPD;
@@ -10,12 +9,12 @@ using ShippingProAPICollection.Provider.GLS;
 namespace ShippingProAPICollection.Provider
 {
     [JsonConverter(typeof(JsonSubtypes), nameof(ProviderType))]
-    [JsonSubtypes.KnownSubType(typeof(GLSShipmentRequestModel), ShippingProviderType.GLS)]
-    [JsonSubtypes.KnownSubType(typeof(DPDShipmentRequestModel), ShippingProviderType.DPD)]
-    [JsonSubtypes.KnownSubType(typeof(DHLShipmentRequestModel), ShippingProviderType.DHL)]
+    [JsonSubtypes.KnownSubType(typeof(GLSShipmentRequestModel), "GLS")]
+    [JsonSubtypes.KnownSubType(typeof(DPDShipmentRequestModel), "DPD")]
+    [JsonSubtypes.KnownSubType(typeof(DHLShipmentRequestModel), "DHL")]
     public abstract class RequestShipmentBase
     {
-        public abstract ShippingProviderType ProviderType { get; }
+        public abstract string ProviderType { get; }
 
         public RequestShipmentBase(string contractID)
         {

@@ -18,7 +18,7 @@ namespace ShippingProAPICollection.Provider.DHL
 
         }
 
-        public override ShippingProviderType ProviderType { get; } = ShippingProviderType.DHL;
+        public override string ProviderType { get; } = ShippingProviderType.DHL.ToString();
 
         /// <summary>
         /// Mit Email Notification an den Kunden -> E-Mail muss dafür angegeben werden |

@@ -6,7 +6,6 @@ using ShippingProAPICollection.Models;
 using ShippingProAPICollection.Models.Entities;
 using ShippingProAPICollection.Models.Error;
 using ShippingProAPICollection.Models.Utils;
-using ShippingProAPICollection.Provider.DHL.Entities;
 using ShippingProAPICollection.Provider.DPD.Entities;
 using ShippingProAPICollection.Provider.GLS.Entities.Validation;
 

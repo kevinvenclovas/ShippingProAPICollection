@@ -18,7 +18,7 @@ namespace ShippingProAPICollection.Provider.GLS
 
         }
 
-        public override ShippingProviderType ProviderType { get; } = ShippingProviderType.GLS;
+        public override string ProviderType { get; } = ShippingProviderType.GLS.ToString();
 
         /// <summary>
         /// Mit Email Notification an den Kunden -> Email muss dafür angegeben werden |

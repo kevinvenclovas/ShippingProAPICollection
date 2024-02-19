@@ -18,7 +18,7 @@ namespace ShippingProAPICollection.Provider.DPD
 
         }
 
-        public override ShippingProviderType ProviderType { get; } = ShippingProviderType.DPD;
+        public override string ProviderType { get; } = ShippingProviderType.DPD.ToString();
 
         /// <summary>
         /// Mit Email Notification an den Kunden -> Email muss dafür angegeben werden |
