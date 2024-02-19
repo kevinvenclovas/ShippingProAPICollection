@@ -270,10 +270,6 @@ namespace ShippingProAPICollection.Provider.GLS
                 {
                     errorCode = ShippingErrorCode.UNAUTHORIZED;
                 }
-                else if (response.StatusCode == System.Net.HttpStatusCode.TooManyRequests)
-                {
-                    errorCode = ShippingErrorCode.TO_MANY_REQUESTS;
-                }
                 else if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
                 {
                     errorCode = ShippingErrorCode.INTERNAL_SERVER_ERROR;

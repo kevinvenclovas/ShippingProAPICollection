@@ -1,6 +1,4 @@
-﻿using System.Reflection.Metadata;
-using ShippingProAPICollection.Provider.GLS.Entities.Create.Response;
-
+﻿
 namespace ShippingProAPICollection.Provider.GLS.Entities.Create.Response
 {
     internal class CreatedShipmentData
