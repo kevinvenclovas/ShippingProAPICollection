@@ -4,7 +4,7 @@ using ShippingProAPICollection.Provider.GLS.Entities.Validation;
 
 namespace ShippingProAPICollection.Provider
 {
-    internal interface IShippingProviderService
+    public interface IShippingProviderService
     {
         /// <summary>
         /// Erstellen ein Versandlabels |
