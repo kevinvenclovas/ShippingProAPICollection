@@ -20,11 +20,11 @@ namespace ShippingProAPICollection
 
             foreach (KeyValuePair<string, ProviderSettings> provider in providers)
             {
-                providerServices.Add(provider.Key, BuildProviderService(_cache, providerSettings.AccountSettings, provider.Value));
+                providerServices.Add(provider.Key, BuildProviderService(providerSettings.AccountSettings, provider.Value, _cache));
             }
         }
 
-        private IShippingProviderService BuildProviderService(IMemoryCache _cache, ShippingProAPIAccountSettings accountSettings, ProviderSettings settings)
+        private IShippingProviderService BuildProviderService(ShippingProAPIAccountSettings accountSettings, ProviderSettings settings, IMemoryCache _cache)
         {
             switch (settings)
             {
@@ -34,6 +34,8 @@ namespace ShippingProAPICollection
                     return new DHLShipmentService(accountSettings, providerSettings);
                 case DPDSettings providerSettings:
                     return new DPDShipmentService(accountSettings, providerSettings, _cache);
+                case CustomProviderSettings providerSettings:
+                    return providerSettings.CreateProviderService(accountSettings, providerSettings, _cache);
                 default:  throw new Exception("provider not available");
             }
         }
