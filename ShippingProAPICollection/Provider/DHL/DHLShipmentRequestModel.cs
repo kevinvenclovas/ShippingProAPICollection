@@ -79,9 +79,9 @@ namespace ShippingProAPICollection.Provider.DHL
             if (ServiceType == DHLServiceType.DEPOSIT && !PlaceOfDeposit.RangeLenghtValidation(1, 60)) throw new ShipmentRequestNoValidStringLengthException("PlaceOfDeposit", 1, 60);
             if (ServiceType == DHLServiceType.LOCKER && Locker == null) throw new ShipmentRequestNotNullException("Locker");
             if (ServiceType == DHLServiceType.POSTOFFICE && PostOffice == null) throw new ShipmentRequestNotNullException("PostOffice");
-            if (!Note1.RangeLenghtValidation(0, 35)) throw new ShipmentRequestNoValidStringLengthException("Note1", 1, 35);
-            if (!Phone.RangeLenghtValidation(0, 20)) throw new ShipmentRequestNoValidStringLengthException("Phone", 0, 20);
-            if (!StreetNumber.RangeLenghtValidation(0, 20)) throw new ShipmentRequestNoValidStringLengthException("StreetNumber", 0, 20);
+            if (!Note1.RangeLenghtValidation(0, 35)) throw new ShipmentRequestNoValidStringLengthException("Note1", null, 35);
+            if (!Phone.RangeLenghtValidation(0, 20)) throw new ShipmentRequestNoValidStringLengthException("Phone", null, 20);
+            if (!StreetNumber.RangeLenghtValidation(0, 20)) throw new ShipmentRequestNoValidStringLengthException("StreetNumber", null, 20);
             if (!Adressline1.RangeLenghtValidation(1, 50)) throw new ShipmentRequestNoValidStringLengthException("Adressline1", 1, 50);
             if (!Adressline2.RangeLenghtValidation(0, 50)) throw new ShipmentRequestNoValidStringLengthException("Adressline2", null, 50);
             if (!Adressline3.RangeLenghtValidation(0, 50)) throw new ShipmentRequestNoValidStringLengthException("Adressline3", null, 50);

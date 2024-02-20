@@ -289,11 +289,11 @@ namespace ShippingProAPICollection.Provider.DHL
                 case DHLServiceType.NONE:
                 case DHLServiceType.DEPOSIT:
                     consignee.AdditionalProperties.Add("name1", request.Adressline1);
-                    consignee.AdditionalProperties.Add("name2", request.Adressline2);
-                    consignee.AdditionalProperties.Add("name3", request.Adressline3);
                     consignee.AdditionalProperties.Add("addressStreet", request.Street);
                     consignee.AdditionalProperties.Add("country", ThreeLetterCountryCodeHelper.GetThreeLetterCountryCode(request.Country));
 
+                    if (!String.IsNullOrEmpty(request.Adressline2)) consignee.AdditionalProperties.Add("name2", request.Adressline2);
+                    if (!String.IsNullOrEmpty(request.Adressline3)) consignee.AdditionalProperties.Add("name3", request.Adressline3);
                     if (!String.IsNullOrEmpty(request.Note1)) consignee.AdditionalProperties.Add("dispatchingInformation", request.Note1);
                     if (!String.IsNullOrEmpty(request.StreetNumber)) consignee.AdditionalProperties.Add("addressHouse", request.StreetNumber);
                     if (!String.IsNullOrEmpty(request.Phone)) consignee.AdditionalProperties.Add("phone", request.Phone);
