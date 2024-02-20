@@ -23,9 +23,16 @@ namespace ShippingProAPICollection.Models
         public required byte[] Label { get; set; }
 
         /// <summary>
-        /// Art des Labels, Normaler versand oder Retourenlabel
-        /// Kind of the label, normal shipment or shop return
+        /// Gewicht des Paketes in Kg
+        /// Weight of the package Kg
+        /// </summary>
+        public required float Weight { get; set; }
+
+        /// <summary>
+        /// Art des Labels, Normaler versand, Express versand oder Retourenlabel
+        /// Kind of the label, normal shipment, express shipment or shop return
         /// </summary>
         public required ShippingLabelType LabelType { get; set; }
+
     }
 }

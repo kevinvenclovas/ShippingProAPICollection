@@ -86,7 +86,8 @@ namespace ShippingProAPICollection.Provider.DHL
                             Label = Convert.FromBase64String(c.Label.B64),
                             ParcelNumber = c.ShipmentNo,
                             CancelId = c.ShipmentNo,
-                            LabelType = ShippingLabelType.NORMAL,
+                            LabelType = request.IsExpress() ? ShippingLabelType.EXPRESS : ShippingLabelType.NORMAL,
+                            Weight = request.GetPackageWeight(),
                         });
                     }
 
@@ -215,9 +216,6 @@ namespace ShippingProAPICollection.Provider.DHL
         private ShipmentOrderRequest CreateRequestModel(DHLShipmentRequestModel request)
         {
 
-            float packageWeight = request.Weight / request.LabelCount;
-            packageWeight = (float)Math.Round(packageWeight, 2);
-
             // Build shipper infos
             Shipper shipper = new Shipper()
             {
@@ -254,7 +252,7 @@ namespace ShippingProAPICollection.Provider.DHL
                     Weight = new Weight()
                     {
                         Uom = WeightUom.Kg,
-                        Value = packageWeight
+                        Value = request.GetPackageWeight()
                     }
                 };
 

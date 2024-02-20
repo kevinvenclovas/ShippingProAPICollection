@@ -63,7 +63,8 @@ namespace ShippingProAPICollection.Provider.GLS
                     CancelId = response.Data.CreatedShipment.ParcelData[i].TrackID,
                     ParcelNumber = response.Data.CreatedShipment.ParcelData[i].ParcelNumber,
                     Label = response.Data.CreatedShipment.PrintData[i].Data,
-                    LabelType = GLSRequest.ServiceType == GLSServiceType.SHOPRETURN ? ShippingLabelType.SHOPRETURN : ShippingLabelType.NORMAL,
+                    LabelType = GLSRequest.ServiceType == GLSServiceType.SHOPRETURN ? ShippingLabelType.SHOPRETURN : (request.IsExpress() ? ShippingLabelType.EXPRESS : ShippingLabelType.NORMAL),
+                    Weight = request.GetPackageWeight()
                 });
             }
 
@@ -292,12 +293,8 @@ namespace ShippingProAPICollection.Provider.GLS
         /// <returns></returns>
         private Shipment CreateRequestModel(GLSShipmentRequestModel request)
         {
-            
-            // Calculate single package weight
-            // Share weight if more than one label requested
-            double singlePackageWeight = request.Weight / request.LabelCount;
-            // Minimum weight 1 Kg
-            if (singlePackageWeight < 1) singlePackageWeight = 1;
+
+            float packageWeight = request.GetPackageWeight();
 
             List<ShipmentUnit> units = new List<ShipmentUnit>();
 
@@ -306,7 +303,7 @@ namespace ShippingProAPICollection.Provider.GLS
             {
                 units.Add(new ShipmentUnit()
                 {
-                    Weight = Convert.ToDecimal(singlePackageWeight),
+                    Weight = Convert.ToDecimal(packageWeight),
                     Note1 = request.Note1 ?? "",
                     Note2 = request.Note2 ?? "",
                     ShipmentUnitReference = string.IsNullOrEmpty(request.ShipmentReference) ? null : new List<string>() { request.ShipmentReference }.ToArray(),

@@ -2,6 +2,7 @@
 using DPDShipmentService4_4;
 using Microsoft.Extensions.Caching.Memory;
 using RestSharp;
+using ShippingProAPICollection._Provider.DHL;
 using ShippingProAPICollection.Models;
 using ShippingProAPICollection.Models.Entities;
 using ShippingProAPICollection.Models.Error;
@@ -71,7 +72,8 @@ namespace ShippingProAPICollection.Provider.DPD
                             ParcelNumber = i.parcelLabelNumber,
                             CancelId = i.parcelLabelNumber,
                             Label = ByteUtils.MergePDFByteToOnePDF(i.output.Select(x => x.content).ToList()),
-                            LabelType = DPDRequest.ServiceType == DPDServiceType.SHOPRETURN ? ShippingLabelType.SHOPRETURN : ShippingLabelType.NORMAL,
+                            LabelType = DPDRequest.ServiceType == DPDServiceType.SHOPRETURN ? ShippingLabelType.SHOPRETURN : (request.IsExpress() ? ShippingLabelType.EXPRESS : ShippingLabelType.NORMAL),
+                            Weight = request.GetPackageWeight(),
                         });
                     }
                 }
@@ -178,8 +180,7 @@ namespace ShippingProAPICollection.Provider.DPD
 
             List<parcel> parcels = new List<parcel>();
 
-            double packageWeight = request.Weight / request.LabelCount;
-            packageWeight = Math.Round(packageWeight, 2);
+            float packageWeight = request.GetPackageWeight();
 
             int grammfactor = 100;
             int packageWeightGramm = ((int)packageWeight * grammfactor);

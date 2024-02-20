@@ -19,6 +19,7 @@ namespace ShippingProAPICollection.Provider.DHL
         }
 
         public override string ProviderType { get; } = ShippingProviderType.DHL.ToString();
+        public override float MaxPackageWeight { get; } = 31.5f;
 
         /// <summary>
         /// Mit Email Notification an den Kunden -> E-Mail muss dafür angegeben werden |
@@ -74,15 +75,14 @@ namespace ShippingProAPICollection.Provider.DHL
         [MaxLength(60, ErrorMessage = "Note1 darf maximal 60 Zeichen lang sein.")]
         public string? Note1 { get; set; }
 
+        internal override bool IsExpress()
+        {
+            return ServiceProduct == DHLProductType.V01PRIO;
+        }
 
         public override void Validate()
         {
             base.Validate();
-
-            float maxPackageWeight = 31.5f;
-            if (Weight <= 0) throw new ShipmentRequestWeightException(1, maxPackageWeight, 0);
-            if (LabelCount == 1 && Weight > 31.5f) throw new ShipmentRequestWeightException(1, maxPackageWeight, Weight);
-            if (Weight / LabelCount > 31.5f) throw new ShipmentRequestWeightException(1, maxPackageWeight, Weight / LabelCount);
 
             if (ServiceType == DHLServiceType.DEPOSIT && !PlaceOfDeposit.RangeLenghtValidation(1, 60)) throw new ShipmentRequestNoValidStringLengthException("PlaceOfDeposit", 1, 60);
             if (ServiceType == DHLServiceType.LOCKER && Locker == null) throw new ShipmentRequestNotNullException("Locker");

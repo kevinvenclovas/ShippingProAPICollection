@@ -15,6 +15,7 @@ namespace ShippingProAPICollection.Provider
     public abstract class RequestShipmentBase
     {
         public abstract string ProviderType { get; }
+        public abstract float MaxPackageWeight { get; }
 
         public RequestShipmentBase(string contractID)
         {
@@ -150,6 +151,30 @@ namespace ShippingProAPICollection.Provider
         {
             if (LabelCount <= 0) throw new ShipmentRequestLabelCountException(LabelCount);
             if (Country.Length != 2) throw new ShipmentRequestNoValidStringLengthException("Country", 2, 2);
+
+            if (Weight <= 0) throw new ShipmentRequestWeightException(1, MaxPackageWeight, 0);
+            if (LabelCount == 1 && Weight > MaxPackageWeight) throw new ShipmentRequestWeightException(1, MaxPackageWeight, Weight);
+            if (Weight / LabelCount > MaxPackageWeight) throw new ShipmentRequestWeightException(1, MaxPackageWeight, Weight / LabelCount);
+        }
+
+        /// <summary>
+        /// Get the single package weight of the request
+        /// </summary>
+        /// <returns></returns>
+        public virtual float GetPackageWeight()
+        {
+            float packageWeight = Weight / LabelCount;
+            return (float)Math.Round(packageWeight, 2);
+        }
+
+        /// <summary>
+        /// Is the booked service express shipping variant
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        internal virtual bool IsExpress()
+        {
+            throw new NotImplementedException();
         }
     }
 }

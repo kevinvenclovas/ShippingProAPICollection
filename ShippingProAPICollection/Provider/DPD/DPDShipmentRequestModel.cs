@@ -3,6 +3,7 @@ using ShippingProAPICollection.Models.Utils;
 using ShippingProAPICollection.Models.Entities;
 using ShippingProAPICollection.Models.Error;
 using ShippingProAPICollection.Provider.DPD.Entities;
+using ShippingProAPICollection.Provider.GLS.Entities;
 
 namespace ShippingProAPICollection.Provider.DPD
 {
@@ -19,6 +20,7 @@ namespace ShippingProAPICollection.Provider.DPD
         }
 
         public override string ProviderType { get; } = ShippingProviderType.DPD.ToString();
+        public override float MaxPackageWeight { get; } = 31.5f;
 
         /// <summary>
         /// Mit Email Notification an den Kunden -> Email muss dafür angegeben werden |
@@ -57,12 +59,17 @@ namespace ShippingProAPICollection.Provider.DPD
         /// </summary>
         public bool DeliveryAdressIsCommercialCustomer { get; set; }
 
+
+        internal override bool IsExpress()
+        {
+            return ServiceProduct == DPDProductType.IE2;
+        }
+
         public override void Validate()
         {
-            float maxPackageWeight = 31.5f;
-            if (Weight <= 0) throw new ShipmentRequestWeightException(1, maxPackageWeight, 0);
-            if (LabelCount == 1 && Weight > 31.5f) throw new ShipmentRequestWeightException(1, maxPackageWeight, Weight);
-            if (Weight / LabelCount > 31.5f) throw new ShipmentRequestWeightException(1, maxPackageWeight, Weight / LabelCount);
+            if (Weight <= 0) throw new ShipmentRequestWeightException(1, MaxPackageWeight, 0);
+            if (LabelCount == 1 && Weight > MaxPackageWeight) throw new ShipmentRequestWeightException(1, MaxPackageWeight, Weight);
+            if (Weight / LabelCount > MaxPackageWeight) throw new ShipmentRequestWeightException(1, MaxPackageWeight, Weight / LabelCount);
 
             if (!Adressline1.RangeLenghtValidation(1, 35)) throw new ShipmentRequestNoValidStringLengthException("Adressline1", 1, 35);
             if (!Adressline2.RangeLenghtValidation(0, 35)) throw new ShipmentRequestNoValidStringLengthException("Adressline2", null, 35);

@@ -3,6 +3,7 @@ using ShippingProAPICollection.Models.Utils;
 using ShippingProAPICollection.Models.Entities;
 using ShippingProAPICollection.Models.Error;
 using ShippingProAPICollection.Provider.GLS.Entities;
+using ShippingProAPICollection.Provider.DHL.Entities;
 
 namespace ShippingProAPICollection.Provider.GLS
 {
@@ -19,6 +20,7 @@ namespace ShippingProAPICollection.Provider.GLS
         }
 
         public override string ProviderType { get; } = ShippingProviderType.GLS.ToString();
+        public override float MaxPackageWeight { get; } = 31.5f;
 
         /// <summary>
         /// Mit Email Notification an den Kunden -> Email muss dafür angegeben werden |
@@ -71,14 +73,14 @@ namespace ShippingProAPICollection.Provider.GLS
         /// <example>RE 123456;K.Nr 5897143</example>
         public string? ShipmentReference { get; set; }
 
+        internal override bool IsExpress()
+        {
+            return ServiceProduct == GLSProductType.EXPRESS;
+        }
+
         public override void Validate()
         {
             base.Validate();
-
-            float maxPackageWeight = 31.5f;
-            if (Weight <= 0) throw new ShipmentRequestWeightException(1, maxPackageWeight, 0);
-            if (LabelCount == 1 && Weight > 31.5f) throw new ShipmentRequestWeightException(1, maxPackageWeight, Weight);
-            if (Weight / LabelCount > 31.5f) throw new ShipmentRequestWeightException(1, maxPackageWeight, Weight / LabelCount);
 
             // Check base parameters
             if (!Adressline1.RangeLenghtValidation(1, 40)) throw new ShipmentRequestNoValidStringLengthException("Adressline1", 1, 40);
