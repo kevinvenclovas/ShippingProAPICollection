@@ -291,11 +291,12 @@ namespace ShippingProAPICollection.Provider.DHL
                     consignee.AdditionalProperties.Add("name1", request.Adressline1);
                     consignee.AdditionalProperties.Add("name2", request.Adressline2);
                     consignee.AdditionalProperties.Add("name3", request.Adressline3);
-                    consignee.AdditionalProperties.Add("dispatchingInformation", request.Note1 ?? null);
                     consignee.AdditionalProperties.Add("addressStreet", request.Street);
-                    consignee.AdditionalProperties.Add("addressHouse", request.StreetNumber);
                     consignee.AdditionalProperties.Add("country", ThreeLetterCountryCodeHelper.GetThreeLetterCountryCode(request.Country));
-                    consignee.AdditionalProperties.Add("phone", request.Phone);
+
+                    if (!String.IsNullOrEmpty(request.Note1)) consignee.AdditionalProperties.Add("dispatchingInformation", request.Note1);
+                    if (!String.IsNullOrEmpty(request.StreetNumber)) consignee.AdditionalProperties.Add("addressHouse", request.StreetNumber);
+                    if (!String.IsNullOrEmpty(request.Phone)) consignee.AdditionalProperties.Add("phone", request.Phone);
                     break;
                 case DHLServiceType.LOCKER:
                     consignee.AdditionalProperties.Add("name", request.Adressline1);
