@@ -35,7 +35,7 @@ namespace ShippingProAPICollection
                 case DPDSettings providerSettings:
                     return new DPDShipmentService(accountSettings, providerSettings, _cache);
                 case CustomProviderSettings providerSettings:
-                    return providerSettings.CreateProviderService(accountSettings, providerSettings, _cache);
+                    return providerSettings.CreateProviderService(accountSettings, _cache);
                 default:  throw new Exception("provider not available");
             }
         }

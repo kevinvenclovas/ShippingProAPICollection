@@ -5,6 +5,6 @@ namespace ShippingProAPICollection.Provider
 {
     public abstract class CustomProviderSettings : ProviderSettings
     {
-        public abstract IShippingProviderService CreateProviderService(ShippingProAPIAccountSettings accountSettings, ProviderSettings settings, IMemoryCache _cache);
+        public abstract IShippingProviderService CreateProviderService(ShippingProAPIAccountSettings accountSettings, IMemoryCache _cache);
     }
 }
