@@ -12,5 +12,6 @@ namespace ShippingProAPICollection.Models
         public required string CountryIsoA2Code { get; set; }
         public required string ContactName { get; set; }
         public required string Email { get; set; }
+        public required string Phone { get; set; }
     }
 }
