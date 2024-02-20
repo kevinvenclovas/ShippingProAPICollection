@@ -3,7 +3,6 @@ using ShippingProAPICollection.Models.Utils;
 using ShippingProAPICollection.Models.Entities;
 using ShippingProAPICollection.Models.Error;
 using ShippingProAPICollection.Provider.DPD.Entities;
-using ShippingProAPICollection.Provider.GLS.Entities;
 
 namespace ShippingProAPICollection.Provider.DPD
 {
@@ -45,13 +44,6 @@ namespace ShippingProAPICollection.Provider.DPD
         [Required]
         public required DPDServiceType ServiceType { get; set; }
 
-        /// <summary>
-        /// Notiz 1 auf dem Label |
-        /// Note 1 printed on the label
-        /// </summary>
-        /// <example>Ware auf den Briefkasten</example>
-        [MaxLength(70, ErrorMessage = "Note1 darf maximal 60 Zeichen lang sein.")]
-        public string? Note1 { get; set; }
 
         /// <summary>
         /// Ist die Lieferadresse ein Bussiness Kunde
@@ -71,6 +63,7 @@ namespace ShippingProAPICollection.Provider.DPD
             if (LabelCount == 1 && Weight > MaxPackageWeight) throw new ShipmentRequestWeightException(1, MaxPackageWeight, Weight);
             if (Weight / LabelCount > MaxPackageWeight) throw new ShipmentRequestWeightException(1, MaxPackageWeight, Weight / LabelCount);
 
+            if (!Note1.RangeLenghtValidation(0, 70)) throw new ShipmentRequestNoValidStringLengthException("Note1", null, 70);
             if (!Adressline1.RangeLenghtValidation(1, 35)) throw new ShipmentRequestNoValidStringLengthException("Adressline1", 1, 35);
             if (!Adressline2.RangeLenghtValidation(0, 35)) throw new ShipmentRequestNoValidStringLengthException("Adressline2", null, 35);
             if (!Adressline3.RangeLenghtValidation(0, 35)) throw new ShipmentRequestNoValidStringLengthException("Adressline3", null, 35);

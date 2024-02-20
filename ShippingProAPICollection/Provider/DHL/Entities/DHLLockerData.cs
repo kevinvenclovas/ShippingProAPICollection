@@ -2,7 +2,7 @@
 
 namespace ShippingProAPICollection.Provider.DHL.Entities
 {
-    public class DHLPackingStationData
+    public class DHLLockerData
     {
         /// <summary>
         /// Postkundennummer |

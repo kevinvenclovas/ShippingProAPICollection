@@ -147,6 +147,14 @@ namespace ShippingProAPICollection.Provider
         /// <example>10,20,30</example>
         public int? IncotermCode { get; set; }
 
+        /// <summary>
+        /// Notiz 1 auf dem Label |
+        /// Note 1 printed on the label
+        /// </summary>
+        /// <example>Ware auf den Briefkasten</example>
+        public string? Note1 { get; set; }
+
+
         public virtual void Validate()
         {
             if (LabelCount <= 0) throw new ShipmentRequestLabelCountException(LabelCount);

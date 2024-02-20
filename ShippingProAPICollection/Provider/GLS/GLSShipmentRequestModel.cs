@@ -3,7 +3,6 @@ using ShippingProAPICollection.Models.Utils;
 using ShippingProAPICollection.Models.Entities;
 using ShippingProAPICollection.Models.Error;
 using ShippingProAPICollection.Provider.GLS.Entities;
-using ShippingProAPICollection.Provider.DHL.Entities;
 
 namespace ShippingProAPICollection.Provider.GLS
 {
@@ -51,13 +50,6 @@ namespace ShippingProAPICollection.Provider.GLS
         /// </summary>
         /// <example>Briefkasten</example>
         public string? PlaceOfDeposit { get; set; }
-
-        /// <summary>
-        /// Notiz 1 auf dem Label |
-        /// Note 1 printed on the label
-        /// </summary>
-        /// <example>Ware auf den Briefkasten</example>
-        public string? Note1 { get; set; }
 
         /// <summary>
         /// Notiz 2 auf dem Label |
