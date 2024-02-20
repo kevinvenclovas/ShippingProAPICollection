@@ -38,7 +38,7 @@ namespace ShippingProAPICollection.Models
         /// Weitere Werte über das Versandlabel
         /// Additional values about the shipping label
         /// </summary>
-        public Dictionary<string, object> AdditionalValues { get; set; } = new Dictionary<string, object>();
+        public Dictionary<string, object>? AdditionalValues { get; set; }
 
     }
 }

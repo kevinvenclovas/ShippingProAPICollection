@@ -31,7 +31,8 @@ namespace ShippingProAPICollection.NUnitTests
                 CountryIsoA2Code = "DE",
                 City = "Springfield",
                 Email = "homer@duffbeer.de",
-                PostCode = "73479"
+                PostCode = "73479",
+                Phone = "123456789"
             };
 
             ShippingProAPICollectionSettings providerSettings = new ShippingProAPICollectionSettings(accountSettings);
