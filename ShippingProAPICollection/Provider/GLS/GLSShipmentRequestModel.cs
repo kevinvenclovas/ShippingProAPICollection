@@ -58,13 +58,6 @@ namespace ShippingProAPICollection.Provider.GLS
         /// <example>Danke für Ihre Bestellung!</example>
         public string? Note2 { get; set; }
 
-        /// <summary>
-        /// Referencenummer für das Paket |
-        /// Some reference numbers printed on the label
-        /// </summary>
-        /// <example>RE 123456;K.Nr 5897143</example>
-        public string? ShipmentReference { get; set; }
-
         internal override bool IsExpress()
         {
             return ServiceProduct == GLSProductType.EXPRESS;
@@ -86,7 +79,6 @@ namespace ShippingProAPICollection.Provider.GLS
             if (!Note1.RangeLenghtValidation(0, 60)) throw new ShipmentRequestNoValidStringLengthException("Note1", null, 60);
             if (!Note2.RangeLenghtValidation(0, 60)) throw new ShipmentRequestNoValidStringLengthException("Note2", null, 60);
             if (ServiceType == GLSServiceType.DEPOSIT && !PlaceOfDeposit.RangeLenghtValidation(1, 60)) throw new ShipmentRequestNoValidStringLengthException("PlaceOfDeposit", 1, 60);
-            if (!ShipmentReference.MaxLenghtValidation(80)) throw new ShipmentRequestNoValidStringLengthException("ShipmentReference", null, 25);
         }
 
     }

@@ -298,6 +298,17 @@ namespace ShippingProAPICollection.Provider.GLS
 
             List<ShipmentUnit> units = new List<ShipmentUnit>();
 
+            List<string> shipmentUnitReference = new List<string>();
+            if (!String.IsNullOrEmpty(request.InvoiceReference))
+            {
+                shipmentUnitReference.Add("INr: " + request.InvoiceReference);
+            }
+
+            if (!String.IsNullOrEmpty(request.CustomerReference))
+            {
+                shipmentUnitReference.Add("KNr: " + request.CustomerReference);
+            }
+
             // Create shipment units
             for (int i = 0; i < request.LabelCount; i++)
             {
@@ -306,7 +317,7 @@ namespace ShippingProAPICollection.Provider.GLS
                     Weight = Convert.ToDecimal(packageWeight),
                     Note1 = request.Note1 ?? "",
                     Note2 = request.Note2 ?? "",
-                    ShipmentUnitReference = string.IsNullOrEmpty(request.ShipmentReference) ? null : new List<string>() { request.ShipmentReference }.ToArray(),
+                    ShipmentUnitReference = shipmentUnitReference.ToArray(),
                 });
             }
 
