@@ -34,5 +34,11 @@ namespace ShippingProAPICollection.Models
         /// </summary>
         public required ShippingLabelType LabelType { get; set; }
 
+        /// <summary>
+        /// Weitere Werte über das Versandlabel
+        /// Additional values about the shipping label
+        /// </summary>
+        public Dictionary<string, object> AdditionalValues { get; set; } = new Dictionary<string, object>();
+
     }
 }
