@@ -114,7 +114,6 @@ namespace ShippingProAPICollection.Provider.DHL
             if (!CustomerReference.MaxLenghtValidation(35)) throw new ShipmentRequestNoValidStringLengthException("CustomerReference", null, 35);
             if (!GetRefString().MaxLenghtValidation(35)) throw new ShipmentRequestNoValidStringLengthException("InvoiceReference + CustomerReference", null, 35);
             if (WithEmailNotification && !EMail.RangeLenghtValidation(1, 80)) throw new ShipmentRequestNoValidStringLengthException("EMail", null, 80);
-            if (!String.IsNullOrEmpty(InvoiceReference) && !InvoiceReference.RangeLenghtValidation(8, 35)) throw new ShipmentRequestNoValidStringLengthException("InvoiceReference", 8, 35);
         }
     }
 }
