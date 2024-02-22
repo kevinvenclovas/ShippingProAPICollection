@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using ShippingProAPICollection.Models.Entities;
 using ShippingProAPICollection.Models.Error;
 using ShippingProAPICollection.Provider.DHL.Entities;
+using Org.BouncyCastle.Asn1.Ocsp;
 
 namespace ShippingProAPICollection.Provider.DHL
 {
@@ -72,6 +73,28 @@ namespace ShippingProAPICollection.Provider.DHL
             return ServiceProduct == DHLProductType.V01PRIO;
         }
 
+        /// <summary>
+        /// Referenc string des Versandlabels auf Rechnungsreferenze und Kundenreferenze bauen
+        /// Build shippinglabel ref number from invoice reference and customer reference 
+        /// </summary>
+        /// <returns></returns>
+        internal string? GetRefString()
+        {
+            if (!String.IsNullOrEmpty(InvoiceReference) && String.IsNullOrEmpty(CustomerReference))
+            {
+                return InvoiceReference.FillString(8, '-');
+            }
+            else if (String.IsNullOrEmpty(InvoiceReference) && !String.IsNullOrEmpty(CustomerReference))
+            {
+                return CustomerReference.FillString(8, '-');
+            }
+            else if (!String.IsNullOrEmpty(InvoiceReference) && !String.IsNullOrEmpty(CustomerReference))
+            {
+                return (InvoiceReference + " | " + CustomerReference).FillString(8, '-');
+            }
+            return null;
+        }
+
         public override void Validate()
         {
             base.Validate();
@@ -89,6 +112,7 @@ namespace ShippingProAPICollection.Provider.DHL
             if (!City.RangeLenghtValidation(1, 40)) throw new ShipmentRequestNoValidStringLengthException("City", 1, 40);
             if (!InvoiceReference.MaxLenghtValidation(35)) throw new ShipmentRequestNoValidStringLengthException("InvoiceReference", null, 35);
             if (!CustomerReference.MaxLenghtValidation(35)) throw new ShipmentRequestNoValidStringLengthException("CustomerReference", null, 35);
+            if (!GetRefString().MaxLenghtValidation(35)) throw new ShipmentRequestNoValidStringLengthException("InvoiceReference + CustomerReference", null, 35);
             if (WithEmailNotification && !EMail.RangeLenghtValidation(1, 80)) throw new ShipmentRequestNoValidStringLengthException("EMail", null, 80);
             if (!String.IsNullOrEmpty(InvoiceReference) && !InvoiceReference.RangeLenghtValidation(8, 35)) throw new ShipmentRequestNoValidStringLengthException("InvoiceReference", 8, 35);
         }

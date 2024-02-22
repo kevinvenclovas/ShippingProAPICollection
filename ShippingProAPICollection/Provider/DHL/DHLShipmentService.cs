@@ -245,7 +245,7 @@ namespace ShippingProAPICollection.Provider.DHL
                 shipment.ShipDate = DateTimeOffset.Now;
                 shipment.Shipper = shipper;
                 shipment.Consignee = consignee;
-                shipment.RefNo = request.InvoiceReference ?? null;
+                shipment.RefNo = request.GetRefString();
 
                 shipment.Details = new ShipmentDetails()
                 {

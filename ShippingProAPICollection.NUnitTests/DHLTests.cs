@@ -27,6 +27,7 @@ namespace ShippingProAPICollection.NUnitTests
                 Street = "Maxstraﬂe 10",
                 PostCode = "73479",
                 InvoiceReference = "RE-123456",
+                CustomerReference = "RE-123456",
                 Phone = "0123456789",
                 ServiceType = DHLServiceType.NONE,
             };

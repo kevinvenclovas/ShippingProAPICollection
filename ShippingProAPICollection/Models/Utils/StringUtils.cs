@@ -32,5 +32,20 @@
             if (value == null) return true;
             return value.Length <= maxLength;
         }
+
+        /// <summary>
+        /// FIll the string to a specified length
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        internal static string FillString(this string input, int length, char fillChar)
+        {
+            if (input.Length >= length)
+                return input;
+
+            int fillCount = length - input.Length;
+            string filledString = input.PadRight(input.Length + fillCount, fillChar);
+            return filledString;
+        }
     }
 }
