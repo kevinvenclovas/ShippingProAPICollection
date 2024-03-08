@@ -318,6 +318,7 @@ namespace ShippingProAPICollection.Provider.GLS
                     Note1 = request.Note1 ?? "",
                     Note2 = request.Note2 ?? "",
                     ShipmentUnitReference = shipmentUnitReference.ToArray(),
+                    ParcelNumber = request.PartnerParcelNumber
                 });
             }
 

@@ -39,10 +39,10 @@ namespace ShippingProAPICollection.NUnitTests
 
             GLSSettings GLSSettings = new GLSSettings()
             {
-                ApiDomain = "test01",
-                ContactID = "276a45fkqM",
-                Password = "lXZBIF7uRccyK7Ohr64d",
-                Username = "276a45fkqM"
+                ApiDomain = "de03",
+                ContactID = "276a45fJZO",
+                Password = "iwVD83yF5hRcSoqK",
+                Username = "2760178611"
             };
 
             providerSettings.AddSettings("GLS", GLSSettings);

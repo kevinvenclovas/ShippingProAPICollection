@@ -58,6 +58,13 @@ namespace ShippingProAPICollection.Provider.GLS
         /// <example>Danke für Ihre Bestellung!</example>
         public string? Note2 { get; set; }
 
+        /// <summary>
+        /// Partner Referencenummer, z.B Amazon Bestellnummer
+        /// Refrerenc number of the partner system like Amazon order id
+        /// </summary>
+        /// <example>305-5872079-2948312</example>
+        public string? PartnerParcelNumber { get; set; }
+        
         internal override bool IsExpress()
         {
             return ServiceProduct == GLSProductType.EXPRESS;
@@ -74,7 +81,8 @@ namespace ShippingProAPICollection.Provider.GLS
             if (!InvoiceReference.MaxLenghtValidation(80)) throw new ShipmentRequestNoValidStringLengthException("InvoiceReference", null, 80);
             if (!CustomerReference.MaxLenghtValidation(80)) throw new ShipmentRequestNoValidStringLengthException("CustomerReference", null, 80);
             if (!Street.RangeLenghtValidation(3, 40)) throw new ShipmentRequestNoValidStringLengthException("Street", 3, 40);
-
+            if (!PartnerParcelNumber.RangeLenghtValidation(0, 50)) throw new ShipmentRequestNoValidStringLengthException("PartnerParcelNumber", null, 50);
+            
             if (WithEmailNotification && !EMail.MaxLenghtValidation(40)) throw new ShipmentRequestNoValidStringLengthException("EMail", null, 40);
             if (!Note1.RangeLenghtValidation(0, 60)) throw new ShipmentRequestNoValidStringLengthException("Note1", null, 60);
             if (!Note2.RangeLenghtValidation(0, 60)) throw new ShipmentRequestNoValidStringLengthException("Note2", null, 60);
