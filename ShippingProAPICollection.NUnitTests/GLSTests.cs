@@ -31,7 +31,7 @@ namespace ShippingProAPICollection.NUnitTests
                 ServiceType = GLSServiceType.NONE,
                 AmazonOrderId = "305-5872079-2948312",
                 WithEmailNotification = true,
-                EMail = "k.venclovas@alfa-direkt.de"
+                EMail = "TEST@marketplace.amazon.de"
             };
             request.Validate();
 
