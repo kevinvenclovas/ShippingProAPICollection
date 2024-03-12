@@ -29,7 +29,7 @@ namespace ShippingProAPICollection.NUnitTests
                 InvoiceReference = "RE-123456",
                 Phone = "0123456789",
                 ServiceType = GLSServiceType.NONE,
-                PartnerParcelNumber = "305-5872079-2948312",
+                AmazonOrderId = "305-5872079-2948312",
                 WithEmailNotification = true,
                 EMail = "k.venclovas@alfa-direkt.de"
             };
