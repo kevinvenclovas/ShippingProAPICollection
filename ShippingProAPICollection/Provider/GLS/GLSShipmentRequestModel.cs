@@ -59,11 +59,11 @@ namespace ShippingProAPICollection.Provider.GLS
         public string? Note2 { get; set; }
 
         /// <summary>
-        /// Partner Referencenummer, z.B Amazon Bestellnummer
-        /// Refrerenc number of the partner system like Amazon order id
+        /// AmazonOrderId, z.B Amazon Bestellnummer
+        /// GLS need the amazon order id to handle amazon prime orders
         /// </summary>
         /// <example>305-5872079-2948312</example>
-        public string? PartnerParcelNumber { get; set; }
+        public string? AmazonOrderId { get; set; }
         
         internal override bool IsExpress()
         {
@@ -81,7 +81,7 @@ namespace ShippingProAPICollection.Provider.GLS
             if (!InvoiceReference.MaxLenghtValidation(80)) throw new ShipmentRequestNoValidStringLengthException("InvoiceReference", null, 80);
             if (!CustomerReference.MaxLenghtValidation(80)) throw new ShipmentRequestNoValidStringLengthException("CustomerReference", null, 80);
             if (!Street.RangeLenghtValidation(3, 40)) throw new ShipmentRequestNoValidStringLengthException("Street", 3, 40);
-            if (!PartnerParcelNumber.RangeLenghtValidation(0, 50)) throw new ShipmentRequestNoValidStringLengthException("PartnerParcelNumber", null, 50);
+            if (!AmazonOrderId.MaxLenghtValidation(80)) throw new ShipmentRequestNoValidStringLengthException("AmazonOrderId", null, 80);
             
             if (WithEmailNotification && !EMail.MaxLenghtValidation(40)) throw new ShipmentRequestNoValidStringLengthException("EMail", null, 40);
             if (!Note1.RangeLenghtValidation(0, 60)) throw new ShipmentRequestNoValidStringLengthException("Note1", null, 60);

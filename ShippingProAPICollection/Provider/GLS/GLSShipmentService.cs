@@ -299,6 +299,12 @@ namespace ShippingProAPICollection.Provider.GLS
             List<ShipmentUnit> units = new List<ShipmentUnit>();
 
             List<string> shipmentUnitReference = new List<string>();
+
+            if (!String.IsNullOrEmpty(request.AmazonOrderId))
+            {
+                shipmentUnitReference.Add(request.AmazonOrderId);
+            }
+
             if (!String.IsNullOrEmpty(request.InvoiceReference))
             {
                 shipmentUnitReference.Add("INr: " + request.InvoiceReference);
@@ -318,7 +324,6 @@ namespace ShippingProAPICollection.Provider.GLS
                     Note1 = request.Note1 ?? "",
                     Note2 = request.Note2 ?? "",
                     ShipmentUnitReference = shipmentUnitReference.ToArray(),
-                    ParcelNumber = request.PartnerParcelNumber
                 });
             }
 
@@ -342,7 +347,7 @@ namespace ShippingProAPICollection.Provider.GLS
                         City = request.City,
                         Street = request.Street,
                         StreetNumber = request.StreetNumber ?? "-",
-                        EMail = request.WithEmailNotification ? request.EMail : null,
+                        EMail = (request.WithEmailNotification || !String.IsNullOrEmpty(request.AmazonOrderId))  ? request.EMail : null,
                         MobilePhoneNumber = request.Phone,
                     }
                 },
