@@ -19,7 +19,7 @@ namespace ShippingProAPICollection.NUnitTests
             var request = new GLSShipmentRequestModel("GLS")
             {
                 ServiceProduct = GLSProductType.PARCEL,
-                Weight = 0.5f,
+                Weight = 1f,
                 LabelCount = 1,
                 Adressline1 = "Max Mustermann",
                 Country = "DE",

@@ -172,7 +172,8 @@ namespace ShippingProAPICollection.Provider
         public virtual float GetPackageWeight()
         {
             float packageWeight = Weight / LabelCount;
-            return (float)Math.Round(packageWeight, 2);
+            var result = (float)Math.Round(packageWeight, 2);
+            return result < 1 ? 1 : result;
         }
 
         /// <summary>
