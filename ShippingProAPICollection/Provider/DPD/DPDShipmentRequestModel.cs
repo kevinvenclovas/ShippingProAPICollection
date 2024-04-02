@@ -59,9 +59,7 @@ namespace ShippingProAPICollection.Provider.DPD
 
         public override void Validate()
         {
-            if (Weight <= 0) throw new ShipmentRequestWeightException(1, MaxPackageWeight, 0);
-            if (LabelCount == 1 && Weight > MaxPackageWeight) throw new ShipmentRequestWeightException(1, MaxPackageWeight, Weight);
-            if (Weight / LabelCount > MaxPackageWeight) throw new ShipmentRequestWeightException(1, MaxPackageWeight, Weight / LabelCount);
+            base.Validate();
 
             if (!Note1.RangeLenghtValidation(0, 70)) throw new ShipmentRequestNoValidStringLengthException("Note1", null, 70);
             if (!Adressline1.RangeLenghtValidation(1, 35)) throw new ShipmentRequestNoValidStringLengthException("Adressline1", 1, 35);
