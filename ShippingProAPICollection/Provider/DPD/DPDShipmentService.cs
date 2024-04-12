@@ -75,7 +75,7 @@ namespace ShippingProAPICollection.Provider.DPD
                             Label = ByteUtils.MergePDFByteToOnePDF(i.output.Select(x => x.content).ToList()),
                             LabelType = DPDRequest.ServiceType == DPDServiceType.SHOPRETURN ? ShippingLabelType.SHOPRETURN : (request.IsExpress() ? ShippingLabelType.EXPRESS : ShippingLabelType.NORMAL),
                             Weight = request.GetPackageWeight(),
-                            AdditionalValues = new Dictionary<string, object> { ["DPD_MPSID"] = shipment.mpsId }
+                            AdditionalValues = new Dictionary<string, object> { ["REQUEST_ID"] = shipment.mpsId }
                         });
                     }
                 }
