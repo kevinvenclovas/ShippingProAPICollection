@@ -1,0 +1,38 @@
+name: Docker
+
+on:
+  push:
+    tags:
+    - 'v*.*.*'
+    - 'v*.*.*-rc*'
+    - '[0-9]+.[0-9]+.[0-9]+'
+    - '[0-9]+.[0-9]+.[0-9]+-rc[0-9]+'
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
+    - name: Unit Testing
+      run: dotnet test --no-restore
+
+    - name: Login to Docker 
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+        
+    - name: Build the Docker image
+      run: docker build -t shippproapicollection:latest -f ShippingProAPICollection.RestApi/Dockerfile . 
+      
+    - name: Docker tag
+      run: docker tag shippproapicollection:latest ${{ secrets.DOCKERHUB_USERNAME }}/shippproapicollection:latest
+      
+    - name: Docker Push
+      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/shippproapicollection:latest
