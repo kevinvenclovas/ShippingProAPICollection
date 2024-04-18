@@ -14,8 +14,7 @@ env:
     PROJECT_NUNIT : 'ShippingProAPICollection.NUnitTests/ShippingProAPICollection.NUnitTests.csproj'
 jobs:
 
-  build:
-
+  Build-Publish:
     runs-on: ubuntu-latest
 
     steps:
