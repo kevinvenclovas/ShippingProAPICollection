@@ -1,0 +1,165 @@
+# For more info on HTTP files go to https://aka.ms/vs/httpfile
+@rootURL = https://localhost:32780/api/shipment
+
+
+// Clear cache
+DELETE {{rootURL}}/cache
+
+###
+
+// Update account settings
+PUT {{rootURL}}/settings/account
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "Homer Simpson",
+  "street": "Simpsonstreet 1",
+  "postCode": "73479",
+  "city": "Springfield",
+  "countryIsoA2Code": "DE",
+  "contactName": "Maggie Simpson",
+  "email": "homer@duffbeer.de",
+  "phone": "123456789"
+}
+
+###
+
+// Add GLS provider
+PUT {{rootURL}}/settings/provider
+Accept: application/json
+Content-Type: application/json
+
+{
+  "contractID": "GLS",
+  "shippingProviderType": "GLS",
+  "apiDomain": "test01",
+  "username": "276a45fkqM",
+  "password": "lXZBIF7uRccyK7Ohr64d",
+  "contactID": "276a45fkqM",
+}
+
+###
+
+// Add second GLS provider
+PUT {{rootURL}}/settings/provider
+Accept: application/json
+Content-Type: application/json
+
+{
+  "contractID": "GLS2",
+  "shippingProviderType": "GLS",
+  "apiDomain": "test01",
+  "username": "276a45fkqM",
+  "password": "lXZBIF7uRccyK7Ohr64d",
+  "contactID": "276a45fkqM",
+}
+
+###
+
+// Add DHL provider
+PUT {{rootURL}}/settings/provider
+Accept: application/json
+Content-Type: application/json
+
+{
+  "contractID": "DHL",
+  "shippingProviderType": "DHL",
+  "apiDomain": "sandbox",
+  "nationalAccountNumber": "33333333330102",
+  "internationalAccountNumber": "33333333335301",
+  "username": "sandy_sandbox",
+  "password": "pass",
+  "labelPrintFormat": "910-300-410",
+  "dhlshipmentProfile": "STANDARD_GRUPPENPROFIL",
+  "apikey": '{{DHLAPIKey}}',
+  "apilanguage": "de-DE",
+}
+
+###
+
+// Add DPD provider
+PUT {{rootURL}}/settings/provider
+Accept: application/json
+Content-Type: application/json
+
+{
+  "contractID": "DPD",
+  "shippingProviderType": "DPD",
+  "apiDomain": "ws-stage",
+  "apilanguage": "de_DE",
+  "depotNumber": "0191",
+  "username": "sandboxdpd",
+  "password": "xMmshh1",
+}
+
+###
+
+// Delete provider settings
+DELETE {{rootURL}}/settings/provider/GLS2
+Accept: application/json
+
+###
+
+// Get settings
+GET {{rootURL}}/settings
+Accept: application/json
+
+###
+
+// Validate shipment
+POST {{rootURL}}/label/validate
+Accept: application/json
+Content-Type: application/json
+
+{
+  "providerType": "GLS",
+  "serviceProduct": "PARCEL",
+  "weight": 1.0,
+  "labelCount": 1,
+  "adressline1": "Max Mustermann",
+  "country": "DE",
+  "city": "Ellwangen",
+  "street": "Maxstraﬂe 10",
+  "postCode": "73479",
+  "invoiceReference": "RE-123456",
+  "phone": "0123456789",
+  "serviceType": "SHOPRETURN"
+}
+
+###
+
+// Create shipment
+POST {{rootURL}}/label
+Accept: application/json
+Content-Type: application/json
+
+{
+  "providerType": "GLS",
+  "contractID": "GLS",
+  "serviceProduct": "PARCEL",
+  "weight": 1.0,
+  "labelCount": 1,
+  "adressline1": "Max Mustermann",
+  "country": "DE",
+  "city": "Ellwangen",
+  "street": "Maxstraﬂe 10",
+  "postCode": "73479",
+  "invoiceReference": "RE-123456",
+  "phone": "0123456789",
+  "serviceType": "SHOPRETURN"
+}
+
+###
+
+// Cancel shipment
+DELETE {{rootURL}}/label
+Accept: application/json
+Content-Type: application/json
+
+{
+  "contractID": "GLS",
+  "cancelId": "ZTGKBN9I",
+}
+
+###

@@ -1,8 +1,5 @@
 ﻿using ShippingProAPICollection.Models;
 using ShippingProAPICollection.Provider;
-using ShippingProAPICollection.Provider.DHL;
-using ShippingProAPICollection.Provider.DPD;
-using ShippingProAPICollection.Provider.GLS;
 
 namespace ShippingProAPICollection
 {
@@ -23,33 +20,19 @@ namespace ShippingProAPICollection
 
         public void AddSettings(string contractID, ProviderSettings setting)
         {
-            if (providerSettings.ContainsKey(contractID)) throw new Exception($"{contractID} Provider already initalized");
-            setting.ContractID = contractID;
-            providerSettings.Add(contractID, setting);
-        }
-
-        public void AddSettings(ProviderSettings setting)
-        {
-            string contractID = null!;
-
-            switch (setting)
+            if (providerSettings.ContainsKey(contractID))
             {
-                case GLSSettings:
-                    contractID = "GLS";
-                    break;
-                case DHLSettings:
-                    contractID = "DHL";
-                    break;
-                case DPDSettings:
-                    contractID = "DPD";
-                    break;
-                default: throw new Exception("provider not available");
+                providerSettings.Remove(contractID);
             }
 
-            if (providerSettings.ContainsKey(contractID)) throw new Exception($"{contractID} Provider already initalized");
             setting.ContractID = contractID;
             providerSettings.Add(contractID, setting);
         }
 
+        public void OverrideSettings(ShippingProAPICollectionSettings newSettings)
+        {
+            AccountSettings = newSettings.AccountSettings;
+            providerSettings = newSettings.GetProviders();
+        }
     }
 }

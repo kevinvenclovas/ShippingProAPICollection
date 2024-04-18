@@ -9,6 +9,8 @@ Welcome to our C# library, designed to integrate multiple shipping service APIs 
 - [X] GLS GLS Germany ([API Documentation](https://GLS.gls-group.eu/webservices/3_2_9/doxygen/WS-REST-API/index.html))
 	- [X] Create Shipment
 	- [X] Cancel Shipment
+	- [X] Validate Label
+	- [X] Get Estimated Delivery Days
 
 - [X] DHL Parcel Germany (2.1.8) ([API Documentation] (https://developer.dhl.com/api-reference/parcel-de-shipping-post-parcel-germany-v2#downloads-section))
 	- [X] Create Shipment
@@ -31,9 +33,6 @@ To finalize the setup, register the ShippingProAPICollectionService as a scoped 
  
 	GLSSettings GLSSettings = new GLSSettings()
 	{   
-		 // Define your desired label result format
-		 LabelFormat = GLSLabelFormat.PDF,
-	
 		 // PLEASE GET IN TOUCH WITH YOUR GLS CONTACT TO GET THE FOLLOWING INFORMATIONS
 	 
 		 // Api domain is the XXXXXXX part of your GLS-GLS api url => https://GLS-wbm-XXXXXXX.gls-group.eu:443/backend/rs
@@ -103,3 +102,49 @@ At times, you may need to utilize multiple contract accounts from the same provi
      	 Password = "xMmshh1"
 	};
 	providerSettings.AddSettings("DPD2", dpdSettings);
+
+# Docker
+
+## Environment variables
+
+### Address 
+Name | Type | Required | Example
+--- | --- | ---| ---
+`ADDRESS_CITY` | String | * | Ellwangen
+`ADDRESS_CONTACT_NAME` | String | * | Kevin Mustermann
+`ADDRESS_COUNTRY_CODE_ISOA2` | String | * | DE
+`ADDRESS_EMAIL` | String | * | kevin.mustermann@gmail.com
+`ADDRESS_NAME` | String | * | Max GmbH
+`ADDRESS_POSTCODE` | String | * | 73479
+`ADDRESS_STREET` | String | * | Max-Straﬂe 15
+`ADDRESS_PHONE` | String | * | 0152012345678
+
+### DPD
+Name | Type | Required | Example
+--- | --- | ---| ---
+`DPD_API_DOMAIN` | String | * | ws-stage or ws
+`DPD_API_LANGUAGE` | String | * | de_DE or en_EN
+`DPD_DEPOT_NUMBER` | String | * | 0191
+`DPD_PASSWORD` | String | * | xMmshh1
+`DPD_USERNAME` | String | * | sandboxdpd
+
+### DHL
+Name | Type | Required | Example
+--- | --- | ---| ---
+`DHL_API_DOMAIN` | String | * | sandbox or eu
+`DHL_USERNAME` | String | * | sandy_sandbox
+`DPD_PASSWORD` | String | * | pass
+`DHL_INTERNATIONAL_ACCOUNT_NUMBER` | String | * | 33333333335301
+`DHL_NATIONAL_ACCOUNT_NUMBER` | String | * | 33333333330102
+`DHL_LABEL_FORMAT` | String | * | 910-300-410
+`DHL_API_KEY` | String | * | sandboxdpd
+`DHL_API_LANGUAGE` | String | * | de-DE
+
+
+### GLS
+Name | Type | Required | Example
+--- | --- | ---| ---
+`GLS_API_DOMAIN` | String | * | test01 or de03
+`GLS_CONTRACT_ID` | String | * | 276a5fkqM
+`GLS_PASSWORD` | String | * | lXZBIF7uccyK7Ohr64d
+`GLS_USERNAME` | String | * | 276a5fkqM

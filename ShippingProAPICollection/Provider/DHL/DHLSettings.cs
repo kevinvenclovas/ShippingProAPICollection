@@ -1,10 +1,10 @@
-﻿using ShippingProAPICollection.Provider;
-using ShippingProAPICollection._Provider.DHL;
+﻿using ShippingProAPICollection.Models.Entities;
 
 namespace ShippingProAPICollection.Provider.DHL
 {
     public class DHLSettings : ProviderSettings
     {
+        public override ShippingProviderType ShippingProviderType => ShippingProviderType.DHL;
         /// <summary>
         /// Api domain is the XXXXXXX part of the api url provides by DHL => https://api-XXXXXXX.dhl.com/parcel/de/shipping/v2/	
         /// </summary>

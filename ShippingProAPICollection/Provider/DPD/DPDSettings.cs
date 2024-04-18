@@ -1,7 +1,10 @@
-﻿namespace ShippingProAPICollection.Provider.DPD
+﻿using ShippingProAPICollection.Models.Entities;
+
+namespace ShippingProAPICollection.Provider.DPD
 {
     public class DPDSettings : ProviderSettings
     {
+        public override ShippingProviderType ShippingProviderType => ShippingProviderType.DPD;
         /// <summary>
         /// Api domain is the XXXXXXX part of your DPD api url => https://public-XXXXXXX.dpd.com/services/
         /// </summary>

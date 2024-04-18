@@ -19,14 +19,14 @@ namespace ShippingProAPICollection.Provider
 
         public RequestShipmentBase(string contractID)
         {
-            ContractID = contractID;
+            if(ContractID == null) ContractID = contractID;
         }
 
         /// <summary>
         /// Typ des Versandanbieters |
         /// Type of the shipping provider
         /// </summary>
-        public string ContractID { get; }
+        public string ContractID { get; set; }
 
         /// <summary>
         /// Datum wann das Paket frühestens geliefert werden soll |
