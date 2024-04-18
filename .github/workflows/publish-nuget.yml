@@ -14,7 +14,7 @@ env:
     PROJECT_NUNIT : 'ShippingProAPICollection.NUnitTests/ShippingProAPICollection.NUnitTests.csproj'
     PACKAGE_OUTPUT_DIRECTORY: ${{ github.workspace }}/output
 jobs:
-  build:
+  Build-Publish:
 
     runs-on: ubuntu-latest
 
