@@ -52,6 +52,9 @@ jobs:
     - name: Build the Docker image
       run: docker build -t shippproapicollection:$VERSION -f ${{env.PROJECT_DOCKERFILE}} . 
       
+    - name: Docker Push
+      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/shippproapicollection:$VERSION
+      
     - name: Docker tag
       run: docker tag shippproapicollection:$VERSION ${{ secrets.DOCKERHUB_USERNAME }}/shippproapicollection:latest
       
