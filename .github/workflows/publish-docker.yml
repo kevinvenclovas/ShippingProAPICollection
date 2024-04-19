@@ -52,6 +52,7 @@ jobs:
     - name: Build and push
       uses: docker/build-push-action@v5
       with:
-        context: .
+        file: ./ShippingProAPICollection.RestApi/Dockerfile
         push: true
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/shippproapicollection:latest
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/shippproapicollection:latest , ${{ secrets.DOCKERHUB_USERNAME }}/shippproapicollection:${{ env.VERSION }} , 
+    
