@@ -1,0 +1,65 @@
+name: Publish Nuget
+
+on:
+  push:
+    tags:
+    - 'v*.*.*'
+    - 'v*.*.*-rc*'
+    - '[0-9]+.[0-9]+.[0-9]+'
+    - '[0-9]+.[0-9]+.[0-9]+-rc[0-9]+'
+
+env:
+    PROJECT_PATH : 'ShippingProAPICollection/ShippingProAPICollection.csproj'
+    PROJECT_NUNIT : 'ShippingProAPICollection.NUnitTests/ShippingProAPICollection.NUnitTests.csproj'
+    PACKAGE_OUTPUT_DIRECTORY: ${{ github.workspace }}/output
+jobs:
+  Build-Publish:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Project
+      uses: actions/checkout@v3
+
+    - name: Set Version Variable
+      if: ${{ github.ref_type == 'tag' }}
+      env:
+        TAG: ${{ github.ref_name }}
+      run: echo "VERSION=${TAG#v}" >> $GITHUB_ENV
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 8.0.x
+        
+    - name: Restore dependencies
+      run: dotnet restore
+ 
+    - name: Setup Secrets
+      run: dotnet user-secrets init --project ${{ env.PROJECT_NUNIT }}
+      
+    - name: Add Secrets
+      run: dotnet user-secrets set "DHLAPIKey" ${{ secrets.DHLAPIKEY }} --project ${{ env.PROJECT_NUNIT }}
+      
+    - name: Run Tests
+      run: dotnet test --no-restore
+
+    - name: Build Project
+      run: dotnet build ${{ env.PROJECT_PATH }} --no-restore /p:Version=$VERSION --configuration Release
+      
+    - name: Create Github Release 
+      uses: actions/create-release@v1
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+      with:
+        tag_name: ${{ github.ref_name }}
+        release_name: Release ${{ github.ref_name }}
+        draft: false
+        prerelease: false
+        
+    - name: Create nuget
+      run: dotnet pack ${{ env.PROJECT_PATH }} --configuration Release --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }} /p:Version=$VERSION
+    
+    - name: Upload nuget package
+      if: github.ref_type == 'tag' && startsWith(github.ref, 'refs/tags/v')
+      run: dotnet nuget push ${{ env.PACKAGE_OUTPUT_DIRECTORY }}/*.nupkg -k ${{ secrets.NUGETAPIKEY }} -s https://api.nuget.org/v3/index.json

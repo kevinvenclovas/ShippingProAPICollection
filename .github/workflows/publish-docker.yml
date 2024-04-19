@@ -1,0 +1,58 @@
+name: Publish Docker
+
+on:
+  push:
+    tags:
+    - 'v*.*.*'
+    - 'v*.*.*-rc*'
+    - '[0-9]+.[0-9]+.[0-9]+'
+    - '[0-9]+.[0-9]+.[0-9]+-rc[0-9]+'
+    
+env:
+    PROJECT_DOCKERFILE : 'ShippingProAPICollection.RestApi/Dockerfile'
+    PROJECT_NUNIT : 'ShippingProAPICollection.NUnitTests/ShippingProAPICollection.NUnitTests.csproj'
+jobs:
+
+  Build-Publish:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Project
+      uses: actions/checkout@v3
+
+    - name: Set Version Variable
+      if: ${{ github.ref_type == 'tag' }}
+      env:
+        TAG: ${{ github.ref_name }}
+      run: echo "VERSION=${TAG#v}" >> $GITHUB_ENV
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 8.0.x
+        
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Setup Secrets
+      run: dotnet user-secrets init --project ${{ env.PROJECT_NUNIT }}
+      
+    - name: Add Secrets
+      run: dotnet user-secrets set "DHLAPIKey" ${{ secrets.DHLAPIKEY }} --project ${{ env.PROJECT_NUNIT }}
+      
+    - name: Run Tests
+      run: dotnet test --no-restore
+   
+    - name: Login to Docker 
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Build and push
+      uses: docker/build-push-action@v5
+      with:
+        file: ./ShippingProAPICollection.RestApi/Dockerfile
+        push: true
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/shippproapicollection:latest , ${{ secrets.DOCKERHUB_USERNAME }}/shippproapicollection:${{ env.VERSION }} , 
+    
