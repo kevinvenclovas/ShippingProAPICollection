@@ -9,8 +9,7 @@ on:
     - '[0-9]+.[0-9]+.[0-9]+-rc[0-9]+'
     
 env:
-    PROJECT_PATH : 'ShippingProAPICollection.RestApi/ShippingProAPICollection.RestApi.csproj'
-    PROJECT_DOCKERFILE : 'ShippingProAPICollection.RestApi/ShippingProAPICollection.RestApi/Dockerfile'
+    PROJECT_DOCKERFILE : 'ShippingProAPICollection.RestApi/Dockerfile'
     PROJECT_NUNIT : 'ShippingProAPICollection.NUnitTests/ShippingProAPICollection.NUnitTests.csproj'
 jobs:
 
@@ -43,10 +42,7 @@ jobs:
       
     - name: Run Tests
       run: dotnet test --no-restore
-      
-    - name: Build Project
-      run: dotnet build ${{ env.PROJECT_PATH }} --no-restore /p:Version=$VERSION --configuration Release
-
+   
     - name: Login to Docker 
       uses: docker/login-action@v2
       with:
