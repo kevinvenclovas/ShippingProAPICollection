@@ -10,7 +10,7 @@ on:
     
 env:
     PROJECT_DOCKERFILE : 'ShippingProAPICollection/ShippingProAPICollection.RestApi/Dockerfile'
-    PROJECT_PATH : 'ShippingProAPICollection/ShippingProAPICollection.RestApi.csproj'
+    PROJECT_PATH : 'ShippingProAPICollection.RestApi/ShippingProAPICollection.RestApi.csproj'
     PROJECT_NUNIT : 'ShippingProAPICollection.NUnitTests/ShippingProAPICollection.NUnitTests.csproj'
 jobs:
 
