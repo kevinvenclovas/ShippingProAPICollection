@@ -8,6 +8,7 @@
     <UserSecretsId>a252d4fd-cd7a-4ab0-a897-9fb0bcd5bfba</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
