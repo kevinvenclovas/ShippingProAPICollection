@@ -48,20 +48,10 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
-        
-    - name: Build the Docker image
-      run: docker build -t shippproapicollection:$VERSION -f ${{env.PROJECT_DOCKERFILE}} . 
 
-    - name: Wait for image to be available
-      run: sleep 10  # Pause für 10 Sekunden
-  
-    - name: Docker Push
-      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/shippproapicollection:$VERSION
-      
-    - name: Docker tag
-      run: docker tag shippproapicollection:$VERSION ${{ secrets.DOCKERHUB_USERNAME }}/shippproapicollection:latest
-      
-    - name: Docker Push
-      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/shippproapicollection:latest
-      
-    
+    - name: Build and push
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: true
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/shippproapicollection:$VERSION , ${{ secrets.DOCKERHUB_USERNAME }}/shippproapicollection:latest
