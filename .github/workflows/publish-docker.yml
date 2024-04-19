@@ -51,7 +51,10 @@ jobs:
         
     - name: Build the Docker image
       run: docker build -t shippproapicollection:$VERSION -f ${{env.PROJECT_DOCKERFILE}} . 
-      
+
+    - name: Wait for image to be available
+      run: sleep 10  # Pause für 10 Sekunden
+  
     - name: Docker Push
       run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/shippproapicollection:$VERSION
       
