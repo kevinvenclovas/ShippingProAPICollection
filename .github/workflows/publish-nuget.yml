@@ -36,6 +36,9 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
 
+    - name: Build Project
+      run: dotnet build ${{ env.PROJECT_PATH }} --no-restore /p:Version=$VERSION --configuration Release
+      
     - name: Setup Secrets
       run: dotnet user-secrets init --project ${{ env.PROJECT_NUNIT }}
       
@@ -44,10 +47,7 @@ jobs:
       
     - name: Run Tests
       run: dotnet test --no-restore
-      
-    - name: Build Project
-      run: dotnet build ${{ env.PROJECT_PATH }} --no-restore /p:Version=$VERSION --configuration Release
-  
+
     - name: Create Github Release 
       uses: actions/create-release@v1
       env:
