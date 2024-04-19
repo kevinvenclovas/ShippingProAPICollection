@@ -54,4 +54,4 @@ jobs:
       with:
         context: .
         push: true
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/shippproapicollection:$VERSION , ${{ secrets.DOCKERHUB_USERNAME }}/shippproapicollection:latest
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/shippproapicollection:${{ env.VERSION }} , ${{ secrets.DOCKERHUB_USERNAME }}/shippproapicollection:latest
