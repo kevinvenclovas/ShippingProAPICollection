@@ -2,7 +2,6 @@
 using DPDShipmentService4_4;
 using Microsoft.Extensions.Caching.Memory;
 using RestSharp;
-using ShippingProAPICollection._Provider.DHL;
 using ShippingProAPICollection.Models;
 using ShippingProAPICollection.Models.Entities;
 using ShippingProAPICollection.Models.Error;
