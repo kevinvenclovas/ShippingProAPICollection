@@ -9,7 +9,6 @@ on:
     - '[0-9]+.[0-9]+.[0-9]+-rc[0-9]+'
     
 env:
-    PROJECT_DOCKERFILE : 'ShippingProAPICollection/ShippingProAPICollection.RestApi/Dockerfile'
     PROJECT_PATH : 'ShippingProAPICollection.RestApi/ShippingProAPICollection.RestApi.csproj'
     PROJECT_NUNIT : 'ShippingProAPICollection.NUnitTests/ShippingProAPICollection.NUnitTests.csproj'
 jobs:
@@ -54,7 +53,7 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
         
     - name: Build the Docker image
-      run: docker build -t shippproapicollection:latest -f ${{env.PROJECT_DOCKERFILE}} . 
+      run: docker build -t shippproapicollection:latest -f ${{env.PROJECT_PATH}}/Dockerfile . 
       
     - name: Docker tag
       run: docker tag shippproapicollection:latest ${{ secrets.DOCKERHUB_USERNAME }}/shippproapicollection:latest
