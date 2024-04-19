@@ -50,10 +50,10 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
         
     - name: Build the Docker image
-      run: docker build -t shippproapicollection:latest -f ${{env.PROJECT_DOCKERFILE}} . 
+      run: docker build -t shippproapicollection:$VERSION -f ${{env.PROJECT_DOCKERFILE}} . 
       
     - name: Docker tag
-      run: docker tag shippproapicollection:latest ${{ secrets.DOCKERHUB_USERNAME }}/shippproapicollection:latest
+      run: docker tag shippproapicollection:$VERSION ${{ secrets.DOCKERHUB_USERNAME }}/shippproapicollection:latest
       
     - name: Docker Push
       run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/shippproapicollection:latest
