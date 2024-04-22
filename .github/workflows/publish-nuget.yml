@@ -34,9 +34,6 @@ jobs:
 
     - name: Add myget Store
       run: dotnet nuget add source "https://www.myget.org/F/domaindrivendev/api/v3/index.json" --name "myget.org"
-      
-    - name: Restore dependencies
-      run: dotnet restore
  
     - name: Setup Secrets
       run: dotnet user-secrets init --project ${{ env.PROJECT_NUNIT }}
