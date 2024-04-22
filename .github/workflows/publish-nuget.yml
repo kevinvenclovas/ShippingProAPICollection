@@ -31,13 +31,16 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 8.0.x
-        
+
+    - name: Add myget Store
+      run: dotnet nuget add source "https://www.myget.org/F/domaindrivendev/api/v3/index.json" --name "myget.org"
+      
     - name: Restore dependencies
       run: dotnet restore
  
     - name: Setup Secrets
       run: dotnet user-secrets init --project ${{ env.PROJECT_NUNIT }}
-      
+ 
     - name: Add Secrets
       run: dotnet user-secrets set "DHLAPIKey" ${{ secrets.DHLAPIKEY }} --project ${{ env.PROJECT_NUNIT }}
       
