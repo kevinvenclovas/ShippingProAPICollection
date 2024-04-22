@@ -1,4 +1,6 @@
-﻿using DPDLoginService2_0;
+﻿#pragma warning disable 1998
+
+using DPDLoginService2_0;
 using DPDShipmentService4_4;
 using Microsoft.Extensions.Caching.Memory;
 using RestSharp;
@@ -27,6 +29,8 @@ namespace ShippingProAPICollection.Provider.DPD
         public async Task<List<RequestShippingLabelResponse>> RequestLabel(RequestShipmentBase request, CancellationToken cancelToken = default)
         {
             var DPDRequest = request as DPDShipmentRequestModel;
+            if (DPDRequest == null) throw new Exception("Cannot convert request to DPDShipmentRequestModel");
+
             string authToken = await GetAuthToken();
 
             string url = string.Format("https://public-{0}.dpd.com/services/ShipmentService/V4_4/", providerSettings.ApiDomain);

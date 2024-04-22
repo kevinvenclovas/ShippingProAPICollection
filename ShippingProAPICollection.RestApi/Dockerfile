@@ -6,10 +6,16 @@ WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
+
+
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["ShippingProAPICollection.RestApi/ShippingProAPICollection.RestApi.csproj", "ShippingProAPICollection.RestApi/"]
+
+RUN dotnet nuget add source "https://www.myget.org/F/domaindrivendev/api/v3/index.json" --name "myget.org"
+
+
 RUN dotnet restore "./ShippingProAPICollection.RestApi/./ShippingProAPICollection.RestApi.csproj"
 COPY . .
 WORKDIR "/src/ShippingProAPICollection.RestApi"

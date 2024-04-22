@@ -1,4 +1,6 @@
-﻿namespace ShippingProAPICollection.Models.Error
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ShippingProAPICollection.Models.Error
 {
     public class ShippingProviderException : Exception
     {

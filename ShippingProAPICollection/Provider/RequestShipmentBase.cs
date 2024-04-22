@@ -39,7 +39,6 @@ namespace ShippingProAPICollection.Provider
         /// First address line of reciever
         /// </summary>
         /// <example>Alfa GmbH</example>
-        [Required]
         public required string Adressline1 { get; set; }
 
         /// <summary>
@@ -61,7 +60,6 @@ namespace ShippingProAPICollection.Provider
         /// Country code in IDOA2 format
         /// </summary>
         /// <example>DE</example>
-        [Required]
         public required string Country { get; set; }
 
         /// <summary>
@@ -69,7 +67,6 @@ namespace ShippingProAPICollection.Provider
         /// Postcode of reciever address
         /// </summary>
         /// <example>73479</example>
-        [Required]
         public required string PostCode { get; set; }
 
         /// <summary>
@@ -77,7 +74,6 @@ namespace ShippingProAPICollection.Provider
         /// city of reciever address
         /// </summary>
         /// <example>Ellwangen</example>
-        [Required]
         public required string City { get; set; }
 
         /// <summary>
@@ -85,7 +81,6 @@ namespace ShippingProAPICollection.Provider
         /// street of reciever address
         /// </summary>
         /// <example>Ferdinand-Porsche-Str.</example>
-        [Required]
         public required string Street { get; set; }
 
         /// <summary>
@@ -107,7 +102,6 @@ namespace ShippingProAPICollection.Provider
         /// Weight of the total freight in KG 
         /// </summary>
         /// <example>5</example>
-        [Required]
         public required float Weight { get; set; }
 
         /// <summary>
@@ -116,7 +110,6 @@ namespace ShippingProAPICollection.Provider
         /// </summary>
         /// <example>1</example>
         [Range(1, 99)]
-        [Required]
         public required uint LabelCount { get; set; }
 
         /// <summary>

@@ -33,7 +33,6 @@ namespace ShippingProAPICollection.Provider.DPD
         /// Normal or Express shipping
         /// </summary>
         /// <example>CL</example>
-        [Required]
         public required DPDProductType ServiceProduct { get; set; }
 
         /// <summary>
@@ -41,7 +40,6 @@ namespace ShippingProAPICollection.Provider.DPD
         /// What kind of service should be used? Return or none
         /// </summary>
         /// <example>SHOPRETURN</example>
-        [Required]
         public required DPDServiceType ServiceType { get; set; }
 
 

@@ -33,7 +33,6 @@ namespace ShippingProAPICollection.Provider.GLS
         /// Normal or Express shipping
         /// </summary>
         /// <example>PARCEL</example>
-        [Required]
         public required GLSProductType ServiceProduct { get; set; }
 
         /// <summary>
@@ -41,7 +40,6 @@ namespace ShippingProAPICollection.Provider.GLS
         /// What kind of service should be used? Deposit-Service or none
         /// </summary>
         /// <example>DEPOSIT</example>
-        [Required]
         public required GLSServiceType ServiceType { get; set; }
 
         /// <summary>

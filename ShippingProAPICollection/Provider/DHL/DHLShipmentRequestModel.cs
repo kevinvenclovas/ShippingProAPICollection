@@ -34,7 +34,6 @@ namespace ShippingProAPICollection.Provider.DHL
         /// Normal or Express shipping
         /// </summary>
         /// <example>V01PAK</example>
-        [Required]
         public required DHLProductType ServiceProduct { get; set; }
 
         /// <summary>
@@ -42,7 +41,6 @@ namespace ShippingProAPICollection.Provider.DHL
         /// What kind of service should be used? Deposit-Service or none
         /// </summary>
         /// <example>DEPOSIT</example>
-        [Required]
         public required DHLServiceType ServiceType { get; set; }
 
         //Deposit 

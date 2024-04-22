@@ -91,7 +91,7 @@ namespace ShippingProAPICollection
         {
             foreach (var item in providerServices.Where(x => x.Value.GetType() == typeof(DPDShipmentService)).Select(x => x.Value as DPDShipmentService))
             {
-                item.ResetDPDAutToken();
+                if(item != null) item.ResetDPDAutToken();
             }
         }
 

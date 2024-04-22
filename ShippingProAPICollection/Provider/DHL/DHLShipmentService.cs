@@ -26,6 +26,7 @@ namespace ShippingProAPICollection.Provider.DHL
         public async Task<List<RequestShippingLabelResponse>> RequestLabel(RequestShipmentBase request, CancellationToken cancelToken = default)
         {
             var DHLRequest = request as DHLShipmentRequestModel;
+            if (DHLRequest == null) throw new Exception("Cannot convert request to DHLShipmentRequestModel");
 
             var urlBuilder_ = new System.Text.StringBuilder();
             var baseUrl = string.Format("https://api-{0}.dhl.com/parcel/de/shipping/v2/", providerSettings.ApiDomain);
@@ -71,7 +72,7 @@ namespace ShippingProAPICollection.Provider.DHL
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK || response.StatusCode == System.Net.HttpStatusCode.MultiStatus)
                 {
-                    var objectResponse_ = JsonConvert.DeserializeObject<LabelDataResponse>(response.Content);
+                    var objectResponse_ = JsonConvert.DeserializeObject<LabelDataResponse>(response.Content ?? "");
                     if (objectResponse_ == null)
                     {
                         throw new DHLException(ShippingErrorCode.CANNOT_CONVERT_RESPONSE, "Cannot convert reponse to object", new { payload = requestBody, respone = response.Content });
@@ -95,7 +96,7 @@ namespace ShippingProAPICollection.Provider.DHL
                 }
                 else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
                 {
-                    var objectResponse_ = JsonConvert.DeserializeObject<LabelDataResponse>(response.Content);
+                    var objectResponse_ = JsonConvert.DeserializeObject<LabelDataResponse>(response.Content ?? "");
                     if (objectResponse_ == null)
                     {
                         throw new DHLException(ShippingErrorCode.CANNOT_CONVERT_RESPONSE, "Cannot convert reponse to object", new { payload = requestBody, respone = response.Content });
@@ -160,7 +161,7 @@ namespace ShippingProAPICollection.Provider.DHL
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK || response.StatusCode == System.Net.HttpStatusCode.MultiStatus)
                 {
-                    var objectResponse_ = JsonConvert.DeserializeObject<LabelDataResponse>(response.Content);
+                    var objectResponse_ = JsonConvert.DeserializeObject<LabelDataResponse>(response.Content ?? "");
                     if (objectResponse_ == null)
                     {
                         throw new DHLException(ShippingErrorCode.CANNOT_CONVERT_RESPONSE, "Cannot convert reponse to object", new { payload = cancelId, respone = response.Content });
@@ -170,7 +171,7 @@ namespace ShippingProAPICollection.Provider.DHL
                 }
                 else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
                 {
-                    var objectResponse_ = JsonConvert.DeserializeObject<LabelDataResponse>(response.Content);
+                    var objectResponse_ = JsonConvert.DeserializeObject<LabelDataResponse>(response.Content ?? "");
                     if (objectResponse_ == null)
                     {
                         throw new DHLException(ShippingErrorCode.CANNOT_CONVERT_RESPONSE, "Cannot convert reponse to object", new { payload = cancelId, respone = response.Content });
@@ -299,11 +300,13 @@ namespace ShippingProAPICollection.Provider.DHL
                     if (!String.IsNullOrEmpty(request.Phone)) consignee.AdditionalProperties.Add("phone", request.Phone);
                     break;
                 case DHLServiceType.LOCKER:
+                    if (request.Locker == null) throw new ShipmentRequestNotNullException("Locker");
                     consignee.AdditionalProperties.Add("name", request.Adressline1);
                     consignee.AdditionalProperties.Add("lockerID", request.Locker.PackstationNumber);
                     consignee.AdditionalProperties.Add("postNumber", request.Locker.PostNumber);
                     break;
                 case DHLServiceType.POSTOFFICE:
+                    if (request.PostOffice == null) throw new ShipmentRequestNotNullException("PostOffice");
                     consignee.AdditionalProperties.Add("name", request.Adressline1);
                     consignee.AdditionalProperties.Add("retailID", request.PostOffice.PostfilialeNumber);
                     consignee.AdditionalProperties.Add("postNumber", request.PostOffice.PostNumber);

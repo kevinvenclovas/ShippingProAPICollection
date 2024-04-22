@@ -29,6 +29,7 @@ namespace ShippingProAPICollection.Provider.GLS
         public async Task<List<RequestShippingLabelResponse>> RequestLabel(RequestShipmentBase request, CancellationToken cancelToken = default)
         {
             var GLSRequest = request as GLSShipmentRequestModel;
+            if (GLSRequest == null) throw new Exception("Cannot convert request to GLSShipmentRequestModel");
 
             PrintingOptions printOptions = new PrintingOptions()
             {
@@ -56,16 +57,19 @@ namespace ShippingProAPICollection.Provider.GLS
 
             List<RequestShippingLabelResponse> createdLabels = new List<RequestShippingLabelResponse>();
 
-            for (int i = 0; i < response.Data.CreatedShipment.ParcelData.Count(); i++)
+            if (response.Data != null)
             {
-                createdLabels.Add(new RequestShippingLabelResponse()
+                for (int i = 0; i < response.Data.CreatedShipment.ParcelData.Count(); i++)
                 {
-                    CancelId = response.Data.CreatedShipment.ParcelData[i].TrackID,
-                    ParcelNumber = response.Data.CreatedShipment.ParcelData[i].ParcelNumber,
-                    Label = response.Data.CreatedShipment.PrintData[i].Data,
-                    LabelType = GLSRequest.ServiceType == GLSServiceType.SHOPRETURN ? ShippingLabelType.SHOPRETURN : (request.IsExpress() ? ShippingLabelType.EXPRESS : ShippingLabelType.NORMAL),
-                    Weight = request.GetPackageWeight()
-                });
+                    createdLabels.Add(new RequestShippingLabelResponse()
+                    {
+                        CancelId = response.Data.CreatedShipment.ParcelData[i].TrackID,
+                        ParcelNumber = response.Data.CreatedShipment.ParcelData[i].ParcelNumber,
+                        Label = response.Data.CreatedShipment.PrintData[i].Data,
+                        LabelType = GLSRequest.ServiceType == GLSServiceType.SHOPRETURN ? ShippingLabelType.SHOPRETURN : (request.IsExpress() ? ShippingLabelType.EXPRESS : ShippingLabelType.NORMAL),
+                        Weight = request.GetPackageWeight()
+                    });
+                }
             }
 
             return createdLabels;
@@ -80,6 +84,8 @@ namespace ShippingProAPICollection.Provider.GLS
                 cancelId,
                 cancelToken
                 );
+
+            if (response.Data == null) throw new Exception("Reponse was null");
 
             switch (response.Data.Result)
             {
@@ -97,6 +103,7 @@ namespace ShippingProAPICollection.Provider.GLS
         public async Task<ValidationReponse> ValidateLabel(RequestShipmentBase request, CancellationToken cancelToken)
         {
             var GLSRequest = request as GLSShipmentRequestModel;
+            if (GLSRequest == null) throw new Exception("Cannot convert request to GLSShipmentRequestModel");
 
             var shipment = CreateRequestModel(GLSRequest);
 
@@ -109,6 +116,7 @@ namespace ShippingProAPICollection.Provider.GLS
                cancelToken
                );
 
+            if (response.Data == null) throw new Exception("Reponse was null");
 
             if (response.Data.Success == true) return new ValidationReponse() { Success = true };
            
@@ -131,7 +139,7 @@ namespace ShippingProAPICollection.Provider.GLS
                         reponseIssues.Add(new ValidationReponseIssue() { ErrorCode = ShippingErrorCode.GLS_NEXT_DAY_NOT_SATURDAY_ERROR, Message = "Nächster Werktag ist nicht Samstag. Service kann heute nicht gebucht werden." });
                         break;
                     case "SHIPMENT_VALID_ROUTING":
-                        reponseIssues.Add(new ValidationReponseIssue() { ErrorCode = ShippingErrorCode.GLS_ROUTING_ERROR, Message = "Kein gültiges Routing mit GLS möglich: " + validationErrorKey.Value.Parameters[0] });
+                        reponseIssues.Add(new ValidationReponseIssue() { ErrorCode = ShippingErrorCode.GLS_ROUTING_ERROR, Message = "Kein gültiges Routing mit GLS möglich: " + (validationErrorKey.Value?.Parameters?[0] ?? "UNKNOW") });
                         break;
                     case "ADDRESS_VALID_ZIPCODE":
                         reponseIssues.Add(new ValidationReponseIssue() { ErrorCode = ShippingErrorCode.GLS_POSTCODE_ERROR, Message = "Keine gültige Postleitzahl vorhanden." });
@@ -146,7 +154,7 @@ namespace ShippingProAPICollection.Provider.GLS
                         reponseIssues.Add(new ValidationReponseIssue() { ErrorCode = ShippingErrorCode.GLS_ARTICLE_DESTINATION_EXCLUSION_ERROR, Message = "GLS-Service und Produkt sind zur Lieferadresse nicht möglich" });
                         break;
                     case "COMMON":
-                        reponseIssues.Add(new ValidationReponseIssue() { ErrorCode = ShippingErrorCode.GLS_COMMON_ERROR, Message = $"GLS-Labeldruck einfacher Fehler aufgetreten: Location: {validationErrorKey.Value.Location} Message: {validationErrorKey.Value.Parameters[0]}" });
+                        reponseIssues.Add(new ValidationReponseIssue() { ErrorCode = ShippingErrorCode.GLS_COMMON_ERROR, Message = $"GLS-Labeldruck einfacher Fehler aufgetreten: Location: {validationErrorKey.Value?.Location ?? "UNKNOW" } Message: {validationErrorKey.Value?.Parameters?[0] ?? "UNKNOW"} " });
                         break;
                     case "ARTICLES_VALID_FOR_COUNTRY":
                         reponseIssues.Add(new ValidationReponseIssue() { ErrorCode = ShippingErrorCode.GLS_ARTICLE_COMBINATIONS_ERROR, Message = $"Artikelkombination ist in diesem Land nicht verfügbar" });

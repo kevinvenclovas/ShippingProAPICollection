@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Cors;
+﻿#pragma warning disable 1998
+
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using ShippingProAPICollection.Models;
@@ -6,7 +8,9 @@ using ShippingProAPICollection.Provider;
 using ShippingProAPICollection.Provider.GLS.Entities.Validation;
 using ShippingProAPICollection.RestApi.Entities;
 using ShippingProAPICollection.RestApi.Entities.DTOs;
+using ShippingProAPICollection.RestApi.Entities.Error;
 using ShippingProAPICollection.RestApi.Helper;
+using System.Net;
 
 namespace ShippingProAPICollection.RestApi.Controllers
 {
@@ -27,9 +31,10 @@ namespace ShippingProAPICollection.RestApi.Controllers
         [HttpPost]
         [Route("label")]
         [EnableCors("Intern")]
-        [ProducesResponseType(typeof(List<ShippingLabelReponse>), 200)]
-        [ProducesResponseType(typeof(ApiErrorResponse), 400)]
-        [ProducesResponseType(typeof(ApiErrorResponse), 500)]
+        [ProducesResponseType(typeof(List<ShippingLabelReponse>), (int)HttpStatusCode.Created)]
+        [ProducesResponseType(typeof(InternalServerErrorReponse), (int)HttpStatusCode.InternalServerError)]
+        [ProducesResponseType(typeof(BadRequestReponse), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(UnprocessableEntityResponse), (int)HttpStatusCode.UnprocessableEntity)]
         public async Task<IActionResult> RequestShippingLabel([FromBody, BindRequired] RequestShipmentBase request)
         {
             var requestedLabels = await shippingProAPICollectionService.RequestLabel(request);
@@ -41,20 +46,22 @@ namespace ShippingProAPICollection.RestApi.Controllers
                 ParcelNumber = x.ParcelNumber,
                 TrackingURL = TrackingLinkHelper.CreateTrackingURL(x, request)
             }).ToList();
-            
-            return Ok(requestedLabels);
+
+            return CreatedAtAction("RequestShippingLabel", requestedLabels);
+
         }
 
         /// <summary>
-        /// Anfragen eines neuen Labels
-        /// Request new shipping labels
+        /// Stornieren eines  Labels
+        /// Cancel shipping labels
         /// </summary>
         [HttpDelete]
         [Route("label")]
         [EnableCors("Intern")]
-        [ProducesResponseType(typeof(CancelShippingLabelReponse), 200)]
-        [ProducesResponseType(typeof(ApiErrorResponse), 400)]
-        [ProducesResponseType(typeof(ApiErrorResponse), 500)]
+        [ProducesResponseType(typeof(CancelShippingLabelReponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(InternalServerErrorReponse), (int)HttpStatusCode.InternalServerError)]
+        [ProducesResponseType(typeof(BadRequestReponse), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(UnprocessableEntityResponse), (int)HttpStatusCode.UnprocessableEntity)]
         public async Task<IActionResult> CancelShippingLabel([FromBody, BindRequired] CancelShippingLabelRequest request)
         {
             var cancelResult = await shippingProAPICollectionService.CancelLabel(request.ContractID, request.CancelId);
@@ -69,8 +76,9 @@ namespace ShippingProAPICollection.RestApi.Controllers
         [Route("label/validate")]
         [EnableCors("Intern")]
         [ProducesResponseType(typeof(ValidationReponse), 200)]
-        [ProducesResponseType(typeof(ApiErrorResponse), 400)]
-        [ProducesResponseType(typeof(ApiErrorResponse), 500)]
+        [ProducesResponseType(typeof(InternalServerErrorReponse), (int)HttpStatusCode.InternalServerError)]
+        [ProducesResponseType(typeof(BadRequestReponse), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(UnprocessableEntityResponse), (int)HttpStatusCode.UnprocessableEntity)]
         public async Task<IActionResult> ValidateShippingLabel([FromBody, BindRequired] RequestShipmentBase request)
         {
             var validationRespone = await shippingProAPICollectionService.ValidateLabel(request);
@@ -85,8 +93,9 @@ namespace ShippingProAPICollection.RestApi.Controllers
         [Route("settings")]
         [EnableCors("Intern")]
         [ProducesResponseType(typeof(ApplicationSettings), 200)]
-        [ProducesResponseType(typeof(ApiErrorResponse), 400)]
-        [ProducesResponseType(typeof(ApiErrorResponse), 500)]
+        [ProducesResponseType(typeof(InternalServerErrorReponse), (int)HttpStatusCode.InternalServerError)]
+        [ProducesResponseType(typeof(BadRequestReponse), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(UnprocessableEntityResponse), (int)HttpStatusCode.UnprocessableEntity)]
         public async Task<IActionResult> GetApplicationSettings()
         {
             return Ok(applicationSettingService.LoadApplicationSettings());
@@ -99,8 +108,9 @@ namespace ShippingProAPICollection.RestApi.Controllers
         [HttpPut]
         [Route("settings/provider")]
         [EnableCors("Intern")]
-        [ProducesResponseType(typeof(ApiErrorResponse), 400)]
-        [ProducesResponseType(typeof(ApiErrorResponse), 500)]
+        [ProducesResponseType(typeof(InternalServerErrorReponse), (int)HttpStatusCode.InternalServerError)]
+        [ProducesResponseType(typeof(BadRequestReponse), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(UnprocessableEntityResponse), (int)HttpStatusCode.UnprocessableEntity)]
         public async Task<IActionResult> AddOrUpdateProvider([FromBody, BindRequired] ProviderSettings dto)
         {
             applicationSettingService.AddOrUpdateProviderSettings(shippingProAPICollectionSettings, dto);
@@ -114,8 +124,9 @@ namespace ShippingProAPICollection.RestApi.Controllers
         [HttpDelete]
         [Route("settings/provider/{contractid}")]
         [EnableCors("Intern")]
-        [ProducesResponseType(typeof(ApiErrorResponse), 400)]
-        [ProducesResponseType(typeof(ApiErrorResponse), 500)]
+        [ProducesResponseType(typeof(InternalServerErrorReponse), (int)HttpStatusCode.InternalServerError)]
+        [ProducesResponseType(typeof(BadRequestReponse), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(UnprocessableEntityResponse), (int)HttpStatusCode.UnprocessableEntity)]
         public async Task<IActionResult> DeleteProvider([FromRoute, BindRequired] string contractid)
         {
             applicationSettingService.DeleteProvider(shippingProAPICollectionSettings, contractid);
@@ -129,8 +140,9 @@ namespace ShippingProAPICollection.RestApi.Controllers
         [HttpPut]
         [Route("settings/account")]
         [EnableCors("Intern")]
-        [ProducesResponseType(typeof(ApiErrorResponse), 400)]
-        [ProducesResponseType(typeof(ApiErrorResponse), 500)]
+        [ProducesResponseType(typeof(InternalServerErrorReponse), (int)HttpStatusCode.InternalServerError)]
+        [ProducesResponseType(typeof(BadRequestReponse), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(UnprocessableEntityResponse), (int)HttpStatusCode.UnprocessableEntity)]
         public async Task<IActionResult> UpdateAccountSettings([FromBody, BindRequired] UpdateAccountSettingsRequest dto)
         {
             ShippingProAPIAccountSettings settings = new ShippingProAPIAccountSettings()
@@ -158,8 +170,9 @@ namespace ShippingProAPICollection.RestApi.Controllers
         [HttpDelete]
         [Route("cache")]
         [EnableCors("Intern")]
-        [ProducesResponseType(typeof(ApiErrorResponse), 400)]
-        [ProducesResponseType(typeof(ApiErrorResponse), 500)]
+        [ProducesResponseType(typeof(InternalServerErrorReponse), (int)HttpStatusCode.InternalServerError)]
+        [ProducesResponseType(typeof(BadRequestReponse), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(UnprocessableEntityResponse), (int)HttpStatusCode.UnprocessableEntity)]
         public async Task<IActionResult> ClearCache()
         {
             shippingProAPICollectionService.ResetDPDAutToken();

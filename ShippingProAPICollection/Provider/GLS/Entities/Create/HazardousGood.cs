@@ -2,8 +2,8 @@
 {
     internal class HazardousGood
     {
-        public string GLSHazNo { get; set; }
+        public required string GLSHazNo { get; set; }
 
-        public decimal Weight { get; set; }
+        public required decimal Weight { get; set; }
     }
 }

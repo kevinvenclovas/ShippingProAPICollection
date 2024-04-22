@@ -3,8 +3,14 @@ using ShippingProAPICollection.Provider;
 
 namespace ShippingProAPICollection.RestApi.Entities
 {
+    /// <summary>
+    /// Shipping pro api collection settings
+    /// </summary>
     public class ApplicationSettings
     {
+        /// <summary>
+        /// Account settings
+        /// </summary>
         public ShippingProAPIAccountSettings AccountSettings = 
             new ShippingProAPIAccountSettings() 
             { 
@@ -18,6 +24,9 @@ namespace ShippingProAPICollection.RestApi.Entities
                 Street = ""
             };
 
+        /// <summary>
+        /// Provider settings
+        /// </summary>
         public List<ProviderSettings> ProviderSettings = new List<ProviderSettings>();
 
     }

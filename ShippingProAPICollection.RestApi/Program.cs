@@ -2,6 +2,7 @@ using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using ShippingProAPICollection.RestApi.Entities;
+using ShippingProAPICollection.RestApi.Extensions;
 using System.Reflection;
 
 namespace ShippingProAPICollection.RestApi
@@ -13,13 +14,19 @@ namespace ShippingProAPICollection.RestApi
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
-            builder.Services.AddControllers()
+            builder.Services.AddControllers(
+                options => {
+                    options.Filters.Add<ModelValidationAttribute>();
+                    options.Filters.Add<ExceptionHandlingAttribute>();
+                }
+            )
             .AddNewtonsoftJson(options => 
             { 
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore; 
                 options.SerializerSettings.Converters.Add(new StringEnumConverter()); 
-                options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc; 
+                options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
+                options.AllowInputFormatterExceptionMessages = false;
+                options.SerializerSettings.Error += (sender, args) => throw args.ErrorContext.Error;
             });
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

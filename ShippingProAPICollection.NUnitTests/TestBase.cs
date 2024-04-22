@@ -56,7 +56,7 @@ namespace ShippingProAPICollection.NUnitTests
                 InternationalAccountNumber = "33333333335301",
                 NationalAccountNumber = "33333333330102",
                 LabelPrintFormat = "910-300-410",
-                APIKey = configuration["DHLAPIKey"],
+                APIKey = configuration["DHLAPIKey"] ?? "",
                 APILanguage = "de-DE"
             };
 
