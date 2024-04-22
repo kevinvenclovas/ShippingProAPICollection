@@ -1,4 +1,8 @@
-[![Build&Test](https://github.com/kevinvenclovas/ShippingProAPICollection/actions/workflows/dotnet.yml/badge.svg)](https://github.com/kevinvenclovas/ShippingProAPICollection/actions/workflows/dotnet.yml)
+
+[![Publish Docker](https://github.com/kevinvenclovas/ShippingProAPICollection/actions/workflows/publish-docker.yml/badge.svg)](https://github.com/kevinvenclovas/ShippingProAPICollection/actions/workflows/publish-docker.yml)
+![Docker Image Version](https://img.shields.io/docker/v/kevinvenclovas/shippproapicollection)
+
+[![Publish Nuget](https://github.com/kevinvenclovas/ShippingProAPICollection/actions/workflows/publish-nuget.yml/badge.svg)](https://github.com/kevinvenclovas/ShippingProAPICollection/actions/workflows/publish-nuget.yml)
 [![NuGet](https://img.shields.io/nuget/v/ShippingProAPICollection.svg)](https://www.nuget.org/packages/ShippingProAPICollection/)
 # Shipping Pro API Collection
 Welcome to our C# library, designed to integrate multiple shipping service APIs into one streamlined solution. This project provides a unified interface for GLS GLS, DHL, and DPD, simplifying the shipping process for developers and businesses. With easy integration, you can handle logistics across different carriers seamlessly. Ideal for enhancing efficiency in e-commerce and logistics operations.
@@ -116,7 +120,7 @@ Name | Type | Required | Example
 `ADDRESS_EMAIL` | String | * | kevin.mustermann@gmail.com
 `ADDRESS_NAME` | String | * | Max GmbH
 `ADDRESS_POSTCODE` | String | * | 73479
-`ADDRESS_STREET` | String | * | Max-Straﬂe 15
+`ADDRESS_STREET` | String | * | Max-Stra√üe 15
 `ADDRESS_PHONE` | String | * | 0152012345678
 
 ### DPD
