@@ -6,7 +6,7 @@ namespace ShippingProAPICollection.Provider.GLS
     {
         public override ShippingProviderType ShippingProviderType => ShippingProviderType.GLS;
         /// <summary>
-        /// Api domain is the XXXXXXX part of your GLS-GLS api url provides by ur GLS contact => https://GLS-wbm-XXXXXXX.gls-group.eu:443/backend/rs
+        /// Api domain => https://shipit-wbm-test01.gls-group.eu:443
         /// </summary>
         public required string ApiDomain { get; set; }
         public required string Username { get; set; }

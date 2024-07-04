@@ -39,8 +39,8 @@ To finalize the setup, register the ShippingProAPICollectionService as a scoped 
 	{   
 		 // PLEASE GET IN TOUCH WITH YOUR GLS CONTACT TO GET THE FOLLOWING INFORMATIONS
 	 
-		 // Api domain is the XXXXXXX part of your GLS-GLS api url => https://GLS-wbm-XXXXXXX.gls-group.eu:443/backend/rs
-		 ApiDomain = "test01",         
+		 // Api domain => https://shipit-wbm-test01.gls-group.eu:443
+		 ApiDomain = "https://shipit-wbm-test01.gls-group.eu:443",         
 		 ContactID = "276a45fkqM",       
 		 Username = "276a45fkqM"
 		 Password = "lXZBIF7uRccyK7Ohr64d",       
@@ -148,7 +148,7 @@ Name | Type | Required | Example
 ### GLS
 Name | Type | Required | Example
 --- | --- | ---| ---
-`GLS_API_DOMAIN` | String | * | test01 or de03
+`GLS_API_DOMAIN` | String | * | https://shipit-wbm-test01.gls-group.eu:443
 `GLS_CONTRACT_ID` | String | * | 276a5fkqM
 `GLS_PASSWORD` | String | * | lXZBIF7uccyK7Ohr64d
 `GLS_USERNAME` | String | * | 276a5fkqM

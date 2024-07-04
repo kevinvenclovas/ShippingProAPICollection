@@ -49,7 +49,7 @@ namespace ShippingProAPICollection.Provider.GLS
             };
 
             RestResponse<CreatedShipmentResponse> response = await CallApi<CreatedShipmentResponse>(
-                new Uri(string.Format("https://shipit-wbm-{0}.gls-group.eu:443/backend/rs/shipments", providerSettings.ApiDomain)),
+                new Uri(string.Format("{0}/backend/rs/shipments", providerSettings.ApiDomain)),
                 Method.Post,
                 shipmentRequest,
                 cancelToken
@@ -79,7 +79,7 @@ namespace ShippingProAPICollection.Provider.GLS
         public async Task<ShippingCancelResult> CancelLabel(string cancelId, CancellationToken cancelToken = default)
         {
             RestResponse<CancelShipmentResponse> response = await CallApi<CancelShipmentResponse>(
-                new Uri(string.Format("https://shipit-wbm-{0}.gls-group.eu:443/backend/rs/shipments/cancel/{1}", providerSettings.ApiDomain, cancelId)),
+                new Uri(string.Format("{0}/backend/rs/shipments/cancel/{1}", providerSettings.ApiDomain, cancelId)),
                 Method.Post,
                 cancelId,
                 cancelToken
@@ -110,7 +110,7 @@ namespace ShippingProAPICollection.Provider.GLS
             var requestBody = new ValidateShipmentRequestData() { Shipment = shipment };
 
             RestResponse<ValidateParcelsResponse> response = await CallApi<ValidateParcelsResponse>(
-               new Uri(string.Format("https://shipit-wbm-{0}.gls-group.eu:443/backend/rs/shipments/validate", providerSettings.ApiDomain)),
+               new Uri(string.Format("{0}/backend/rs/shipments/validate", providerSettings.ApiDomain)),
                Method.Post,
                requestBody,
                cancelToken
@@ -171,7 +171,9 @@ namespace ShippingProAPICollection.Provider.GLS
 
         public async Task<uint> GetEstimatedDeliveryDays(RequestShipmentBase request, CancellationToken cancelToken)
         {
-           
+            // Api NotFound on current GLS api
+            return 0;
+
             EstimatedDeliveryDaysAddress senderAddress = new EstimatedDeliveryDaysAddress()
             {
                 City = accountSettings.City,
@@ -204,13 +206,13 @@ namespace ShippingProAPICollection.Provider.GLS
             };
 
             RestResponse<EstimatedDeliveryDaysResponse> response = await CallApi<EstimatedDeliveryDaysResponse>(
-              new Uri(string.Format("https://shipit-wbm-{0}.gls-group.eu:443/backend/rs/timeframe/deliverydays", providerSettings.ApiDomain)),
-              Method.Post,
-              requestBody,
-              cancelToken
-              );
+                new Uri(string.Format("{0}/backend/rs/timeframe/deliverydays", providerSettings.ApiDomain)),
+                Method.Post,
+                requestBody,
+                cancelToken
+            );
 
-            return 0;
+            return response?.Data?.NumberOfWorkDays ?? 0;
         }
 
 

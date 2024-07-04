@@ -39,7 +39,7 @@ namespace ShippingProAPICollection.NUnitTests
 
             GLSSettings GLSSettings = new GLSSettings()
             {
-                ApiDomain = "test01",
+                ApiDomain = "https://shipit-wbm-test01.gls-group.eu:443",
                 ContactID = "276a45fkqM",
                 Password = "lXZBIF7uRccyK7Ohr64d",
                 Username = "276a45fkqM"
