@@ -10,7 +10,7 @@ Welcome to our C# library, designed to integrate multiple shipping service APIs 
  
 ## Provider
 
-- [X] GLS GLS Germany ([API Documentation](https://GLS.gls-group.eu/webservices/3_2_9/doxygen/WS-REST-API/index.html))
+- [X] GLS GLS Germany ([API Documentation](https://shipit.gls-group.eu/webservices/3_2_9/doxygen/WS-REST-API/index.html))
 	- [X] Create Shipment
 	- [X] Cancel Shipment
 	- [X] Validate Label
