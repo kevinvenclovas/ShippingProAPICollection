@@ -89,7 +89,21 @@ namespace ShippingProAPICollection
 
             throw new InvalidOperationException("Unknown shipping provider");
         }
-    
+
+        public async Task Confirm(string contractID, string confirmId, CancellationToken ct = default)
+        {
+            
+            if (providerServices.TryGetValue(contractID, out var service))
+            {
+                await service.ConfirmShipment(confirmId, ct);
+            }
+            else
+            {
+                throw new InvalidOperationException("Unknown shipping provider");
+            }
+
+        }
+
         public void ResetDPDAutToken()
         {
             foreach (var item in providerServices.Where(x => x.Value.GetType() == typeof(DPDShipmentService)).Select(x => x.Value as DPDShipmentService))

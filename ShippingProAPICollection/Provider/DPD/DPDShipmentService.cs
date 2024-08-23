@@ -8,6 +8,7 @@ using ShippingProAPICollection.Models;
 using ShippingProAPICollection.Models.Entities;
 using ShippingProAPICollection.Models.Error;
 using ShippingProAPICollection.Models.Utils;
+using ShippingProAPICollection.Provider.DHL.Entities;
 using ShippingProAPICollection.Provider.DPD.Entities;
 using ShippingProAPICollection.Provider.GLS.Entities.Validation;
 
@@ -95,14 +96,19 @@ namespace ShippingProAPICollection.Provider.DPD
             return ShippingCancelResult.CANCLED;
         }
 
-        public Task<ValidationReponse> ValidateLabel(RequestShipmentBase request, CancellationToken cancelToken)
+        public async Task<ValidationReponse> ValidateLabel(RequestShipmentBase request, CancellationToken cancelToken)
         {
             throw new DPDException(ShippingErrorCode.NOT_AVAILABLE, "Feature not available for DPD");
         }
 
-        public Task<uint> GetEstimatedDeliveryDays(RequestShipmentBase request, CancellationToken cancelToken)
+        public async Task<uint> GetEstimatedDeliveryDays(RequestShipmentBase request, CancellationToken cancelToken)
         {
             throw new DPDException(ShippingErrorCode.NOT_AVAILABLE, "Feature not available for DPD");
+        }
+
+        public async Task ConfirmShipment(string parcelId, CancellationToken cancelToken)
+        {
+            throw new DHLException(ShippingErrorCode.NOT_AVAILABLE, "Feature not available for DPD");
         }
 
         /// <summary>

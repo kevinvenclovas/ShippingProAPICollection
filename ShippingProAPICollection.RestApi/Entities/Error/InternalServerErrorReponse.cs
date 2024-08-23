@@ -1,17 +1,15 @@
-﻿using ShippingProAPICollection.Models.Error;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 
 namespace ShippingProAPICollection.RestApi.Entities.Error
 {
     public class InternalServerErrorReponse
     {
-        public required ShippingProviderException ProviderException { get; set; }
+        public required string ErrorMessages { get; set; }
 
         [SetsRequiredMembers]
-        public InternalServerErrorReponse(ShippingProviderException _providerException)
+        public InternalServerErrorReponse(string _errorMessages)
         {
-            ProviderException = _providerException;
+            ErrorMessages = _errorMessages;
         }
-
     }
 }

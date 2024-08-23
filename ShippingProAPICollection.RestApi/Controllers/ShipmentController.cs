@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using ShippingProAPICollection.Models;
 using ShippingProAPICollection.Provider;
-using ShippingProAPICollection.Provider.GLS.Entities.Validation;
 using ShippingProAPICollection.RestApi.Entities;
 using ShippingProAPICollection.RestApi.Entities.DTOs;
 using ShippingProAPICollection.RestApi.Entities.Error;
@@ -83,6 +82,22 @@ namespace ShippingProAPICollection.RestApi.Controllers
         {
             var validationRespone = await shippingProAPICollectionService.ValidateLabel(request);
             return Ok(validationRespone);
+        }
+
+        /// <summary>
+        /// Ein label bestätigen und abschließen
+        /// Confirm shipping label
+        /// </summary>
+        [HttpPost]
+        [Route("label/confirm")]
+        [EnableCors("Intern")]
+        [ProducesResponseType(typeof(InternalServerErrorReponse), (int)HttpStatusCode.InternalServerError)]
+        [ProducesResponseType(typeof(BadRequestReponse), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(UnprocessableEntityResponse), (int)HttpStatusCode.UnprocessableEntity)]
+        public async Task<IActionResult> ConfirmShippingLabel([FromBody, BindRequired] ConfirmShippingLabelRequest request)
+        {
+            await shippingProAPICollectionService.Confirm(request.ContractID, request.ConfirmId);
+            return Ok();
         }
 
         /// <summary>

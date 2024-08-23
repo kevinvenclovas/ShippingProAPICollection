@@ -201,12 +201,17 @@ namespace ShippingProAPICollection.Provider.DHL
 
         }
         
-        public Task<ValidationReponse> ValidateLabel(RequestShipmentBase request, CancellationToken cancelToken)
+        public async Task<ValidationReponse> ValidateLabel(RequestShipmentBase request, CancellationToken cancelToken)
         {
             throw new DHLException(ShippingErrorCode.NOT_AVAILABLE, "Feature not available for DHL");
         }
 
-        public Task<uint> GetEstimatedDeliveryDays(RequestShipmentBase request, CancellationToken cancelToken)
+        public async Task<uint> GetEstimatedDeliveryDays(RequestShipmentBase request, CancellationToken cancelToken)
+        {
+            throw new DHLException(ShippingErrorCode.NOT_AVAILABLE, "Feature not available for DHL");
+        }
+
+        public async Task ConfirmShipment(string parcelId, CancellationToken cancelToken)
         {
             throw new DHLException(ShippingErrorCode.NOT_AVAILABLE, "Feature not available for DHL");
         }

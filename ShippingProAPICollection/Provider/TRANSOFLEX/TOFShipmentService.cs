@@ -7,6 +7,7 @@ using ShippingProAPICollection.Models.Error;
 using ShippingProAPICollection.Models.Utils;
 using ShippingProAPICollection.Provider.TRANSOFLEX.Entities;
 using ShippingProAPICollection.Provider.TRANSOFLEX.Entities.Cancel;
+using ShippingProAPICollection.Provider.TRANSOFLEX.Entities.Confirm;
 using ShippingProAPICollection.Provider.TRANSOFLEX.Entities.Create;
 using ShippingProAPICollection.Provider.TRANSOFLEX.Entities.Create.Response;
 using ShippingProAPICollection.Provider.TRANSOFLEX.Entities.Login;
@@ -158,6 +159,25 @@ namespace ShippingProAPICollection.Provider.TRANSOFLEX
         public async Task<uint> GetEstimatedDeliveryDays(RequestShipmentBase request, CancellationToken cancelToken)
         {
             throw new TOFException(ShippingErrorCode.NOT_AVAILABLE, "Feature not available for TOF");
+        }
+
+        public async Task ConfirmShipment(string avisoShipmentId, CancellationToken cancelToken)
+        {
+            ConfirmShipmentRequest cancelRequest = new ConfirmShipmentRequest()
+            {
+                SessionToken = await GetAuthToken(),
+                AvisoShipmentId = avisoShipmentId
+            };
+
+            RestResponse<CreatedShipmentResponse> response = await CallApi<CreatedShipmentResponse>(
+                new Uri(string.Format("{0}/order/v1/customer/shipment/confirm", providerSettings.ApiDomain)),
+                Method.Post,
+                cancelRequest,
+                BodyType.XML,
+                cancelToken
+                );
+
+            HTTPReponseUtils.CheckHttpResponse<TOFException>(response.Content ?? "Unknow", cancelRequest, response);
         }
 
         /// <summary>

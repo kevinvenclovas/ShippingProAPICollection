@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Newtonsoft.Json;
 using ShippingProAPICollection.Models.Error;
 using ShippingProAPICollection.RestApi.Entities.Error;
 using System.Net;
@@ -26,13 +25,7 @@ namespace ShippingProAPICollection.RestApi.Extensions
 
                         context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                         context.HttpContext.Response.ContentType = "application/json";
-                        context.Result = new JsonResult(new InternalServerErrorReponse(shippingProviderException));
-                        break;
-                    case JsonSerializationException jsonSerializationException:
-                        var exceptionMessage = jsonSerializationException.InnerException != null ? jsonSerializationException.InnerException.Message : jsonSerializationException.Message;
-                        context.HttpContext.Response.StatusCode = (int)HttpStatusCode.UnprocessableEntity;
-                        context.HttpContext.Response.ContentType = "application/json";
-                        context.Result = new JsonResult(new BadRequestReponse(exceptionMessage));
+                        context.Result = new JsonResult(new BadRequestReponse(shippingProviderException));
                         break;
                     default:
 
@@ -40,7 +33,7 @@ namespace ShippingProAPICollection.RestApi.Extensions
                         context.HttpContext.Response.ContentType = "application/json";
                         if (context.Exception != null)
                         {
-                            context.Result = new JsonResult(new BadRequestReponse(context.Exception.Message));
+                            context.Result = new JsonResult(new InternalServerErrorReponse(context.Exception.Message));
                         }
                         break;
                 }

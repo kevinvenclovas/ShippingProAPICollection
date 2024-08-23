@@ -1,15 +1,19 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using ShippingProAPICollection.Models.Error;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ShippingProAPICollection.RestApi.Entities.Error
 {
+
     public class BadRequestReponse
     {
-        public required string ErrorMessages { get; set; }
+        public required ShippingProviderException ProviderException { get; set; }
 
         [SetsRequiredMembers]
-        public BadRequestReponse(string _errorMessages)
+        public BadRequestReponse(ShippingProviderException _providerException)
         {
-            ErrorMessages = _errorMessages;
+            ProviderException = _providerException;
         }
+
     }
+
 }

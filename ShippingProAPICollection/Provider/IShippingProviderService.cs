@@ -39,5 +39,12 @@ namespace ShippingProAPICollection.Provider
         /// <param name="cancelToken"></param>
         /// <returns></returns>
         public Task<uint> GetEstimatedDeliveryDays(RequestShipmentBase request, CancellationToken cancelToken);
+
+        /// <summary>
+        /// Confirm shipment
+        /// </summary>
+        /// <param name="confirmId"></param>
+        /// <returns></returns>
+        public Task ConfirmShipment(string confirmId, CancellationToken cancelToken);
     }
 }
