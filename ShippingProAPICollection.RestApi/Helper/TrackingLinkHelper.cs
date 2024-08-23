@@ -3,6 +3,7 @@ using ShippingProAPICollection.Provider;
 using ShippingProAPICollection.Provider.DHL;
 using ShippingProAPICollection.Provider.DPD;
 using ShippingProAPICollection.Provider.GLS;
+using ShippingProAPICollection.Provider.TRANSOFLEX;
 
 namespace ShippingProAPICollection.RestApi.Helper
 {
@@ -48,7 +49,8 @@ namespace ShippingProAPICollection.RestApi.Helper
                     {
                         return String.Format("https://tracking.dpd.de/parcelstatus?query={0}&locale=en_DE", dpdTrackingGroupId);
                     }
-
+                case TOFShipmentRequestModel:
+                    return String.Format("https://www.trans-o-flex.com/sendungsverfolgung/tracking?ref={0}&type=ref&zip={1}&streetno={2}", labelReponse.CancelId, request.PostCode, request.StreetNumber);
                 default:
                     return "";
             }

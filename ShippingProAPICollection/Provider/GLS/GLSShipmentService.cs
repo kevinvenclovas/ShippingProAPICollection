@@ -4,6 +4,7 @@ using RestSharp.Authenticators;
 using ShippingProAPICollection.Models;
 using ShippingProAPICollection.Models.Entities;
 using ShippingProAPICollection.Models.Error;
+using ShippingProAPICollection.Models.Utils;
 using ShippingProAPICollection.Provider.GLS.Entities;
 using ShippingProAPICollection.Provider.GLS.Entities.Cancel;
 using ShippingProAPICollection.Provider.GLS.Entities.Create;
@@ -67,7 +68,7 @@ namespace ShippingProAPICollection.Provider.GLS
                         ParcelNumber = response.Data.CreatedShipment.ParcelData[i].ParcelNumber,
                         Label = response.Data.CreatedShipment.PrintData[i].Data,
                         LabelType = GLSRequest.ServiceType == GLSServiceType.SHOPRETURN ? ShippingLabelType.SHOPRETURN : (request.IsExpress() ? ShippingLabelType.EXPRESS : ShippingLabelType.NORMAL),
-                        Weight = request.GetPackageWeight()
+                        Weight = request.Items[i].Weight
                     });
                 }
             }
@@ -95,7 +96,7 @@ namespace ShippingProAPICollection.Provider.GLS
                 case "SCANNED":
                     return ShippingCancelResult.ALREADY_IN_USE;
                 default:
-                    throw new GLSException(ShippingErrorCode.UNKNOW, "Unknow cancel reponse", new { payload = cancelId, respone = response.Data.Result });
+                    throw new GLSException(ShippingErrorCode.UNKNOW, "Unknow cancel reponse", new { payload = cancelId, response = response.Data.Result });
             }
 
         }
@@ -120,7 +121,7 @@ namespace ShippingProAPICollection.Provider.GLS
 
             if (response.Data.Success == true) return new ValidationReponse() { Success = true };
            
-            List<ValidationReponseIssue> reponseIssues = new List<ValidationReponseIssue>();
+            List<GLSValidationReponseIssue> reponseIssues = new List<GLSValidationReponseIssue>();
             Dictionary<string, ValidationIssue> validationErrors = new Dictionary<string, ValidationIssue>();
 
             response.Data.ValidationResult?.Issues?.ForEach(x => validationErrors.Add(x.Rule ?? "", x));
@@ -130,42 +131,42 @@ namespace ShippingProAPICollection.Provider.GLS
                 switch (validationErrorKey.Key)
                 {
                     case "SHIPMENT_VALID_INCOTERM_IF_NEEDED":
-                        reponseIssues.Add(new ValidationReponseIssue() { ErrorCode = ShippingErrorCode.GLS_INCOTERM_ERROR, Message = "Es wird ein gültiger Incoterm für die Sendung benötigt." });
+                        reponseIssues.Add(new GLSValidationReponseIssue() { ErrorCode = ShippingErrorCode.GLS_INCOTERM_ERROR, Message = "Es wird ein gültiger Incoterm für die Sendung benötigt." });
                         break;
                     case "ARTICLES_PRODUCT_MUST_BE_SET":
-                        reponseIssues.Add(new ValidationReponseIssue() { ErrorCode = ShippingErrorCode.GLS_PRODUCT_CANNOT_USE_ERROR, Message = "GLS-Produkt kann für die Lieferadresse nicht angewandt werden." });
+                        reponseIssues.Add(new GLSValidationReponseIssue() { ErrorCode = ShippingErrorCode.GLS_PRODUCT_CANNOT_USE_ERROR, Message = "GLS-Produkt kann für die Lieferadresse nicht angewandt werden." });
                         break;
                     case "ARTICLES_EXPRESS_SATURDAY":
-                        reponseIssues.Add(new ValidationReponseIssue() { ErrorCode = ShippingErrorCode.GLS_NEXT_DAY_NOT_SATURDAY_ERROR, Message = "Nächster Werktag ist nicht Samstag. Service kann heute nicht gebucht werden." });
+                        reponseIssues.Add(new GLSValidationReponseIssue() { ErrorCode = ShippingErrorCode.GLS_NEXT_DAY_NOT_SATURDAY_ERROR, Message = "Nächster Werktag ist nicht Samstag. Service kann heute nicht gebucht werden." });
                         break;
                     case "SHIPMENT_VALID_ROUTING":
-                        reponseIssues.Add(new ValidationReponseIssue() { ErrorCode = ShippingErrorCode.GLS_ROUTING_ERROR, Message = "Kein gültiges Routing mit GLS möglich: " + (validationErrorKey.Value?.Parameters?[0] ?? "UNKNOW") });
+                        reponseIssues.Add(new GLSValidationReponseIssue() { ErrorCode = ShippingErrorCode.GLS_ROUTING_ERROR, Message = "Kein gültiges Routing mit GLS möglich: " + (validationErrorKey.Value?.Parameters?[0] ?? "UNKNOW") });
                         break;
                     case "ADDRESS_VALID_ZIPCODE":
-                        reponseIssues.Add(new ValidationReponseIssue() { ErrorCode = ShippingErrorCode.GLS_POSTCODE_ERROR, Message = "Keine gültige Postleitzahl vorhanden." });
+                        reponseIssues.Add(new GLSValidationReponseIssue() { ErrorCode = ShippingErrorCode.GLS_POSTCODE_ERROR, Message = "Keine gültige Postleitzahl vorhanden." });
                         break;
                     case "ARTICLES_PRODUCT_WEIGHT":
-                        reponseIssues.Add(new ValidationReponseIssue() { ErrorCode = ShippingErrorCode.GLS_WEIGHT_ERROR, Message = "Gewicht ist zu gering oder zu hoch für dieses Produkt." });
+                        reponseIssues.Add(new GLSValidationReponseIssue() { ErrorCode = ShippingErrorCode.GLS_WEIGHT_ERROR, Message = "Gewicht ist zu gering oder zu hoch für dieses Produkt." });
                         break;
                     case "ARTICLE_COMBINATIONS":
-                        reponseIssues.Add(new ValidationReponseIssue() { ErrorCode = ShippingErrorCode.GLS_ARTICLE_COMBINATIONS_ERROR, Message = "GLS-Produktkombination können nicht zusammen gebucht werden." });
+                        reponseIssues.Add(new GLSValidationReponseIssue() { ErrorCode = ShippingErrorCode.GLS_ARTICLE_COMBINATIONS_ERROR, Message = "GLS-Produktkombination können nicht zusammen gebucht werden." });
                         break;
                     case "ARTICLES_DESTINATION_EXCLUSIONS":
-                        reponseIssues.Add(new ValidationReponseIssue() { ErrorCode = ShippingErrorCode.GLS_ARTICLE_DESTINATION_EXCLUSION_ERROR, Message = "GLS-Service und Produkt sind zur Lieferadresse nicht möglich" });
+                        reponseIssues.Add(new GLSValidationReponseIssue() { ErrorCode = ShippingErrorCode.GLS_ARTICLE_DESTINATION_EXCLUSION_ERROR, Message = "GLS-Service und Produkt sind zur Lieferadresse nicht möglich" });
                         break;
                     case "COMMON":
-                        reponseIssues.Add(new ValidationReponseIssue() { ErrorCode = ShippingErrorCode.GLS_COMMON_ERROR, Message = $"GLS-Labeldruck einfacher Fehler aufgetreten: Location: {validationErrorKey.Value?.Location ?? "UNKNOW" } Message: {validationErrorKey.Value?.Parameters?[0] ?? "UNKNOW"} " });
+                        reponseIssues.Add(new GLSValidationReponseIssue() { ErrorCode = ShippingErrorCode.GLS_COMMON_ERROR, Message = $"GLS-Labeldruck einfacher Fehler aufgetreten: Location: {validationErrorKey.Value?.Location ?? "UNKNOW" } Message: {validationErrorKey.Value?.Parameters?[0] ?? "UNKNOW"} " });
                         break;
                     case "ARTICLES_VALID_FOR_COUNTRY":
-                        reponseIssues.Add(new ValidationReponseIssue() { ErrorCode = ShippingErrorCode.GLS_ARTICLE_COMBINATIONS_ERROR, Message = $"Artikelkombination ist in diesem Land nicht verfügbar" });
+                        reponseIssues.Add(new GLSValidationReponseIssue() { ErrorCode = ShippingErrorCode.GLS_ARTICLE_COMBINATIONS_ERROR, Message = $"Artikelkombination ist in diesem Land nicht verfügbar" });
                         break;
                     default:
-                        reponseIssues.Add(new ValidationReponseIssue() { ErrorCode = ShippingErrorCode.UNKNOW, Message = "GLS-Labeldruck nicht abgedeckter Fehler entdeckt: " + validationErrorKey.Key });
+                        reponseIssues.Add(new GLSValidationReponseIssue() { ErrorCode = ShippingErrorCode.UNKNOW, Message = "GLS-Labeldruck nicht abgedeckter Fehler entdeckt: " + validationErrorKey.Key });
                         break;
                 }
             }
 
-            return new ValidationReponse() { Success = true, ValidationIssues = reponseIssues };
+            return new GLSValidationReponse() { Success = true, ValidationIssues = reponseIssues };
 
         }
 
@@ -251,49 +252,16 @@ namespace ShippingProAPICollection.Provider.GLS
 
             var response = await client.ExecuteAsync<T>(clientRequest, cancelToken).ConfigureAwait(false);
 
-            CheckHttpResponse<T>(json, response);
+            var reponseMessage = response.Headers?.ToList().FirstOrDefault(x => x.Name != null && x.Name.Equals("message"))?.Value?.ToString() ?? "Unknow";
+            HTTPReponseUtils.CheckHttpResponse<GLSException>(reponseMessage, json, response);
+
+            if (response.Data == null)
+            {
+                throw new GLSException(ShippingErrorCode.UNKNOW, "No Data available in response", new { payload = json, response = response.Content });
+            }
 
             return response;
 
-        }
-
-        /// <summary>
-        /// Check the http reponse status
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="payload"></param>
-        /// <param name="response"></param>
-        /// <exception cref="GLSException"></exception>
-        private void CheckHttpResponse<T>(object payload, RestResponse<T> response)
-        {
-            if (response.StatusCode != System.Net.HttpStatusCode.OK)
-            {
-                //var glsErrorCode = response.Headers?.ToList().FirstOrDefault(x => x.Name != null && x.Name.Equals("error"))?.Value?.ToString() ?? "Unknow";
-                var message = response.Headers?.ToList().FirstOrDefault(x => x.Name != null && x.Name.Equals("message"))?.Value?.ToString() ?? "Unknow";
-
-                ShippingErrorCode errorCode = ShippingErrorCode.UNKNOW;
-
-                if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
-                {
-                    errorCode = ShippingErrorCode.BAD_REQUEST_ERROR;
-                }
-                else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-                {
-                    errorCode = ShippingErrorCode.UNAUTHORIZED;
-                }
-                else if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
-                {
-                    errorCode = ShippingErrorCode.INTERNAL_SERVER_ERROR;
-                }
-                else
-                {
-                    throw new GLSException(ShippingErrorCode.UNKNOW, response.ErrorMessage + "<------>" + response.Content, payload);
-                }
-                 
-                throw new GLSException(errorCode, message, payload);
-            }
-
-            if (response.Data == null) throw new GLSException(ShippingErrorCode.UNKNOW, "No Data available in response", payload);
         }
 
         /// <summary>
@@ -303,8 +271,6 @@ namespace ShippingProAPICollection.Provider.GLS
         /// <returns></returns>
         private Shipment CreateRequestModel(GLSShipmentRequestModel request)
         {
-
-            float packageWeight = request.GetPackageWeight();
 
             List<ShipmentUnit> units = new List<ShipmentUnit>();
 
@@ -326,11 +292,11 @@ namespace ShippingProAPICollection.Provider.GLS
             }
 
             // Create shipment units
-            for (int i = 0; i < request.LabelCount; i++)
+            for (int i = 0; i < request.Items.Count; i++)
             {
                 units.Add(new ShipmentUnit()
                 {
-                    Weight = Convert.ToDecimal(packageWeight),
+                    Weight = Convert.ToDecimal(request.Items[i].Weight),
                     Note1 = request.Note1 ?? "",
                     Note2 = request.Note2 ?? "",
                     ShipmentUnitReference = shipmentUnitReference.ToArray(),
@@ -415,7 +381,7 @@ namespace ShippingProAPICollection.Provider.GLS
                     service.Service = new Saturday1200Service();
                     break;
                 case GLSServiceType.SHOPRETURN:
-                    service.ShopReturn = new ShopReturnService() { NumberOfLabels = request.LabelCount };
+                    service.ShopReturn = new ShopReturnService() { NumberOfLabels = request.Items.Count };
                     break;
                 default:
                     break;

@@ -1,10 +1,10 @@
 ﻿using JsonSubTypes;
 using Newtonsoft.Json;
-using System.ComponentModel.DataAnnotations;
 using ShippingProAPICollection.Models.Error;
 using ShippingProAPICollection.Provider.DHL;
 using ShippingProAPICollection.Provider.DPD;
 using ShippingProAPICollection.Provider.GLS;
+using ShippingProAPICollection.Provider.TRANSOFLEX;
 
 namespace ShippingProAPICollection.Provider
 {
@@ -12,6 +12,7 @@ namespace ShippingProAPICollection.Provider
     [JsonSubtypes.KnownSubType(typeof(GLSShipmentRequestModel), "GLS")]
     [JsonSubtypes.KnownSubType(typeof(DPDShipmentRequestModel), "DPD")]
     [JsonSubtypes.KnownSubType(typeof(DHLShipmentRequestModel), "DHL")]
+    [JsonSubtypes.KnownSubType(typeof(TOFShipmentRequestModel), "TRANSOFLEX")]
     public abstract class RequestShipmentBase
     {
         public abstract string ProviderType { get; }
@@ -98,19 +99,10 @@ namespace ShippingProAPICollection.Provider
         public string? EMail { get; set; }
 
         /// <summary>
-        /// Gewicht der gesamten Fracht in KG |
-        /// Weight of the total freight in KG 
+        /// Elemente der Lieferung
+        /// Items of the shipment
         /// </summary>
-        /// <example>5</example>
-        public required float Weight { get; set; }
-
-        /// <summary>
-        /// Auf wieviele Label soll die Fracht aufgeteilt werden? |
-        /// How many labels
-        /// </summary>
-        /// <example>1</example>
-        [Range(1, 99)]
-        public required uint LabelCount { get; set; }
+        public required List<RequestShipmentItem> Items { get; set; }
 
         /// <summary>
         /// Kundennummer falls vorhanden |
@@ -150,22 +142,13 @@ namespace ShippingProAPICollection.Provider
 
         public virtual void Validate()
         {
-            if (LabelCount <= 0) throw new ShipmentRequestLabelCountException(LabelCount);
+            if ((Items?.Count ?? 0) <= 0) throw new ShipmentRequestLabelCountException(0);
             if (Country.Length != 2) throw new ShipmentRequestNoValidStringLengthException("Country", 2, 2);
 
-            if (Weight <= 0) throw new ShipmentRequestWeightException(1, MaxPackageWeight, 0);
-            if (GetPackageWeight() > MaxPackageWeight) throw new ShipmentRequestWeightException(1, MaxPackageWeight, Weight / LabelCount);
-        }
-
-        /// <summary>
-        /// Get the single package weight of the request
-        /// </summary>
-        /// <returns></returns>
-        public virtual float GetPackageWeight()
-        {
-            float packageWeight = Weight / LabelCount;
-            var result = (float)Math.Round(packageWeight, 2);
-            return result < 1 ? 1 : result;
+            foreach (var item in Items)
+            {
+                if (item.Weight > MaxPackageWeight) throw new ShipmentRequestWeightException(1, MaxPackageWeight, item.Weight);
+            }
         }
 
         /// <summary>
@@ -177,5 +160,16 @@ namespace ShippingProAPICollection.Provider
         {
             throw new NotImplementedException();
         }
+    }
+
+
+    public class RequestShipmentItem
+    { 
+        /// <summary>
+        /// Gewicht des Paketes
+        /// Weight of the package
+        /// </summary>
+        /// <example>5.0</example>
+        public required float Weight { get; set; }
     }
 }

@@ -21,5 +21,8 @@ namespace ShippingProAPICollection.Models.Error
         GLS_ARTICLE_COMBINATIONS_ERROR,
         GLS_COMMON_ERROR,
         GLS_ARTICLE_DESTINATION_EXCLUSION_ERROR,
+        TOF_LOGIN_ERROR,
+        NOT_FOUND,
+        TOF_DOWNLOAD_PDF_ERROR,
     }
 }

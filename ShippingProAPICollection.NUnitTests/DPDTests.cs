@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using ShippingProAPICollection.Models.Entities;
+using ShippingProAPICollection.Provider;
 using ShippingProAPICollection.Provider.DPD;
 using ShippingProAPICollection.Provider.DPD.Entities;
 
@@ -20,8 +21,7 @@ namespace ShippingProAPICollection.NUnitTests
             var request = new DPDShipmentRequestModel("DPD")
             {
                 ServiceProduct = DPDProductType.CL,
-                Weight = 0.5f,
-                LabelCount = 1,
+                Items = [new RequestShipmentItem() { Weight = 0.5f }],
                 Adressline1 = "Max Mustermann",
                 Country = "DE",
                 City = "Ellwangen",
@@ -51,8 +51,7 @@ namespace ShippingProAPICollection.NUnitTests
             var request = new DPDShipmentRequestModel("DPD")
             {
                 ServiceProduct = DPDProductType.CL,
-                Weight = 2f,
-                LabelCount = 2,
+                Items = [new RequestShipmentItem() { Weight = 1f }, new RequestShipmentItem() { Weight = 1f }],
                 Adressline1 = "Max Mustermann",
                 Country = "DE",
                 City = "Ellwangen",
@@ -83,8 +82,7 @@ namespace ShippingProAPICollection.NUnitTests
             var request = new DPDShipmentRequestModel("DPD")
             {
                 ServiceProduct = DPDProductType.CL,
-                Weight = 1f,
-                LabelCount = 1,
+                Items = [new RequestShipmentItem() { Weight = 1f }],
                 Adressline1 = "Max Mustermann",
                 Country = "DE",
                 City = "Ellwangen",

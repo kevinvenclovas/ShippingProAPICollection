@@ -68,16 +68,17 @@ namespace ShippingProAPICollection.Provider.DPD
                 }
                 else
                 {
-                    
-                    foreach (parcelInformationType i in shipment.parcelInformation)
+                    for (int i = 0; i < shipment.parcelInformation.Length; i++)
                     {
+                        parcelInformationType parcelInfo = shipment.parcelInformation[i];
+
                         labels.Add(new RequestShippingLabelResponse()
                         {
-                            ParcelNumber = i.parcelLabelNumber,
-                            CancelId = i.parcelLabelNumber,
-                            Label = ByteUtils.MergePDFByteToOnePDF(i.output.Select(x => x.content).ToList()),
+                            ParcelNumber = parcelInfo.parcelLabelNumber,
+                            CancelId = parcelInfo.parcelLabelNumber,
+                            Label = ByteUtils.MergePDFByteToOnePDF(parcelInfo.output.Select(x => x.content).ToList()),
                             LabelType = DPDRequest.ServiceType == DPDServiceType.SHOPRETURN ? ShippingLabelType.SHOPRETURN : (request.IsExpress() ? ShippingLabelType.EXPRESS : ShippingLabelType.NORMAL),
-                            Weight = request.GetPackageWeight(),
+                            Weight = request.Items[i].Weight,
                             AdditionalValues = new Dictionary<string, object> { ["REQUEST_ID"] = shipment.mpsId }
                         });
                     }
@@ -185,12 +186,9 @@ namespace ShippingProAPICollection.Provider.DPD
 
             List<parcel> parcels = new List<parcel>();
 
-            float packageWeight = request.GetPackageWeight();
-
             int grammfactor = 100;
-            int packageWeightGramm = ((int)packageWeight * grammfactor);
             
-            for (int i = 0; i < request.LabelCount; i++)
+            for (int i = 0; i < request.Items.Count; i++)
             {
                 parcels.Add(
 
@@ -198,7 +196,7 @@ namespace ShippingProAPICollection.Provider.DPD
                     {
                         customerReferenceNumber1 = request.InvoiceReference ?? "",
                         customerReferenceNumber2 = "KNr: " + request.CustomerReference,
-                        weight = request.ServiceType == DPDServiceType.SHOPRETURN ? 1 : packageWeightGramm,
+                        weight = request.ServiceType == DPDServiceType.SHOPRETURN ? 1 : ((int)request.Items[i].Weight * grammfactor),
                         weightSpecified = request.ServiceType == DPDServiceType.SHOPRETURN ? false : true,
                         returns = request.ServiceType == DPDServiceType.SHOPRETURN,
                         returnsSpecified = request.ServiceType == DPDServiceType.SHOPRETURN,

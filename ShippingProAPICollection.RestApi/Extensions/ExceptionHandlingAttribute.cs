@@ -24,7 +24,7 @@ namespace ShippingProAPICollection.RestApi.Extensions
                 {
                     case ShippingProviderException shippingProviderException:
 
-                        context.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                        context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                         context.HttpContext.Response.ContentType = "application/json";
                         context.Result = new JsonResult(new InternalServerErrorReponse(shippingProviderException));
                         break;
@@ -36,7 +36,7 @@ namespace ShippingProAPICollection.RestApi.Extensions
                         break;
                     default:
 
-                        context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                        context.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                         context.HttpContext.Response.ContentType = "application/json";
                         if (context.Exception != null)
                         {

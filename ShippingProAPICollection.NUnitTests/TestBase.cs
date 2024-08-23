@@ -4,6 +4,7 @@ using ShippingProAPICollection.Models;
 using ShippingProAPICollection.Provider.DHL;
 using ShippingProAPICollection.Provider.DPD;
 using ShippingProAPICollection.Provider.GLS;
+using ShippingProAPICollection.Provider.TRANSOFLEX;
 using System.Reflection;
 
 namespace ShippingProAPICollection.NUnitTests
@@ -37,7 +38,7 @@ namespace ShippingProAPICollection.NUnitTests
 
             ShippingProAPICollectionSettings providerSettings = new ShippingProAPICollectionSettings(accountSettings);
 
-            GLSSettings GLSSettings = new GLSSettings()
+            GLSSettings glsSettings = new GLSSettings()
             {
                 ApiDomain = "https://shipit-wbm-test01.gls-group.eu:443",
                 ContactID = "276a45fkqM",
@@ -45,7 +46,7 @@ namespace ShippingProAPICollection.NUnitTests
                 Username = "276a45fkqM"
             };
 
-            providerSettings.AddSettings("GLS", GLSSettings);
+            providerSettings.AddSettings("GLS", glsSettings);
 
             DHLSettings dhlSettings = new DHLSettings()
             {
@@ -72,6 +73,16 @@ namespace ShippingProAPICollection.NUnitTests
             };
 
             providerSettings.AddSettings("DPD", dpdSettings);
+
+            TOFSettings tofSetting = new TOFSettings()
+            {
+                ApiDomain = "https://ichwillnurtesten.tof.de",
+                Username = configuration["TOFUser"] ?? "",
+                Password = configuration["TOFPassword"] ?? "",
+                CustomerNr = configuration["TOFCustomerNr"] ?? "",
+            };
+
+            providerSettings.AddSettings("TOF", tofSetting);
 
             services.AddSingleton(providerSettings);
 

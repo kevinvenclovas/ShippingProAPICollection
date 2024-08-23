@@ -5,7 +5,7 @@
 [![Publish Nuget](https://github.com/kevinvenclovas/ShippingProAPICollection/actions/workflows/publish-nuget.yml/badge.svg)](https://github.com/kevinvenclovas/ShippingProAPICollection/actions/workflows/publish-nuget.yml)
 [![NuGet](https://img.shields.io/nuget/v/ShippingProAPICollection.svg)](https://www.nuget.org/packages/ShippingProAPICollection/)
 # Shipping Pro API Collection
-Welcome to our C# library, designed to integrate multiple shipping service APIs into one streamlined solution. This project provides a unified interface for GLS GLS, DHL, and DPD, simplifying the shipping process for developers and businesses. With easy integration, you can handle logistics across different carriers seamlessly. Ideal for enhancing efficiency in e-commerce and logistics operations.
+Welcome to our C# library, designed to integrate multiple shipping service APIs into one streamlined solution. This project provides a unified interface for GLS GLS, DHL, DPD and TOF simplifying the shipping process for developers and businesses. With easy integration, you can handle logistics across different carriers seamlessly. Ideal for enhancing efficiency in e-commerce and logistics operations.
 
  
 ## Provider
@@ -24,7 +24,12 @@ Welcome to our C# library, designed to integrate multiple shipping service APIs 
 	- [X] Login (2.0) ([API Documentation] (https://esolutions.dpd.com/dokumente/LoginService_V2_0.pdf))
 	- [X] Create Shipment
 	- [X] Cancel Shipment
-
+	- [ ] 
+- [X] Trans-o-flex
+	- [X] Login
+	- [X] Create Shipment
+	- [X] Cancel Shipment
+	
 ## Get Started
 Before requesting shipping labels, you must first set up your specific shipping provider settings. This is achieved by injecting these settings as a singleton through dependency injection.
 
@@ -35,7 +40,7 @@ To finalize the setup, register the ShippingProAPICollectionService as a scoped 
 	
 #### GLS GLS
  
-	GLSSettings GLSSettings = new GLSSettings()
+	GLSSettings glsSettings = new GLSSettings()
 	{   
 		 // PLEASE GET IN TOUCH WITH YOUR GLS CONTACT TO GET THE FOLLOWING INFORMATIONS
 	 
@@ -45,7 +50,7 @@ To finalize the setup, register the ShippingProAPICollectionService as a scoped 
 		 Username = "276a45fkqM"
 		 Password = "lXZBIF7uRccyK7Ohr64d",       
 	};
-	providerSettings.AddSettings(GLSSettings);
+	providerSettings.AddSettings("GLS", glsSettings);
 
 #### DHL Parcel DE Shipping
 
@@ -63,7 +68,7 @@ To finalize the setup, register the ShippingProAPICollectionService as a scoped 
 		 APIKey = "",
 		 APILanguage = "de-DE" // en-US or de-DE
 	};
-	providerSettings.AddSettings(dhlSettings);
+	providerSettings.AddSettings("DHL", dhlSettings);
 
 #### DPD
 
@@ -76,7 +81,19 @@ To finalize the setup, register the ShippingProAPICollectionService as a scoped 
 	     Username = "sandboxdpd",
 	     Password = "xMmshh1"
 	};
-	providerSettings.AddSettings(dpdSettings);
+	providerSettings.AddSettings("DPD", dpdSettings);
+
+#### Trans-o-flex
+
+	TOFSettings tofSetting = new TOFSettings()
+	{
+		ApiDomain = "https://ichwillnurtesten.tof.de",
+		Username = configuration["TOFUser"] ?? "",
+		Password = configuration["TOFPassword"] ?? "",
+		CustomerNr = configuration["TOFCustomerNr"] ?? "",
+	};
+	providerSettings.AddSettings("TOF", tofSetting);
+
 
 
 ## Add multiple contract accounts
@@ -106,49 +123,3 @@ At times, you may need to utilize multiple contract accounts from the same provi
      	 Password = "xMmshh1"
 	};
 	providerSettings.AddSettings("DPD2", dpdSettings);
-
-# Docker
-
-## Environment variables
-
-### Address 
-Name | Type | Required | Example
---- | --- | ---| ---
-`ADDRESS_CITY` | String | * | Ellwangen
-`ADDRESS_CONTACT_NAME` | String | * | Kevin Mustermann
-`ADDRESS_COUNTRY_CODE_ISOA2` | String | * | DE
-`ADDRESS_EMAIL` | String | * | kevin.mustermann@gmail.com
-`ADDRESS_NAME` | String | * | Max GmbH
-`ADDRESS_POSTCODE` | String | * | 73479
-`ADDRESS_STREET` | String | * | Max-Straße 15
-`ADDRESS_PHONE` | String | * | 0152012345678
-
-### DPD
-Name | Type | Required | Example
---- | --- | ---| ---
-`DPD_API_DOMAIN` | String | * | ws-stage or ws
-`DPD_API_LANGUAGE` | String | * | de_DE or en_EN
-`DPD_DEPOT_NUMBER` | String | * | 0191
-`DPD_PASSWORD` | String | * | xMmshh1
-`DPD_USERNAME` | String | * | sandboxdpd
-
-### DHL
-Name | Type | Required | Example
---- | --- | ---| ---
-`DHL_API_DOMAIN` | String | * | sandbox or eu
-`DHL_USERNAME` | String | * | sandy_sandbox
-`DPD_PASSWORD` | String | * | pass
-`DHL_INTERNATIONAL_ACCOUNT_NUMBER` | String | * | 33333333335301
-`DHL_NATIONAL_ACCOUNT_NUMBER` | String | * | 33333333330102
-`DHL_LABEL_FORMAT` | String | * | 910-300-410
-`DHL_API_KEY` | String | * | sandboxdpd
-`DHL_API_LANGUAGE` | String | * | de-DE
-
-
-### GLS
-Name | Type | Required | Example
---- | --- | ---| ---
-`GLS_API_DOMAIN` | String | * | https://shipit-wbm-test01.gls-group.eu:443
-`GLS_CONTRACT_ID` | String | * | 276a5fkqM
-`GLS_PASSWORD` | String | * | lXZBIF7uccyK7Ohr64d
-`GLS_USERNAME` | String | * | 276a5fkqM
