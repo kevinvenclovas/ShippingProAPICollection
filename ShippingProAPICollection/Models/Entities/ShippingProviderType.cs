@@ -5,6 +5,7 @@
         GLS,
         DHL,
         DPD,
-        CUSTOM
+        CUSTOM,
+        TRANSOFLEX
     }
 }

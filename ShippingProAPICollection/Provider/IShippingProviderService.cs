@@ -1,6 +1,5 @@
 ﻿using ShippingProAPICollection.Models;
 using ShippingProAPICollection.Models.Entities;
-using ShippingProAPICollection.Provider.GLS.Entities.Validation;
 
 namespace ShippingProAPICollection.Provider
 {

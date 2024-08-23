@@ -6,13 +6,14 @@ using ShippingProAPICollection.Provider.DHL;
 using ShippingProAPICollection.Provider.DPD;
 using ShippingProAPICollection.Provider.GLS;
 using ShippingProAPICollection.Provider.GLS.Entities.Validation;
+using ShippingProAPICollection.Provider.TRANSOFLEX;
 
 namespace ShippingProAPICollection
 {
     public class ShippingProAPICollectionService
     {
 
-        Dictionary<string, IShippingProviderService> providerServices = new Dictionary<string, IShippingProviderService>();
+        public Dictionary<string, IShippingProviderService> providerServices = new Dictionary<string, IShippingProviderService>();
 
         public ShippingProAPICollectionService(IMemoryCache _cache, ShippingProAPICollectionSettings providerSettings)
         {
@@ -34,6 +35,8 @@ namespace ShippingProAPICollection
                     return new DHLShipmentService(accountSettings, providerSettings);
                 case DPDSettings providerSettings:
                     return new DPDShipmentService(accountSettings, providerSettings, _cache);
+                case TOFSettings providerSettings:
+                    return new TOFShipmentService(accountSettings, providerSettings, _cache);
                 case CustomProviderSettings providerSettings:
                     return providerSettings.CreateProviderService(accountSettings, _cache);
                 default:  throw new Exception("provider not available");

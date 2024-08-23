@@ -1,7 +1,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using ShippingProAPICollection.Models.Entities;
+using ShippingProAPICollection.Provider;
 using ShippingProAPICollection.Provider.GLS;
 using ShippingProAPICollection.Provider.GLS.Entities;
+using ShippingProAPICollection.Provider.TRANSOFLEX;
 
 namespace ShippingProAPICollection.NUnitTests
 {
@@ -19,8 +21,7 @@ namespace ShippingProAPICollection.NUnitTests
             var request = new GLSShipmentRequestModel("GLS")
             {
                 ServiceProduct = GLSProductType.PARCEL,
-                Weight = 1f,
-                LabelCount = 1,
+                Items = [new RequestShipmentItem() { Weight = 1f }],
                 Adressline1 = "Max Mustermann",
                 Country = "DE",
                 City = "Ellwangen",
@@ -54,8 +55,7 @@ namespace ShippingProAPICollection.NUnitTests
             var request = new GLSShipmentRequestModel("GLS")
             {
                 ServiceProduct = GLSProductType.PARCEL,
-                Weight = 1f,
-                LabelCount = 2,
+                Items = [new RequestShipmentItem() { Weight = 0.5f }, new RequestShipmentItem() { Weight = 0.5f }],
                 Adressline1 = "Max Mustermann",
                 Country = "DE",
                 City = "Ellwangen",
@@ -86,8 +86,7 @@ namespace ShippingProAPICollection.NUnitTests
             var request = new GLSShipmentRequestModel("GLS")
             {
                 ServiceProduct = GLSProductType.PARCEL,
-                Weight = 1f,
-                LabelCount = 1,
+                Items = [new RequestShipmentItem() { Weight = 1f }],
                 Adressline1 = "Max Mustermann",
                 Country = "DE",
                 City = "Ellwangen",
@@ -110,6 +109,8 @@ namespace ShippingProAPICollection.NUnitTests
         /// Create label with return service
         /// </summary>
         /// <returns></returns>
+        /*
+         * No longer available for test user
         [Test]
         public async Task CreateShippingLabelWithReturnService()
         {
@@ -118,8 +119,7 @@ namespace ShippingProAPICollection.NUnitTests
             var request = new GLSShipmentRequestModel("GLS")
             {
                 ServiceProduct = GLSProductType.PARCEL,
-                Weight = 1f,
-                LabelCount = 1,
+                Items = [new RequestShipmentItem() { Weight = 1f }],
                 Adressline1 = "Max Mustermann",
                 Country = "DE",
                 City = "Ellwangen",
@@ -136,7 +136,7 @@ namespace ShippingProAPICollection.NUnitTests
             Assert.That(result.Count() == 1);
             Assert.That(result.FirstOrDefault()?.Label.Length > 0);
         }
-
+        */
 
         /// <summary>
         /// Create label with return service
@@ -150,8 +150,7 @@ namespace ShippingProAPICollection.NUnitTests
             var request = new GLSShipmentRequestModel("GLS")
             {
                 ServiceProduct = GLSProductType.PARCEL,
-                Weight = 1f,
-                LabelCount = 1,
+                Items = [new RequestShipmentItem() { Weight = 1f }],
                 Adressline1 = "Max Mustermann",
                 Country = "DE",
                 City = "Ellwangen",
@@ -180,8 +179,7 @@ namespace ShippingProAPICollection.NUnitTests
             var request = new GLSShipmentRequestModel("GLS")
             {
                 ServiceProduct = GLSProductType.PARCEL,
-                Weight = 1,
-                LabelCount = 2,
+                Items = [new RequestShipmentItem() { Weight = 0.5f }, new RequestShipmentItem() { Weight = 0.5f }],
                 Adressline1 = "Max Mustermann",
                 Country = "DE",
                 City = "Ellwangen",
@@ -216,8 +214,7 @@ namespace ShippingProAPICollection.NUnitTests
             var request = new GLSShipmentRequestModel("GLS")
             {
                 ServiceProduct = GLSProductType.PARCEL,
-                Weight = 1,
-                LabelCount = 2,
+                Items = [new RequestShipmentItem() { Weight = 0.5f }, new RequestShipmentItem() { Weight = 0.5f }],  
                 Adressline1 = "Max Mustermann",
                 Country = "DE",
                 City = "Ellwangen",

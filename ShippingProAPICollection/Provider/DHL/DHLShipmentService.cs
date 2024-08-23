@@ -7,7 +7,6 @@ using ShippingProAPICollection.Models.Entities;
 using ShippingProAPICollection.Models.Error;
 using ShippingProAPICollection.Models.Utils;
 using ShippingProAPICollection.Provider.DHL.Entities;
-using ShippingProAPICollection.Provider.GLS.Entities.Validation;
 
 namespace ShippingProAPICollection.Provider.DHL
 {
@@ -80,15 +79,18 @@ namespace ShippingProAPICollection.Provider.DHL
 
                     List<RequestShippingLabelResponse> labels = new List<RequestShippingLabelResponse>();
 
-                    foreach (ResponseItem c in objectResponse_.Items)
+
+                    for (int i = 0; i < objectResponse_.Items.Count; i++)
                     {
+                        var c = objectResponse_.Items.ElementAt(i);
+
                         labels.Add(new RequestShippingLabelResponse()
                         {
                             Label = Convert.FromBase64String(c.Label.B64),
                             ParcelNumber = c.ShipmentNo,
                             CancelId = c.ShipmentNo,
                             LabelType = request.IsExpress() ? ShippingLabelType.EXPRESS : ShippingLabelType.NORMAL,
-                            Weight = request.GetPackageWeight(),
+                            Weight = request.Items[i].Weight,
                         });
                     }
 
@@ -237,7 +239,7 @@ namespace ShippingProAPICollection.Provider.DHL
             shipmentOrderRequest.Profile = providerSettings.DHLShipmentProfile;
 
             // Build shipment for each requested label
-            for (int i = 0; i < request.LabelCount; i++)
+            for (int i = 0; i < request.Items.Count; i++)
             {
                 Shipment shipment = new Shipment();
 
@@ -253,7 +255,7 @@ namespace ShippingProAPICollection.Provider.DHL
                     Weight = new Weight()
                     {
                         Uom = WeightUom.Kg,
-                        Value = request.GetPackageWeight()
+                        Value = request.Items[i].Weight
                     }
                 };
 

@@ -1,7 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-using ShippingProAPICollection.Models.Utils;
-using ShippingProAPICollection.Models.Entities;
+﻿using ShippingProAPICollection.Models.Entities;
 using ShippingProAPICollection.Models.Error;
+using ShippingProAPICollection.Models.Utils;
 using ShippingProAPICollection.Provider.GLS.Entities;
 
 namespace ShippingProAPICollection.Provider.GLS
@@ -43,7 +42,7 @@ namespace ShippingProAPICollection.Provider.GLS
         public required GLSServiceType ServiceType { get; set; }
 
         /// <summary>
-        /// Ablageort des Paketes -> z.B Briefksten/ Hinter Blumentopf |
+        /// Ablageort des Paketes -> z.B Briefkasten/ Hinter Blumentopf |
         /// Deposit location of the package if ServiceType = DEPOSIT 
         /// </summary>
         /// <example>Briefkasten</example>
