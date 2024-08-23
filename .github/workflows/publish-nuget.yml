@@ -42,7 +42,11 @@ jobs:
       run: dotnet user-secrets init --project ${{ env.PROJECT_NUNIT }}
  
     - name: Add Secrets
-      run: dotnet user-secrets set "DHLAPIKey" ${{ secrets.DHLAPIKEY }} --project ${{ env.PROJECT_NUNIT }}
+      run: |
+          dotnet user-secrets set "DHLAPIKey" ${{ secrets.DHLAPIKEY }} --project ${{ env.PROJECT_NUNIT }}
+          dotnet user-secrets set "TOFUser" ${{ secrets.TOFUSER }} --project ${{ env.PROJECT_NUNIT }}
+          dotnet user-secrets set "TOFPassword" ${{ secrets.TOFPASSWORD }} --project ${{ env.PROJECT_NUNIT }}
+          dotnet user-secrets set "TOFCustomerNr" ${{ secrets.TOFCUSTOMERNR }} --project ${{ env.PROJECT_NUNIT }}
       
     - name: Run Tests
       run: dotnet test --no-restore
