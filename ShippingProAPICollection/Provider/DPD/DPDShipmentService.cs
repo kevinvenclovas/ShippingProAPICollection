@@ -202,7 +202,7 @@ namespace ShippingProAPICollection.Provider.DPD
                     {
                         customerReferenceNumber1 = request.InvoiceReference ?? "",
                         customerReferenceNumber2 = "KNr: " + request.CustomerReference,
-                        weight = request.ServiceType == DPDServiceType.SHOPRETURN ? 1 : ((int)request.Items[i].Weight * grammfactor),
+                        weight = request.ServiceType == DPDServiceType.SHOPRETURN ? 1 : (int)(request.Items[i].Weight * grammfactor),
                         weightSpecified = request.ServiceType == DPDServiceType.SHOPRETURN ? false : true,
                         returns = request.ServiceType == DPDServiceType.SHOPRETURN,
                         returnsSpecified = request.ServiceType == DPDServiceType.SHOPRETURN,
