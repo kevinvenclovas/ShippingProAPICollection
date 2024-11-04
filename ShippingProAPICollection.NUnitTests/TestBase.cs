@@ -51,8 +51,8 @@ namespace ShippingProAPICollection.NUnitTests
             DHLSettings dhlSettings = new DHLSettings()
             {
                 ApiDomain = "sandbox",
-                Password = "pass",
-                Username = "sandy_sandbox",
+                Password = "SandboxPasswort2023!",
+                Username = "user-valid",
                 DHLShipmentProfile = "STANDARD_GRUPPENPROFIL",
                 InternationalAccountNumber = "33333333335301",
                 NationalAccountNumber = "33333333330102",
