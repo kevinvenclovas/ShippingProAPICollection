@@ -22,7 +22,7 @@ namespace ShippingProAPICollection.Provider.DHL.Entities
         /// postcode of the packing station
         /// </summary>
         /// <example>73479</example>
-        public required string ZIPCode { get; set; }
+        public required string PostCode { get; set; }
         /// <summary>
         /// Stadt |
         /// City of the packing station
