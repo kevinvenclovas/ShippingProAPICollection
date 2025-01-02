@@ -185,7 +185,7 @@ namespace ShippingProAPICollection.Provider.DPD
             float packageWeight = request.GetPackageWeight();
 
             int grammfactor = 100;
-            int packageWeightGramm = ((int)packageWeight * grammfactor);
+            int packageWeightGramm = (int)(packageWeight * grammfactor);
             
             for (int i = 0; i < request.LabelCount; i++)
             {
