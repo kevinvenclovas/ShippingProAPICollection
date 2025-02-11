@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using RestSharp;
 using RestSharp.Authenticators;
 using ShippingProAPICollection._Provider.DHL;
@@ -328,6 +328,10 @@ namespace ShippingProAPICollection.Provider.DHL
                     return providerSettings.NationalAccountNumber;
                 case DHLProductType.V53WPAK:
                     return providerSettings.InternationalAccountNumber;
+                case DHLProductType.V62KP:
+                    if(string.IsNullOrWhiteSpace(providerSettings.WarenpostNationalAccountNumber))
+                        throw new Exception("Warenpost national Accountnumber not defined");
+                    return providerSettings.WarenpostNationalAccountNumber;
                 default:
                     throw new Exception("Accountnumber not defined");
             }

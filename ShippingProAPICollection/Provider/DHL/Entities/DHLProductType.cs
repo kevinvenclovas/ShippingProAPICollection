@@ -16,6 +16,11 @@
         /// Normalversand-International |
         /// Normal international shipping
         /// </summary>
-        V53WPAK
+        V53WPAK,
+        /// <summary>
+        /// Kleinpaket (max. 35 x 25 x 8 cm) |
+        /// DHL small package (max. 35 x 25 x 8 cm)
+        /// </summary>
+        V62KP,
     }
 }
