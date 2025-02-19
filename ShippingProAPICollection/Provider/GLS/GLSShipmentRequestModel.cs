@@ -80,7 +80,7 @@ namespace ShippingProAPICollection.Provider.GLS
             if (!Street.RangeLenghtValidation(3, 40)) throw new ShipmentRequestNoValidStringLengthException("Street", 3, 40);
             if (!AmazonOrderId.MaxLenghtValidation(80)) throw new ShipmentRequestNoValidStringLengthException("AmazonOrderId", null, 80);
             
-            if (WithEmailNotification && !EMail.MaxLenghtValidation(40)) throw new ShipmentRequestNoValidStringLengthException("EMail", null, 40);
+            if (WithEmailNotification && !EMail.MaxLenghtValidation(80)) throw new ShipmentRequestNoValidStringLengthException("EMail", null, 80);
             if (!Note1.RangeLenghtValidation(0, 60)) throw new ShipmentRequestNoValidStringLengthException("Note1", null, 60);
             if (!Note2.RangeLenghtValidation(0, 60)) throw new ShipmentRequestNoValidStringLengthException("Note2", null, 60);
             if (ServiceType == GLSServiceType.DEPOSIT && !PlaceOfDeposit.RangeLenghtValidation(1, 60)) throw new ShipmentRequestNoValidStringLengthException("PlaceOfDeposit", 1, 60);
