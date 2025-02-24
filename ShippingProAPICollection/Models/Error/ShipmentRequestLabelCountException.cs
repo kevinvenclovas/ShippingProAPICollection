@@ -2,7 +2,7 @@
 
 namespace ShippingProAPICollection.Models.Error
 {
-    public class ShipmentRequestLabelCountException : Exception
+    public class ShipmentRequestLabelCountException : ShippingProviderException
     {
         public required uint Value { get; set; }
 

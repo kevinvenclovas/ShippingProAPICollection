@@ -2,12 +2,12 @@
 
 namespace ShippingProAPICollection.Models.Error
 {
-    public class ShipmentRequestNoValidStringFormatException : Exception
+    public class ShipmentRequestNoValidStringFormatException : ShippingProviderException
     {
         public required string Value { get; set; }
 
         [SetsRequiredMembers]
-        public ShipmentRequestNoValidStringFormatException(string value) : base()
+        public ShipmentRequestNoValidStringFormatException(string value) : base(null)
         {
             Value = value;
         }

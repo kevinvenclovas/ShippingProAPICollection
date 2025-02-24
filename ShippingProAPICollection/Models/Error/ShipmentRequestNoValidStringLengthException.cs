@@ -2,7 +2,7 @@
 
 namespace ShippingProAPICollection.Models.Error
 {
-    public class ShipmentRequestNoValidStringLengthException : Exception
+    public class ShipmentRequestNoValidStringLengthException : ShippingProviderException
     {
         public int? MinLength { get; set; }
         public int? MaxLength { get; set; }

@@ -186,7 +186,7 @@ namespace ShippingProAPICollection.Provider.TRANSOFLEX
         /// <param name="sessionToken"></param>
         /// <param name="cancelToken"></param>
         /// <returns></returns>
-        /// <exception cref="ShippingProviderException"></exception>
+        /// <exception cref="ShippingProviderErrorCodeException"></exception>
         private async Task Logout(string sessionToken, CancellationToken cancelToken = default)
         {
             var body = new TOFLogout() { SessionToken = sessionToken };
@@ -201,7 +201,7 @@ namespace ShippingProAPICollection.Provider.TRANSOFLEX
 
             if (!(response.StatusCode == System.Net.HttpStatusCode.OK || response.StatusCode == System.Net.HttpStatusCode.Unauthorized))
             {
-                throw new ShippingProviderException(ShippingErrorCode.UNKNOW, response.ErrorMessage + "<------>" + response.Content, body);
+                throw new ShippingProviderErrorCodeException(ShippingErrorCode.UNKNOW, response.ErrorMessage + "<------>" + response.Content, body);
             }
 
             loginStorage.Remove(providerSettings.ContractID);
@@ -213,7 +213,7 @@ namespace ShippingProAPICollection.Provider.TRANSOFLEX
         /// </summary>
         /// <param name="cancelToken"></param>
         /// <returns></returns>
-        /// <exception cref="ShippingProviderException"></exception>
+        /// <exception cref="ShippingProviderErrorCodeException"></exception>
         private async Task<string> LoginToTOF(CancellationToken cancelToken = default)
         {
             string url = string.Format("{0}/order/v1/user/login", providerSettings.ApiDomain);

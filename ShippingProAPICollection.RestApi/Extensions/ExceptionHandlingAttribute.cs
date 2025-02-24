@@ -21,7 +21,7 @@ namespace ShippingProAPICollection.RestApi.Extensions
             {
                 switch (context.Exception)
                 {
-                    case ShippingProviderException shippingProviderException:
+                    case ShippingProviderErrorCodeException shippingProviderException:
 
                         context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                         context.HttpContext.Response.ContentType = "application/json";

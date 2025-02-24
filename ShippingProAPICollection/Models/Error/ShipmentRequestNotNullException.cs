@@ -2,12 +2,12 @@
 
 namespace ShippingProAPICollection.Models.Error
 {
-    public class ShipmentRequestNotNullException : Exception
+    public class ShipmentRequestNotNullException : ShippingProviderException
     {
         public required string Value { get; set; }
 
         [SetsRequiredMembers]
-        public ShipmentRequestNotNullException(string value) : base()
+        public ShipmentRequestNotNullException(string value) : base(null)
         {
             Value = value;
         }

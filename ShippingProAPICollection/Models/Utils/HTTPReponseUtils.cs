@@ -12,8 +12,8 @@ namespace ShippingProAPICollection.Models.Utils
         /// <param name="message"></param>
         /// <param name="payload"></param>
         /// <param name="response"></param>
-        /// <exception cref="ShippingProviderException"></exception>
-        public static void CheckHttpResponse<TException>(string message, object payload, RestResponse response) where TException : ShippingProviderException
+        /// <exception cref="ShippingProviderErrorCodeException"></exception>
+        public static void CheckHttpResponse<TException>(string message, object payload, RestResponse response) where TException : ShippingProviderErrorCodeException
         {
             if (response.StatusCode != System.Net.HttpStatusCode.OK)
             {

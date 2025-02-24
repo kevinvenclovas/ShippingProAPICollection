@@ -6,10 +6,10 @@ namespace ShippingProAPICollection.RestApi.Entities.Error
 
     public class BadRequestReponse
     {
-        public required ShippingProviderException ProviderException { get; set; }
+        public required ShippingProviderErrorCodeException ProviderException { get; set; }
 
         [SetsRequiredMembers]
-        public BadRequestReponse(ShippingProviderException _providerException)
+        public BadRequestReponse(ShippingProviderErrorCodeException _providerException)
         {
             ProviderException = _providerException;
         }

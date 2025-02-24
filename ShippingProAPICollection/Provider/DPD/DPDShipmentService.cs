@@ -246,7 +246,7 @@ namespace ShippingProAPICollection.Provider.DPD
         /// </summary>
         /// <param name="cancelToken"></param>
         /// <returns></returns>
-        /// <exception cref="ShippingProviderException"></exception>
+        /// <exception cref="ShippingProviderErrorCodeException"></exception>
         private async Task<string> LoginToDPD(CancellationToken cancelToken = default)
         {
            
@@ -270,7 +270,7 @@ namespace ShippingProAPICollection.Provider.DPD
             }
             else
             {
-                throw new ShippingProviderException(ShippingErrorCode.UNKNOW, "No auth token available after dpd login");
+                throw new ShippingProviderErrorCodeException(ShippingErrorCode.UNKNOW, "No auth token available after dpd login");
             }
         }
 
