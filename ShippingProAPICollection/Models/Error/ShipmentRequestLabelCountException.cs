@@ -7,7 +7,7 @@ namespace ShippingProAPICollection.Models.Error
         public required uint Value { get; set; }
 
         [SetsRequiredMembers]
-        public ShipmentRequestLabelCountException(uint value)
+        public ShipmentRequestLabelCountException(uint value) : base(null)
         {
             Value = value;
         }

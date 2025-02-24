@@ -9,7 +9,7 @@ namespace ShippingProAPICollection.Models.Error
         public required string Value { get; set; }
 
         [SetsRequiredMembers]
-        public ShipmentRequestNoValidStringLengthException(string value, int? min, int max) : base()
+        public ShipmentRequestNoValidStringLengthException(string value, int? min, int max) : base(null)
         {
             Value = value;
             MinLength = min;
