@@ -5,7 +5,6 @@ using ShippingProAPICollection.Models;
 using ShippingProAPICollection.Models.Entities;
 using ShippingProAPICollection.Models.Error;
 using ShippingProAPICollection.Models.Utils;
-using ShippingProAPICollection.Provider.DHL.Entities;
 using ShippingProAPICollection.Provider.GLS.Entities;
 using ShippingProAPICollection.Provider.GLS.Entities.Cancel;
 using ShippingProAPICollection.Provider.GLS.Entities.Create;
@@ -219,7 +218,7 @@ namespace ShippingProAPICollection.Provider.GLS
 
         public async Task ConfirmShipment(string parcelId, CancellationToken cancelToken)
         {
-            throw new DHLException(ShippingErrorCode.NOT_AVAILABLE, "Feature not available for GLS");
+            throw new GLSException(ShippingErrorCode.NOT_AVAILABLE, "Feature not available for GLS");
         }
 
         /// <summary>
