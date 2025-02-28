@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using RestSharp;
 using RestSharp.Authenticators;
 using ShippingProAPICollection.Models;
@@ -251,7 +252,12 @@ namespace ShippingProAPICollection.Provider.GLS
             string json = JsonConvert.SerializeObject(body, Formatting.Indented, new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore,
+                ContractResolver = new DefaultContractResolver
+                {
+                    NamingStrategy = null
+                }
             });
+
             clientRequest.AddJsonBody(json, apiContentType);
 
             var response = await client.ExecuteAsync<T>(clientRequest, cancelToken).ConfigureAwait(false);
