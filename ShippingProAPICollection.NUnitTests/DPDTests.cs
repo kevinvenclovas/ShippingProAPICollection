@@ -65,6 +65,8 @@ namespace ShippingProAPICollection.NUnitTests
 
             var result = (await shippingCollection.RequestLabel(request));
 
+            File.WriteAllBytes("merged.pdf", result.FirstOrDefault()?.Label);
+
             Assert.That(result.Count() == 2);
             Assert.That(result.FirstOrDefault()?.Label.Length > 0);
         }

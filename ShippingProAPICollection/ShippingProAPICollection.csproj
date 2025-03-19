@@ -37,8 +37,8 @@
 
   <ItemGroup>
     <PackageReference Include="BouncyCastle.Cryptography" Version="2.5.1" />
-    <PackageReference Include="itext.bouncy-castle-adapter" Version="9.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="PDFsharp" Version="6.1.1" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageReference Include="NSwag.ApiDescription.Client" Version="14.2.0">
       <PrivateAssets>all</PrivateAssets>
@@ -55,7 +55,6 @@
     <PackageReference Include="System.ServiceModel.Security" Version="4.10.3" />
     <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="9.0.3" />
     <PackageReference Include="JsonSubTypes" Version="2.0.1" />
-    <PackageReference Include="itext7" Version="9.1.0" />
     <PackageReference Include="System.Text.Json" Version="9.0.3" />
   </ItemGroup>
 
