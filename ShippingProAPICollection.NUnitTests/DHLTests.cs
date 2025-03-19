@@ -3,6 +3,7 @@ using ShippingProAPICollection.Models.Entities;
 using ShippingProAPICollection.Provider;
 using ShippingProAPICollection.Provider.DHL;
 using ShippingProAPICollection.Provider.DHL.Entities;
+using ShippingProAPICollection.Provider.DHL.Entities.VASService;
 
 namespace ShippingProAPICollection.NUnitTests
 {
@@ -90,7 +91,7 @@ namespace ShippingProAPICollection.NUnitTests
                 InvoiceReference = "RE-123456",
                 Phone = "0123456789",
                 ServiceType = DHLServiceType.DEPOSIT,
-                PlaceOfDeposit = "Garden"
+                VASServices = [new VASPlaceOfDepositService("Garden")]
             };
             request.Validate();
 
@@ -175,6 +176,46 @@ namespace ShippingProAPICollection.NUnitTests
                 Assert.That(cancelResult == ShippingCancelResult.CANCLED);
             }
 
+        }
+
+
+        /// <summary>
+        /// Create one label with IdentCheck
+        /// </summary>
+        /// <returns></returns>
+        [Test]
+        public async Task CreateSingleShippingLabelWithIdentCheck()
+        {
+            ShippingProAPICollectionService shippingCollection = _serviceProvider.GetRequiredService<ShippingProAPICollectionService>();
+
+            var request = new DHLShipmentRequestModel("DHL")
+            {
+                ServiceProduct = DHLProductType.V01PAK,
+                Items = [new RequestShipmentItem() { Weight = 0.5f }],
+                Adressline1 = "Max Mustermann",
+                Country = "DE",
+                City = "Ellwangen",
+                Street = "Maxstraße 10",
+                PostCode = "73479",
+                InvoiceReference = "RE-123456",
+                CustomerReference = "RE-123456",
+                Phone = "0123456789",
+                ServiceType = DHLServiceType.NONE,
+                VASServices = [
+                    new VASIdentCheckService(
+                        new DateTimeOffset(1976, 2, 1, 0, 0, 0, TimeSpan.Zero),
+                        "Max",
+                        "Mustermann",
+                         MinimumAge.A16
+                    )
+                ] 
+            };
+            request.Validate();
+
+            var result = (await shippingCollection.RequestLabel(request));
+
+            Assert.That(result.Count() == 1);
+            Assert.That(result.FirstOrDefault()?.Label.Length > 0);
         }
 
     }
