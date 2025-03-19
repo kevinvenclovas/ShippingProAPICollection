@@ -7,6 +7,7 @@ using ShippingProAPICollection.Models.Entities;
 using ShippingProAPICollection.Models.Error;
 using ShippingProAPICollection.Models.Utils;
 using ShippingProAPICollection.Provider.DHL.Entities;
+using ShippingProAPICollection.Provider.DHL.Entities.VASService;
 using ShippingProAPICollection.Provider.GLS.Entities.Validation;
 
 namespace ShippingProAPICollection.Provider.DHL
@@ -243,7 +244,7 @@ namespace ShippingProAPICollection.Provider.DHL
             {
                 Shipment shipment = new Shipment();
 
-                shipment.Product = request.ServiceProduct.ToString();
+                shipment.Product = request.ServiceProduct.ToServiceString();
                 shipment.BillingNumber = GetBillingNumber(request);
                 shipment.ShipDate = DateTimeOffset.Now;
                 shipment.Shipper = shipper;
@@ -259,16 +260,48 @@ namespace ShippingProAPICollection.Provider.DHL
                     }
                 };
 
-                shipment.Services = new VAS()
-                {
-                    PreferredLocation = request.ServiceType == DHLServiceType.DEPOSIT ? request.PlaceOfDeposit : null,
-                };
+                shipment.Services = ResolveVASService(request);
 
                 shipmentOrderRequest.Shipments.Add(shipment);
             }
 
             return shipmentOrderRequest;
 
+        }
+
+        private VAS ResolveVASService(DHLShipmentRequestModel request)
+        {
+            VAS vas = new VAS();
+
+            foreach (var service in request.VASServices)
+            {
+                switch (service)
+                {
+                    case VASPlaceOfDepositService placeOfDepositService:
+                        vas.PreferredLocation = request.ServiceType == DHLServiceType.DEPOSIT ? placeOfDepositService.PlaceOfDeposit : null;
+                        break;
+                    case VASPreferredNeighbourService preferredNeighbourService:
+                        vas.PreferredNeighbour = preferredNeighbourService.PreferredNeighbour;
+                        break;
+                    case VASPreferredLocationService preferredLocationService:
+                        vas.PreferredLocation = preferredLocationService.PreferredLocation;
+                        break;
+                    case VASIdentCheckService identCheckService:
+                        vas.IdentCheck = new VASIdentCheck()
+                        {
+                            DateOfBirth = identCheckService.DateOfBirth,
+                            FirstName = identCheckService.FirstName,
+                            LastName = identCheckService.LastName,
+                            MinimumAge = identCheckService.MinimumAge == MinimumAge.A16 ? VASIdentCheckMinimumAge.A16 : VASIdentCheckMinimumAge.A18,
+                        };
+                        break;
+                    case VASPremiumService:
+                        vas.Premium = true;
+                        break;
+                }
+            }
+
+            return vas;
         }
 
         /// <summary>
