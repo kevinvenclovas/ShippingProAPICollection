@@ -170,7 +170,7 @@ namespace ShippingProAPICollection.Provider.DHL
                         throw new DHLException(ShippingErrorCode.CANNOT_CONVERT_RESPONSE, "Cannot convert reponse to object", new { payload = cancelId, respone = response.Content });
                     }
 
-                    return ShippingCancelResult.CANCLED;
+                    return ShippingCancelResult.CANCELED;
                 }
                 else if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
                 {

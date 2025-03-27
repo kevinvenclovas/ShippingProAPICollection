@@ -93,7 +93,7 @@ namespace ShippingProAPICollection.Provider.DPD
         public async Task<ShippingCancelResult> CancelLabel(string cancelId, CancellationToken cancelToken = default)
         {
             // DPD is fucking crazy and we not need to cancel any labels :)
-            return ShippingCancelResult.CANCLED;
+            return ShippingCancelResult.CANCELED;
         }
 
         public async Task<ValidationReponse> ValidateLabel(RequestShipmentBase request, CancellationToken cancelToken)

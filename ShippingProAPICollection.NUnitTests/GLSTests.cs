@@ -197,7 +197,7 @@ namespace ShippingProAPICollection.NUnitTests
             foreach (var label in createResult)
             {
                 var cancelResult = (await shippingCollection.CancelLabel("GLS", label.CancelId));
-                Assert.That(cancelResult == ShippingCancelResult.CANCLED);
+                Assert.That(cancelResult == ShippingCancelResult.CANCELED);
             }
 
         }
