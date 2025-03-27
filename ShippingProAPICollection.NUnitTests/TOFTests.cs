@@ -73,7 +73,7 @@ namespace ShippingProAPICollection.NUnitTests
 
                 var resultCancel = await shippingCollection.CancelLabel("TOF", result[0].CancelId);
 
-                Assert.That(resultCancel == Models.Entities.ShippingCancelResult.CANCLED);
+                Assert.That(resultCancel == Models.Entities.ShippingCancelResult.CANCELED);
             }
         }*/
 }

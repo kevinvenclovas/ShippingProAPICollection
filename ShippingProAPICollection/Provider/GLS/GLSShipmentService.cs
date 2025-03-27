@@ -93,7 +93,7 @@ namespace ShippingProAPICollection.Provider.GLS
             {
                 case "CANCELLED":
                 case "CANCELLATION_PENDING":
-                    return ShippingCancelResult.CANCLED;
+                    return ShippingCancelResult.CANCELED;
                 case "SCANNED":
                     return ShippingCancelResult.ALREADY_IN_USE;
                 default:
