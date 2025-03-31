@@ -8,5 +8,14 @@ namespace ShippingProAPICollection.Provider.GLS.Entities.Create
         public ShopReturnService? ShopReturn { get; set; }
         public DepositService? Deposit { get; set; }
         public HazardousGoodsService? HazardousGood { get; set; }
+
+        public ShipmentService()
+        {
+        }
+
+        public ShipmentService(Service service)
+        {
+            Service = service;
+        }
     }
 }
