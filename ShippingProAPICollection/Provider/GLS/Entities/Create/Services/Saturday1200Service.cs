@@ -1,5 +1,4 @@
-﻿using ShippingProAPICollection.Provider.GLS.Entities.Create.Services;
-namespace ShippingProAPICollection.Provider.GLS.Entities.Create.Services
+﻿namespace ShippingProAPICollection.Provider.GLS.Entities.Create.Services
 {
     internal class Saturday1200Service : Service
     {
