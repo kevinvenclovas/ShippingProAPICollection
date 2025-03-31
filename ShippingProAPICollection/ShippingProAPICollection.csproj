@@ -36,23 +36,26 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="itext.bouncy-castle-adapter" Version="8.0.3" />
+    <PackageReference Include="BouncyCastle.Cryptography" Version="2.5.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="PDFsharp" Version="6.1.1" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-    <PackageReference Include="NSwag.ApiDescription.Client" Version="14.0.3">
+    <PackageReference Include="NSwag.ApiDescription.Client" Version="14.2.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="RestSharp" Version="110.2.0" />
+    <PackageReference Include="RestSharp" Version="112.1.0" />
+    <PackageReference Include="System.Formats.Asn1" Version="9.0.3" />
+    <PackageReference Include="System.Security.Cryptography.Pkcs" Version="9.0.3" />
     <PackageReference Include="System.ServiceModel.Duplex" Version="4.10.3" />
-    <PackageReference Include="System.ServiceModel.Federation" Version="4.10.3" />
-    <PackageReference Include="System.ServiceModel.Http" Version="4.10.3" />
-    <PackageReference Include="System.ServiceModel.NetTcp" Version="4.10.3" />
-    <PackageReference Include="System.ServiceModel.Primitives" Version="4.10.3" />
+    <PackageReference Include="System.ServiceModel.Federation" Version="8.1.2" />
+    <PackageReference Include="System.ServiceModel.Http" Version="8.1.2" />
+    <PackageReference Include="System.ServiceModel.NetTcp" Version="8.1.2" />
+    <PackageReference Include="System.ServiceModel.Primitives" Version="8.1.2" />
     <PackageReference Include="System.ServiceModel.Security" Version="4.10.3" />
-    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="9.0.3" />
     <PackageReference Include="JsonSubTypes" Version="2.0.1" />
-    <PackageReference Include="itext7" Version="8.0.3" />
+    <PackageReference Include="System.Text.Json" Version="9.0.3" />
   </ItemGroup>
 
   <ItemGroup>

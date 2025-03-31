@@ -1,9 +1,8 @@
-﻿using ShippingProAPICollection.Models.Utils;
-using System.ComponentModel.DataAnnotations;
-using ShippingProAPICollection.Models.Entities;
+﻿using ShippingProAPICollection.Models.Entities;
 using ShippingProAPICollection.Models.Error;
+using ShippingProAPICollection.Models.Utils;
 using ShippingProAPICollection.Provider.DHL.Entities;
-using Org.BouncyCastle.Asn1.Ocsp;
+using ShippingProAPICollection.Provider.DHL.Entities.VASService;
 
 namespace ShippingProAPICollection.Provider.DHL
 {
@@ -43,15 +42,6 @@ namespace ShippingProAPICollection.Provider.DHL
         /// <example>DEPOSIT</example>
         public required DHLServiceType ServiceType { get; set; }
 
-        //Deposit 
-        /// <summary>
-        /// Ablageort des Paketes falls Servicetype == DEPOSIT |
-        /// Deposit location of the package if ServiceType = DEPOSIT 
-        /// </summary>
-        /// <example>Briefksten/ Hinter Blumentopf</example>
-        [MaxLength(60)]
-        public string? PlaceOfDeposit { get; set; }
-
         //Packstation 
         /// <summary>
         /// Angaben zur Packstationen falls Servicetype == PACKSTATION |
@@ -65,6 +55,12 @@ namespace ShippingProAPICollection.Provider.DHL
         /// Postoffice information if Servicetype == POSTFILIALE
         /// </summary>
         public DHLPostOfficeData? PostOffice { get; set; }
+
+        /// <summary>
+        /// Optionale DHL VAS Services
+        /// Optional DHL VAS Services
+        /// </summary>
+        public List<VASService> VASServices { get; set; } = [];
 
         internal override bool IsExpress()
         {
@@ -97,7 +93,7 @@ namespace ShippingProAPICollection.Provider.DHL
         {
             base.Validate();
 
-            if (ServiceType == DHLServiceType.DEPOSIT && !PlaceOfDeposit.RangeLenghtValidation(1, 60)) throw new ShipmentRequestNoValidStringLengthException("PlaceOfDeposit", 1, 60);
+            if (ServiceType == DHLServiceType.DEPOSIT && !VASServices.Any(x => x.GetType() == typeof(VASPlaceOfDepositService))) throw new ShipmentRequestNotNullException("PlaceOfDepositService");
             if (ServiceType == DHLServiceType.LOCKER && Locker == null) throw new ShipmentRequestNotNullException("Locker");
             if (ServiceType == DHLServiceType.POSTOFFICE && PostOffice == null) throw new ShipmentRequestNotNullException("PostOffice");
             if (!Note1.RangeLenghtValidation(0, 35)) throw new ShipmentRequestNoValidStringLengthException("Note1", null, 35);
@@ -112,6 +108,9 @@ namespace ShippingProAPICollection.Provider.DHL
             if (!CustomerReference.MaxLenghtValidation(35)) throw new ShipmentRequestNoValidStringLengthException("CustomerReference", null, 35);
             if (!GetRefString().MaxLenghtValidation(35)) throw new ShipmentRequestNoValidStringLengthException("InvoiceReference + CustomerReference", null, 35);
             if (WithEmailNotification && !EMail.RangeLenghtValidation(1, 80)) throw new ShipmentRequestNoValidStringLengthException("EMail", null, 80);
+
+            VASServices.ForEach(x => x.Validate());
+
         }
     }
 }

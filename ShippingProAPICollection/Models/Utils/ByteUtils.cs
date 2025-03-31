@@ -1,5 +1,5 @@
-﻿using iText.Kernel.Pdf;
-using iText.Kernel.Utils;
+﻿using PdfSharp.Pdf;
+using PdfSharp.Pdf.IO;
 
 namespace ShippingProAPICollection.Models.Utils
 {
@@ -12,34 +12,28 @@ namespace ShippingProAPICollection.Models.Utils
         /// <returns></returns>
         internal static byte[] MergePDFByteToOnePDF(List<byte[]> pdfs)
         {
-            using (var writerMemoryStream = new MemoryStream())
+            using (var outputDocument = new PdfDocument())
             {
-                using (var writer = new PdfWriter(writerMemoryStream))
+                foreach (var pdfBytes in pdfs)
                 {
-                    using (var mergedDocument = new PdfDocument(writer))
+                    using (var inputStream = new MemoryStream(pdfBytes))
                     {
-                        var merger = new PdfMerger(mergedDocument);
-
-                        foreach (var pdfBytes in pdfs)
+                        using (var inputDocument = PdfReader.Open(inputStream, PdfDocumentOpenMode.Import))
                         {
-                            using (var copyFromMemoryStream = new MemoryStream(pdfBytes))
+                            for (int i = 0; i < inputDocument.PageCount; i++)
                             {
-                                using (var reader = new PdfReader(copyFromMemoryStream))
-                                {
-                                    reader.SetUnethicalReading(true);
-                                    using (var copyFromDocument = new PdfDocument(reader))
-                                    {
-                                        merger.Merge(copyFromDocument, 1, copyFromDocument.GetNumberOfPages());
-                                    }
-                                }
+                                outputDocument.AddPage(inputDocument.Pages[i]);
                             }
                         }
                     }
                 }
 
-                return writerMemoryStream.ToArray();
+                using (var outputStream = new MemoryStream())
+                {
+                    outputDocument.Save(outputStream, false);
+                    return outputStream.ToArray();
+                }
             }
-
         }
     }
 }

@@ -1,7 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-using ShippingProAPICollection.Models.Utils;
-using ShippingProAPICollection.Models.Entities;
+﻿using ShippingProAPICollection.Models.Entities;
 using ShippingProAPICollection.Models.Error;
+using ShippingProAPICollection.Models.Utils;
 using ShippingProAPICollection.Provider.DPD.Entities;
 
 namespace ShippingProAPICollection.Provider.DPD

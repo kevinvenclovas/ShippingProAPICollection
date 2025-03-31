@@ -65,6 +65,8 @@ namespace ShippingProAPICollection.NUnitTests
 
             var result = (await shippingCollection.RequestLabel(request));
 
+            File.WriteAllBytes("merged.pdf", result.FirstOrDefault()?.Label);
+
             Assert.That(result.Count() == 2);
             Assert.That(result.FirstOrDefault()?.Label.Length > 0);
         }
@@ -99,7 +101,7 @@ namespace ShippingProAPICollection.NUnitTests
             foreach (var label in createResult)
             {
                 var cancelResult = (await shippingCollection.CancelLabel("DPD", label.CancelId));
-                Assert.That(cancelResult == ShippingCancelResult.CANCLED);
+                Assert.That(cancelResult == ShippingCancelResult.CANCELED);
             }
 
         }

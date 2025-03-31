@@ -148,7 +148,7 @@ namespace ShippingProAPICollection.Provider.TRANSOFLEX
                 );
 
             HTTPReponseUtils.CheckHttpResponse<TOFException>(response.Content ?? "Unknow", cancelRequest, response);
-            return ShippingCancelResult.CANCLED;
+            return ShippingCancelResult.CANCELED;
         }
 
         public async Task<ValidationReponse> ValidateLabel(RequestShipmentBase request, CancellationToken cancelToken)

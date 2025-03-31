@@ -6,7 +6,7 @@
         /// <summary>
         /// Label was successfully canceled
         /// </summary>
-        CANCLED,
+        CANCELED,
 
         /// <summary>
         /// Label already scanned or in use, cannot cancel label anymore
