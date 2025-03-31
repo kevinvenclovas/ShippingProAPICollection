@@ -374,44 +374,37 @@ namespace ShippingProAPICollection.Provider.GLS
         /// <returns></returns>
         private ShipmentService[]? ResolveGLSShipmentService(GLSShipmentRequestModel request)
         {
-            if (request.ServiceType == GLSServiceType.NONE) return null;
+            var services = new List<ShipmentService>();
 
-            ShipmentService service = new ShipmentService();
-
-            switch (request.ServiceType)
+            if (request.WithEmailNotification)
             {
-                case GLSServiceType.DEPOSIT:
-                    service.Deposit = new DepositService() { PlaceOfDeposit = request.PlaceOfDeposit ?? "" };
-                    break;
-                case GLSServiceType.G24:
-                    service.Service = new Guaranteed24Service();
-                    break;
-                case GLSServiceType.G8:
-                    service.Service = new Service0800();
-                    break;
-                case GLSServiceType.G9:
-                    service.Service = new Service0900();
-                    break;
-                case GLSServiceType.G10:
-                    service.Service = new Service1000();
-                    break;
-                case GLSServiceType.G12:
-                    service.Service = new Service1200();
-                    break;
-                case GLSServiceType.GSATURDAY10:
-                    service.Service = new Saturday1000Service();
-                    break;
-                case GLSServiceType.GSATURDAY12:
-                    service.Service = new Saturday1200Service();
-                    break;
-                case GLSServiceType.SHOPRETURN:
-                    service.ShopReturn = new ShopReturnService() { NumberOfLabels = request.LabelCount };
-                    break;
-                default:
-                    break;
+                services.Add(new ShipmentService { Service = new FlexDeliveryService() });
             }
 
-            return new ShipmentService[] { service };
+            var service = request.ServiceType switch
+            {
+                GLSServiceType.DEPOSIT => new ShipmentService
+                {
+                    Deposit = new DepositService { PlaceOfDeposit = request.PlaceOfDeposit ?? string.Empty }
+                },
+                GLSServiceType.G24 => new ShipmentService(new Guaranteed24Service()),
+                GLSServiceType.G8 => new ShipmentService(new Service0800()),
+                GLSServiceType.G9 => new ShipmentService(new Service0900()),
+                GLSServiceType.G10 => new ShipmentService(new Service1000()),
+                GLSServiceType.G12 => new ShipmentService(new Service1200()),
+                GLSServiceType.GSATURDAY10 => new ShipmentService(new Saturday1000Service()),
+                GLSServiceType.GSATURDAY12 => new ShipmentService(new Saturday1200Service()),
+                GLSServiceType.SHOPRETURN => new ShipmentService
+                {
+                    ShopReturn = new ShopReturnService { NumberOfLabels = request.Items.Count }
+                },
+                _ => null
+            };
+
+            if (service != null)
+                services.Add(service);
+  
+            return services.ToArray();
         }
 
     }
