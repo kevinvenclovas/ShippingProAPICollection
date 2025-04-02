@@ -396,7 +396,7 @@ namespace ShippingProAPICollection.Provider.GLS
                 GLSServiceType.GSATURDAY12 => new ShipmentService(new Saturday1200Service()),
                 GLSServiceType.SHOPRETURN => new ShipmentService
                 {
-                    ShopReturn = new ShopReturnService { NumberOfLabels = request.Items.Count }
+                    ShopReturn = new ShopReturnService { NumberOfLabels = request.LabelCount }
                 },
                 _ => null
             };
