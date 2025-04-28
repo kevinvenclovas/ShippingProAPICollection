@@ -249,7 +249,7 @@ namespace ShippingProAPICollection.Provider.DHL
          {
             Shipment shipment = new Shipment();
 
-            shipment.Product = request.ServiceProduct.ToString();
+            shipment.Product = request.ServiceProduct.ToString().Replace('_', '.');
             shipment.BillingNumber = GetBillingNumber(request);
             shipment.ShipDate = DateTimeOffset.Now;
             shipment.Shipper = shipper;
@@ -379,6 +379,11 @@ namespace ShippingProAPICollection.Provider.DHL
                if (string.IsNullOrWhiteSpace(providerSettings.WarenpostNationalAccountNumber))
                   throw new Exception("Warenpost national Accountnumber not defined");
                return providerSettings.WarenpostNationalAccountNumber;
+            case DHLProductType.V66WPI:
+            case DHLProductType.V66WPI_V66PREM:
+               if (string.IsNullOrWhiteSpace(providerSettings.WarenpostInternationalAccountNumber))
+                  throw new Exception("Warenpost international Accountnumber not defined");
+               return providerSettings.WarenpostInternationalAccountNumber;
             default:
                throw new Exception("Accountnumber not defined");
          }
