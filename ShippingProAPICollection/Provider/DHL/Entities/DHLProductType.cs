@@ -22,5 +22,13 @@
         /// DHL small package (max. 35 x 25 x 8 cm)
         /// </summary>
         V62KP,
+        /// <summary>
+        /// Warenpost international
+        /// </summary>
+        V66WPI,
+        /// <summary>
+        /// Warenpost international premium
+        /// </summary>
+        V66WPI_V66PREM,
     }
 }
