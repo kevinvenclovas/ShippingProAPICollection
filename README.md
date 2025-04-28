@@ -58,6 +58,8 @@ To finalize the setup, register the ShippingProAPICollectionService as a scoped 
 		 // Optional for DHL Kleinpaket / DHL small package (max. 35 x 25 x 8 cm)
 		 // for DHLProductType.V62KP
 		 WarenpostNationalAccountNumber = "33333333330103",
+		 // Optional for Warenpost international / international premium (max. 35 x 25 x 5 cm)
+		 WarenpostInternationalAccountNumber = "33333333330104",
 		 LabelPrintFormat = "910-300-410",
 		 // Create your DHL APP here -> https://developer.dhl.com/user/apps
 		 APIKey = "",

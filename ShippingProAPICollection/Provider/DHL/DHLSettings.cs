@@ -13,6 +13,7 @@ namespace ShippingProAPICollection.Provider.DHL
         public required string NationalAccountNumber { get; set; }
         public required string InternationalAccountNumber { get; set; }
         public string WarenpostNationalAccountNumber { get; set; } = string.Empty;
+        public string WarenpostInternationalAccountNumber { get; set; } = string.Empty;
         public required string Username { get; set; }
         public required string Password { get; set; }
         public required string LabelPrintFormat { get; set; }
