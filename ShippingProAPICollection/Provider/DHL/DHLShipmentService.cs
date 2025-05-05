@@ -300,9 +300,14 @@ namespace ShippingProAPICollection.Provider.DHL
                      MinimumAge = identCheckService.MinimumAge == MinimumAge.A16 ? VASIdentCheckMinimumAge.A16 : VASIdentCheckMinimumAge.A18,
                   };
                   break;
-
+               case VASTransportInsuranceService transportInsuranceService:
+                  vas.AdditionalInsurance = new Value
+                  {
+                     Value1 = transportInsuranceService.Value,
+                     Currency = EnumUtils.ToEnum(transportInsuranceService.Currency, ValueCurrency.UNKNOWN),
+                  };
+                  break;
             }
-
          }
 
          return vas;
