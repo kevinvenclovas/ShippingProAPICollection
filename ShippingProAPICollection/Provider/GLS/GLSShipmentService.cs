@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using RestSharp;
 using RestSharp.Authenticators;
@@ -20,11 +20,11 @@ namespace ShippingProAPICollection.Provider.GLS
     {
         private string apiContentType = "application/glsVersion1+json";
         private GLSSettings providerSettings = null!;
-        private ShippingProAPIAccountSettings accountSettings = null!;
+        private ShippingProAPIShipFromAddress defaultShipFromAddress = null!;
 
-        public GLSShipmentService(ShippingProAPIAccountSettings accountSettings, GLSSettings providerSettings)
+        public GLSShipmentService(ShippingProAPIShipFromAddress defaultShipFromAddress, GLSSettings providerSettings)
         {
-            this.accountSettings = accountSettings;
+            this.defaultShipFromAddress = defaultShipFromAddress;
             this.providerSettings = providerSettings;
         }
 
@@ -176,12 +176,14 @@ namespace ShippingProAPICollection.Provider.GLS
             // Api NotFound on current GLS api
             return 0;
 
+            var from = request.ShipFromAddress ?? defaultShipFromAddress;
+
             EstimatedDeliveryDaysAddress senderAddress = new EstimatedDeliveryDaysAddress()
             {
-                City = accountSettings.City,
-                CountryCode = accountSettings.CountryIsoA2Code,
-                ZIPCode = accountSettings.PostCode,
-                Street = accountSettings.Street,
+                City = from.City,
+                CountryCode = from.CountryIsoA2Code,
+                ZIPCode = from.PostCode,
+                Street = from.Street,
             };
             senderAddress.Validate();
 

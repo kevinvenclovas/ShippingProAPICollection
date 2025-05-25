@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Caching.Memory;
 using ShippingProAPICollection.Models;
 using ShippingProAPICollection.Models.Entities;
 using ShippingProAPICollection.Provider;
@@ -21,24 +21,24 @@ namespace ShippingProAPICollection
 
             foreach (KeyValuePair<string, ProviderSettings> provider in providers)
             {
-                providerServices.Add(provider.Key, BuildProviderService(providerSettings.AccountSettings, provider.Value, _cache));
+                providerServices.Add(provider.Key, BuildProviderService(providerSettings.DefaultShipFromAddress, provider.Value, _cache));
             }
         }
 
-        private IShippingProviderService BuildProviderService(ShippingProAPIAccountSettings accountSettings, ProviderSettings settings, IMemoryCache _cache)
+        private IShippingProviderService BuildProviderService(ShippingProAPIShipFromAddress defaultShipFromAddress, ProviderSettings settings, IMemoryCache _cache)
         {
             switch (settings)
             {
                 case GLSSettings providerSettings:
-                    return new GLSShipmentService(accountSettings, providerSettings);
+                    return new GLSShipmentService(defaultShipFromAddress, providerSettings);
                 case DHLSettings providerSettings:
-                    return new DHLShipmentService(accountSettings, providerSettings);
+                    return new DHLShipmentService(defaultShipFromAddress, providerSettings);
                 case DPDSettings providerSettings:
-                    return new DPDShipmentService(accountSettings, providerSettings, _cache);
+                    return new DPDShipmentService(defaultShipFromAddress, providerSettings, _cache);
                 case TOFSettings providerSettings:
-                    return new TOFShipmentService(accountSettings, providerSettings, _cache);
+                    return new TOFShipmentService(defaultShipFromAddress, providerSettings, _cache);
                 case CustomProviderSettings providerSettings:
-                    return providerSettings.CreateProviderService(accountSettings, _cache);
+                    return providerSettings.CreateProviderService(defaultShipFromAddress, _cache);
                 default:  throw new Exception("provider not available");
             }
         }

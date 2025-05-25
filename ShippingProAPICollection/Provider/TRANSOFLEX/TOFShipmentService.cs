@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 using RestSharp;
 using ShippingProAPICollection.Models;
@@ -20,13 +20,13 @@ namespace ShippingProAPICollection.Provider.TRANSOFLEX
     {
         private readonly IMemoryCache _cache;
         private TOFSettings providerSettings = null!;
-        private ShippingProAPIAccountSettings accountSettings = null!;
+        private ShippingProAPIShipFromAddress defaultShipFromAddress = null!;
         private Dictionary<string, TOFLoginStorage> loginStorage = new();
         private int sessionLifetime = 14;
 
-        public TOFShipmentService(ShippingProAPIAccountSettings accountSettings, TOFSettings providerSettings, IMemoryCache cache)
+        public TOFShipmentService(ShippingProAPIShipFromAddress defaultShipFromAddress, TOFSettings providerSettings, IMemoryCache cache)
         {
-            this.accountSettings = accountSettings;
+            this.defaultShipFromAddress = defaultShipFromAddress;
             this.providerSettings = providerSettings;
             this._cache = cache;
             LoadTOFLoginStorages();
