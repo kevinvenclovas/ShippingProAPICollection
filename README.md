@@ -1,4 +1,3 @@
-
 [![Publish Docker](https://github.com/kevinvenclovas/ShippingProAPICollection/actions/workflows/publish-docker.yml/badge.svg)](https://github.com/kevinvenclovas/ShippingProAPICollection/actions/workflows/publish-docker.yml)
 ![Docker Image Version](https://img.shields.io/docker/v/kevinvenclovas/shippproapicollection)
 
@@ -128,3 +127,136 @@ At times, you may need to utilize multiple contract accounts from the same provi
      	 Password = "xMmshh1"
 	};
 	providerSettings.AddSettings("DPD2", dpdSettings);
+
+## Complete Example: Creating a Shipping Label with Custom Sender Address
+
+This example demonstrates how to create a shipping label while overriding the default sender address. This is useful when you have multiple warehouses or need to ship from different locations.
+
+### Setup and Configuration
+
+First, configure your shipping service with a default sender address:
+
+```csharp
+using ShippingProAPICollection;
+using ShippingProAPICollection.Models;
+using ShippingProAPICollection.Provider.DHL;
+using ShippingProAPICollection.Provider.DHL.Entities;
+
+// Configure default sender address
+var defaultShipFromAddress = new ShippingProAPIShipFromAddress()
+{
+    Name = "Main Warehouse GmbH",
+    ContactName = "John Doe",
+    Street = "Hauptstraße 123",
+    PostCode = "12345",
+    City = "Berlin",
+    CountryIsoA2Code = "DE",
+    Phone = "030 12345678",
+    Email = "warehouse@company.com"
+};
+
+// Setup shipping settings
+var settings = new ShippingProAPICollectionSettings(defaultShipFromAddress);
+
+// Configure DHL settings
+var dhlSettings = new DHLSettings()
+{
+    ApiDomain = "sandbox", // or "eu" for production
+    Password = "your_password",
+    Username = "your_username",
+    DHLShipmentProfile = "STANDARD_GRUPPENPROFIL",
+    InternationalAccountNumber = "33333333335301",
+    NationalAccountNumber = "33333333330102",
+    WarenpostNationalAccountNumber = "33333333330103",
+    WarenpostInternationalAccountNumber = "33333333330104",
+    LabelPrintFormat = "910-300-410",
+    APIKey = "your_api_key",
+    APILanguage = "de-DE"
+};
+
+settings.AddSettings("DHL", dhlSettings);
+
+// Initialize the service
+var shippingService = new ShippingProAPICollectionService(memoryCache, settings);
+```
+
+### Creating a Label with Custom Sender Address
+
+```csharp
+// Define a custom sender address (e.g., for a different warehouse)
+var customShipFromAddress = new ShippingProAPIShipFromAddress()
+{
+    Name = "Branch Office GmbH",
+    Name2 = "Abteilung Versand",
+    Name3 = "Lager 2",
+    ContactName = "Jane Smith",
+    Street = "Nebenstraße 456",
+    PostCode = "54321",
+    City = "Hamburg",
+    CountryIsoA2Code = "DE",
+    Phone = "040 98765432",
+    Email = "branch@company.com"
+};
+
+// Create the shipping request with custom sender address
+var request = new DHLShipmentRequestModel("DHL")
+{
+    // Recipient information
+    Adressline1 = "Max Mustermann",
+    Adressline2 = "c/o Muster GmbH",
+    Street = "Musterstraße 789",
+    PostCode = "98765",
+    City = "München",
+    Country = "DE",
+    
+    // Shipping details
+    ServiceProduct = DHLProductType.V01PAK,
+    ServiceType = DHLServiceType.NONE,
+    Items = new List<RequestShipmentItem>
+    {
+        new RequestShipmentItem { Weight = 2.5f }
+    },
+    
+    // References
+    InvoiceReference = "INV-2024-001",
+    CustomerReference = "CUST-12345",
+    
+    // Contact information
+    Phone = "089 12345678",
+    EMail = "max.mustermann@example.com",
+    WithEmailNotification = true,
+    
+    // Override the default sender address with custom address
+    ShipFromAddress = customShipFromAddress
+};
+
+// Validate the request
+request.Validate();
+
+// Create the shipping label
+try
+{
+    var results = await shippingService.RequestLabel(request);
+    var result = results.FirstOrDefault();
+    
+    if (result != null && result.Label?.Length > 0)
+    {
+        Console.WriteLine($"Label created successfully!");
+        Console.WriteLine($"Tracking Number: {result.ParcelNumber}");
+        Console.WriteLine($"Cancel ID: {result.CancelId}");
+        
+        // Save the label PDF
+        await File.WriteAllBytesAsync($"label_{result.ParcelNumber}.pdf", result.Label);
+        
+        Console.WriteLine($"Label saved as: label_{result.ParcelNumber}.pdf");
+    }
+    else
+    {
+        Console.WriteLine("Failed to create label");
+    }
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"Error creating label: {ex.Message}");
+}
+```
