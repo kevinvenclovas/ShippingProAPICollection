@@ -15,11 +15,11 @@ namespace ShippingProAPICollection.Provider.DHL
    {
 
       private DHLSettings providerSettings = null!;
-      private ShippingProAPIAccountSettings accountSettings = null!;
+      private ShippingProAPIShipFromAddress defaultShipFromAddress = null!;
 
-      public DHLShipmentService(ShippingProAPIAccountSettings accountSettings, DHLSettings providerSettings)
+      public DHLShipmentService(ShippingProAPIShipFromAddress defaultShipFromAddress, DHLSettings providerSettings)
       {
-         this.accountSettings = accountSettings;
+         this.defaultShipFromAddress = defaultShipFromAddress;
          this.providerSettings = providerSettings;
       }
 
@@ -224,19 +224,21 @@ namespace ShippingProAPICollection.Provider.DHL
       /// <returns></returns>
       private ShipmentOrderRequest CreateRequestModel(DHLShipmentRequestModel request)
       {
+         var from = request.ShipFromAddress ?? defaultShipFromAddress;
 
          // Build shipper infos
-         Shipper shipper = new Shipper()
+         var shipper = new Shipper()
          {
-            Name1 = accountSettings.Name,
-            Name2 = accountSettings.Name2,
-            Name3 = accountSettings.Name3,
-            AddressStreet = accountSettings.Street,
-            PostalCode = accountSettings.PostCode,
-            City = accountSettings.City,
-            Country = EnumUtils.ToEnum(ThreeLetterCountryCodeHelper.GetThreeLetterCountryCode(accountSettings.CountryIsoA2Code), Country.UNKNOWN),
-            ContactName = accountSettings.ContactName,
-            Email = accountSettings.Email,
+            Name1 = from.Name,
+            Name2 = string.IsNullOrWhiteSpace(from.Name2) ? null : from.Name2,
+            Name3 = string.IsNullOrWhiteSpace(from.Name3) ? null : from.Name3,
+            AddressStreet = from.Street,
+            PostalCode = from.PostCode,
+            City = from.City,
+            Country = EnumUtils.ToEnum(ThreeLetterCountryCodeHelper.GetThreeLetterCountryCode(from.CountryIsoA2Code), Country.UNKNOWN),
+            ContactName = from.ContactName,
+            Email = from.Email,
+            AddressHouse = null,
          };
 
          Consignee consignee = GetConsignee(request);

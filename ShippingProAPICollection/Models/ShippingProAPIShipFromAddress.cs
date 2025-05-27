@@ -1,9 +1,9 @@
-﻿
+
 using System.ComponentModel.DataAnnotations;
 
 namespace ShippingProAPICollection.Models
 {
-    public class ShippingProAPIAccountSettings
+    public class ShippingProAPIShipFromAddress
     {
         public required string Name { get; set; }
         public string? Name2 { get; set; }

@@ -1,5 +1,6 @@
-﻿using JsonSubTypes;
+using JsonSubTypes;
 using Newtonsoft.Json;
+using ShippingProAPICollection.Models;
 using ShippingProAPICollection.Models.Error;
 using ShippingProAPICollection.Provider.DHL;
 using ShippingProAPICollection.Provider.DPD;
@@ -146,13 +147,18 @@ namespace ShippingProAPICollection.Provider
       /// <example>Ware auf den Briefkasten</example>
       public string? Note1 { get; set; }
 
+      /// <summary>
+      /// Individuelle Absenderadresse |
+      /// individual sender address
+      /// </summary>
+      public ShippingProAPIShipFromAddress? ShipFromAddress { get; set; }
 
       public virtual void Validate()
       {
          if ((Items?.Count ?? 0) <= 0) throw new ShipmentRequestLabelCountException(0);
          if (Country.Length != 2) throw new ShipmentRequestNoValidStringLengthException("Country", 2, 2);
 
-         foreach (var item in Items)
+         foreach (var item in Items!)
          {
             if (item.Weight > MaxPackageWeight) throw new ShipmentRequestWeightException(1, MaxPackageWeight, item.Weight);
          }

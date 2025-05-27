@@ -1,16 +1,16 @@
-﻿using ShippingProAPICollection.Models;
+using ShippingProAPICollection.Models;
 using ShippingProAPICollection.Provider;
 
 namespace ShippingProAPICollection
 {
     public class ShippingProAPICollectionSettings
     {
-        public ShippingProAPIAccountSettings AccountSettings { get; private set; }
+        public ShippingProAPIShipFromAddress DefaultShipFromAddress { get; private set; }
         private Dictionary<string, ProviderSettings> providerSettings { get; set; } = new Dictionary<string, ProviderSettings>();
 
-        public ShippingProAPICollectionSettings(ShippingProAPIAccountSettings accountSettings)
+        public ShippingProAPICollectionSettings(ShippingProAPIShipFromAddress defaultShipFromAddress)
         {
-            this.AccountSettings = accountSettings;
+            this.DefaultShipFromAddress = defaultShipFromAddress;
         }
 
         public Dictionary<string, ProviderSettings> GetProviders()
@@ -31,7 +31,7 @@ namespace ShippingProAPICollection
 
         public void OverrideSettings(ShippingProAPICollectionSettings newSettings)
         {
-            AccountSettings = newSettings.AccountSettings;
+            DefaultShipFromAddress = newSettings.DefaultShipFromAddress;
             providerSettings = newSettings.GetProviders();
         }
     }

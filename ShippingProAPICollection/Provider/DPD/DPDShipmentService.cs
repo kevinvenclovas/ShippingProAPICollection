@@ -1,4 +1,4 @@
-﻿#pragma warning disable 1998
+#pragma warning disable 1998
 
 using DPDLoginService2_0;
 using DPDShipmentService4_4;
@@ -18,11 +18,11 @@ namespace ShippingProAPICollection.Provider.DPD
     {
         private readonly IMemoryCache _cache;
         private DPDSettings providerSettings = null!;
-        private ShippingProAPIAccountSettings accountSettings = null!;
+        private ShippingProAPIShipFromAddress defaultShipFromAddress = null!;
 
-        public DPDShipmentService(ShippingProAPIAccountSettings accountSettings, DPDSettings providerSettings, IMemoryCache cache)
+        public DPDShipmentService(ShippingProAPIShipFromAddress defaultShipFromAddress, DPDSettings providerSettings, IMemoryCache cache)
         {
-            this.accountSettings = accountSettings;
+            this.defaultShipFromAddress = defaultShipFromAddress;
             this.providerSettings = providerSettings;
             _cache = cache;
         }
@@ -151,17 +151,21 @@ namespace ShippingProAPICollection.Provider.DPD
                 product = EnumUtils.ToEnum<generalShipmentDataProduct>(request.ServiceProduct.ToString(), generalShipmentDataProduct.CL),
             };
 
+            var from = request.ShipFromAddress ?? defaultShipFromAddress;
+
             shipmentServiceData.generalShipmentData.sender = new addressWithType()
             {
                 addressType = addressWithTypeAddressType.COM,
-                name1 = accountSettings.Name,
-                street = accountSettings.Street,
-                country = accountSettings.CountryIsoA2Code,
-                zipCode = accountSettings.PostCode,
-                city = accountSettings.City,
-                contact = accountSettings.ContactName,
+                name1 = from.Name,
+                name2 = from.Name2,
+                email = from.Email,
+                phone = from.Phone,
+                street = from.Street,
+                country = from.CountryIsoA2Code,
+                zipCode = from.PostCode,
+                city = from.City,
+                contact = from.ContactName,
             };
-
 
             shipmentServiceData.generalShipmentData.recipient = new addressWithType()
             {
