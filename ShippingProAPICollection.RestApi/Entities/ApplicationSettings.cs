@@ -11,8 +11,8 @@ namespace ShippingProAPICollection.RestApi.Entities
         /// <summary>
         /// Account settings
         /// </summary>
-        public ShippingProAPIAccountSettings AccountSettings = 
-            new ShippingProAPIAccountSettings() 
+        public ShippingProAPIShipFromAddress AccountSettings = 
+            new ShippingProAPIShipFromAddress() 
             { 
                 City = "", 
                 ContactName = "", 

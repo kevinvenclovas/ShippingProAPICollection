@@ -24,7 +24,7 @@ namespace ShippingProAPICollection.NUnitTests
             var services = new ServiceCollection();
             services.AddMemoryCache();
 
-            ShippingProAPIAccountSettings accountSettings = new ShippingProAPIAccountSettings()
+            ShippingProAPIShipFromAddress accountSettings = new ShippingProAPIShipFromAddress()
             {
                 Name = "Homer Simpson",
                 Street = "Simpsonstreet 1",

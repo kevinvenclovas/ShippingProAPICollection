@@ -18,7 +18,7 @@ namespace ShippingProAPICollection.RestApi.Entities
         /// </summary>
         /// <param name="collectionSettings"></param>
         /// <param name="newAccountSettings"></param>
-        public void UpdateAccountSettings(ShippingProAPICollectionSettings collectionSettings, ShippingProAPIAccountSettings newAccountSettings)
+        public void UpdateAccountSettings(ShippingProAPICollectionSettings collectionSettings, ShippingProAPIShipFromAddress newAccountSettings)
         {
             // Load current settings
             var currentSettings = LoadApplicationSettings();
