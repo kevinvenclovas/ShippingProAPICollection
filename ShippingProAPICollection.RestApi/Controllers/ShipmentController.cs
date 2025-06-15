@@ -160,7 +160,7 @@ namespace ShippingProAPICollection.RestApi.Controllers
         [ProducesResponseType(typeof(UnprocessableEntityResponse), (int)HttpStatusCode.UnprocessableEntity)]
         public async Task<IActionResult> UpdateAccountSettings([FromBody, BindRequired] UpdateAccountSettingsRequest dto)
         {
-            ShippingProAPIAccountSettings settings = new ShippingProAPIAccountSettings()
+            ShippingProAPIShipFromAddress settings = new ShippingProAPIShipFromAddress()
             {
                 City = dto.City,
                 ContactName = dto.ContactName,
