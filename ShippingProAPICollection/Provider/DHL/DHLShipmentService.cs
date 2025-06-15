@@ -224,6 +224,13 @@ namespace ShippingProAPICollection.Provider.DHL
       /// <returns></returns>
       private ShipmentOrderRequest CreateRequestModel(DHLShipmentRequestModel request)
       {
+         // Automatically add VAS Premium service for V66WPI_V66PREM if not already present
+         if (request.ServiceProduct == DHLProductType.V66WPI_V66PREM 
+            && !request.VASServices.Any(x => x is VASPremiumService))
+         {
+            request.VASServices.Add(new VASPremiumService());
+         }
+
          var from = request.ShipFromAddress ?? defaultShipFromAddress;
 
          // Build shipper infos
@@ -251,7 +258,12 @@ namespace ShippingProAPICollection.Provider.DHL
          {
             Shipment shipment = new Shipment();
 
-            shipment.Product = request.ServiceProduct.ToString().Replace('_', '.');
+            var product = request.ServiceProduct.ToString();
+            // see comment on start of this function
+            if (request.ServiceProduct == DHLProductType.V66WPI_V66PREM)
+               product = "V66WPI";
+
+            shipment.Product = product;
             shipment.BillingNumber = GetBillingNumber(request);
             shipment.ShipDate = DateTimeOffset.Now;
             shipment.Shipper = shipper;
@@ -308,6 +320,9 @@ namespace ShippingProAPICollection.Provider.DHL
                      Value1 = transportInsuranceService.Value,
                      Currency = EnumUtils.ToEnum(transportInsuranceService.Currency, ValueCurrency.UNKNOWN),
                   };
+                  break;
+               case VASPremiumService:
+                  vas.Premium = true;
                   break;
             }
          }
