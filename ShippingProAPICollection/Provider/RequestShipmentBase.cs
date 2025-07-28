@@ -96,6 +96,12 @@ namespace ShippingProAPICollection.Provider
         public string? StreetNumber { get; set; }
 
         /// <summary>
+        /// Optionaler Kontaktname des Empfängers
+        /// optional contact name
+        /// </summary>
+        public string? ContactName { get; set; }
+
+        /// <summary>
         /// E-Mail des Empfängers |
         /// EMail of reciever
         /// </summary>

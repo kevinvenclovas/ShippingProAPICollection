@@ -284,6 +284,11 @@ namespace ShippingProAPICollection.Provider.DHL
                 consignee.AdditionalProperties.Add("email", request.EMail);
             }
 
+            if (!string.IsNullOrWhiteSpace(request.ContactName))
+            {
+                consignee.AdditionalProperties.Add("contactName", request.ContactName);
+            }
+
             switch (request.ServiceType)
             {
                 case DHLServiceType.NONE:
