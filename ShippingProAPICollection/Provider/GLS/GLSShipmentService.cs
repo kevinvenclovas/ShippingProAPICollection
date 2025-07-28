@@ -111,7 +111,7 @@ namespace ShippingProAPICollection.Provider.GLS
 
 
             if (response.Data.Success == true) return new ValidationReponse() { Success = true };
-           
+
             List<ValidationReponseIssue> reponseIssues = new List<ValidationReponseIssue>();
             Dictionary<string, ValidationIssue> validationErrors = new Dictionary<string, ValidationIssue>();
 
@@ -163,13 +163,14 @@ namespace ShippingProAPICollection.Provider.GLS
 
         public async Task<uint> GetEstimatedDeliveryDays(RequestShipmentBase request, CancellationToken cancelToken)
         {
-           
+            var from = accountSettings.GetShipFromAddress(request.Country);
+
             EstimatedDeliveryDaysAddress senderAddress = new EstimatedDeliveryDaysAddress()
             {
-                City = accountSettings.City,
-                CountryCode = accountSettings.CountryIsoA2Code,
-                ZIPCode = accountSettings.PostCode,
-                Street = accountSettings.Street,
+                City = from.City,
+                CountryCode = from.CountryIsoA2Code,
+                ZIPCode = from.PostCode,
+                Street = from.Street,
             };
             senderAddress.Validate();
 
@@ -279,7 +280,7 @@ namespace ShippingProAPICollection.Provider.GLS
                 {
                     throw new GLSException(ShippingErrorCode.UNKNOW, response.ErrorMessage + "<------>" + response.Content, payload);
                 }
-                 
+
                 throw new GLSException(errorCode, message, payload);
             }
 
@@ -347,7 +348,7 @@ namespace ShippingProAPICollection.Provider.GLS
                         City = request.City,
                         Street = request.Street,
                         StreetNumber = request.StreetNumber ?? "-",
-                        EMail = (request.WithEmailNotification || !String.IsNullOrEmpty(request.AmazonOrderId))  ? request.EMail : null,
+                        EMail = (request.WithEmailNotification || !String.IsNullOrEmpty(request.AmazonOrderId)) ? request.EMail : null,
                         MobilePhoneNumber = request.Phone,
                     }
                 },
@@ -364,7 +365,7 @@ namespace ShippingProAPICollection.Provider.GLS
 
 
             return shipment;
-           
+
         }
 
         /// <summary>
@@ -403,7 +404,7 @@ namespace ShippingProAPICollection.Provider.GLS
 
             if (service != null)
                 services.Add(service);
-  
+
             return services.ToArray();
         }
 
