@@ -2,7 +2,6 @@
 using DPDShipmentService4_4;
 using Microsoft.Extensions.Caching.Memory;
 using RestSharp;
-using ShippingProAPICollection._Provider.DHL;
 using ShippingProAPICollection.Models;
 using ShippingProAPICollection.Models.Entities;
 using ShippingProAPICollection.Models.Error;
@@ -34,7 +33,7 @@ namespace ShippingProAPICollection.Provider.DPD
             ShipmentService_4_4Client shipmentClient = new ShipmentService_4_4Client(ShipmentService_4_4Client.EndpointConfiguration.ShipmentService_Public_4_4_SOAP, url);
 
             storeOrders requestBody = CreateRequestModel(DPDRequest);
-            
+
             authentication auth = new authentication()
             {
                 delisId = providerSettings.Username,
@@ -65,7 +64,7 @@ namespace ShippingProAPICollection.Provider.DPD
                 }
                 else
                 {
-                    
+
                     foreach (parcelInformationType i in shipment.parcelInformation)
                     {
                         labels.Add(new RequestShippingLabelResponse()
@@ -82,7 +81,7 @@ namespace ShippingProAPICollection.Provider.DPD
             }
 
             return labels;
-            
+
         }
 
         public async Task<ShippingCancelResult> CancelLabel(string cancelId, CancellationToken cancelToken = default)
@@ -141,15 +140,17 @@ namespace ShippingProAPICollection.Provider.DPD
                 product = EnumUtils.ToEnum<generalShipmentDataProduct>(request.ServiceProduct.ToString(), generalShipmentDataProduct.CL),
             };
 
+            var from = accountSettings.GetShipFromAddress(request.Country);
+
             shipmentServiceData.generalShipmentData.sender = new addressWithType()
             {
                 addressType = addressWithTypeAddressType.COM,
-                name1 = accountSettings.Name,
-                street = accountSettings.Street,
-                country = accountSettings.CountryIsoA2Code,
-                zipCode = accountSettings.PostCode,
-                city = accountSettings.City,
-                contact = accountSettings.ContactName,
+                name1 = from.Name,
+                street = from.Street,
+                country = from.CountryIsoA2Code,
+                zipCode = from.PostCode,
+                city = from.City,
+                contact = from.ContactName,
             };
 
 
@@ -186,7 +187,7 @@ namespace ShippingProAPICollection.Provider.DPD
 
             int grammfactor = 100;
             int packageWeightGramm = (int)(packageWeight * grammfactor);
-            
+
             for (int i = 0; i < request.LabelCount; i++)
             {
                 parcels.Add(
@@ -242,7 +243,7 @@ namespace ShippingProAPICollection.Provider.DPD
         /// <exception cref="ShippingProviderException"></exception>
         private async Task<string> LoginToDPD(CancellationToken cancelToken = default)
         {
-           
+
             string url = string.Format("https://public-{0}.dpd.com/services/LoginService/V2_0/", providerSettings.ApiDomain);
             LoginServiceClient loginClient = new LoginServiceClient(LoginServiceClient.EndpointConfiguration.LoginService_2_0_SOAP, url);
 

@@ -13,5 +13,29 @@ namespace ShippingProAPICollection.Models
         public required string ContactName { get; set; }
         public required string Email { get; set; }
         public required string Phone { get; set; }
+
+        private Dictionary<string, ShippingProAPIAccountSettings> AlternativeShippingFromAddress = new();
+
+        public void AddAlternativeShippingFromAddress(string locationCode, ShippingProAPIAccountSettings shippingProAPIShipFromAddress)
+        {
+            if (AlternativeShippingFromAddress.ContainsKey(locationCode))
+            {
+                AlternativeShippingFromAddress[locationCode] = shippingProAPIShipFromAddress;
+            }
+            else
+            {
+                AlternativeShippingFromAddress.Add(locationCode, shippingProAPIShipFromAddress);
+            }
+        }
+
+        public ShippingProAPIAccountSettings GetShipFromAddress(string locationCode)
+        {
+            if (AlternativeShippingFromAddress.TryGetValue(locationCode, out var address))
+            {
+                return address;
+            }
+            return this;
+        }
+
     }
 }

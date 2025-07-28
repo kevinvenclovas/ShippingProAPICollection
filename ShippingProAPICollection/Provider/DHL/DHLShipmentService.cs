@@ -55,7 +55,8 @@ namespace ShippingProAPICollection.Provider.DHL
                 if (!string.IsNullOrEmpty(providerSettings.APILanguage))
                 {
                     clientRequest.AddHeader("Accept-Language", providerSettings.APILanguage);
-                };
+                }
+                ;
 
                 var requestBody = CreateRequestModel(DHLRequest);
 
@@ -154,7 +155,8 @@ namespace ShippingProAPICollection.Provider.DHL
                 if (!string.IsNullOrEmpty(providerSettings.APILanguage))
                 {
                     clientRequest.AddHeader("Accept-Language", providerSettings.APILanguage);
-                };
+                }
+                ;
 
                 RestResponse response = await client.ExecuteAsync(clientRequest, cancelToken).ConfigureAwait(false);
 
@@ -197,7 +199,7 @@ namespace ShippingProAPICollection.Provider.DHL
             }
 
         }
-        
+
         public Task<ValidationReponse> ValidateLabel(RequestShipmentBase request, CancellationToken cancelToken)
         {
             throw new DHLException(ShippingErrorCode.NOT_AVAILABLE, "Feature not available for DHL");
@@ -215,19 +217,20 @@ namespace ShippingProAPICollection.Provider.DHL
         /// <returns></returns>
         private ShipmentOrderRequest CreateRequestModel(DHLShipmentRequestModel request)
         {
+            var from = accountSettings.GetShipFromAddress(request.Country);
 
             // Build shipper infos
             Shipper shipper = new Shipper()
             {
-                Name1 = accountSettings.Name,
-                Name2 = accountSettings.Name2,
-                Name3 = accountSettings.Name3,
-                AddressStreet = accountSettings.Street,
-                PostalCode = accountSettings.PostCode,
-                City = accountSettings.City,
-                Country = EnumUtils.ToEnum(ThreeLetterCountryCodeHelper.GetThreeLetterCountryCode(accountSettings.CountryIsoA2Code), Country.UNKNOWN),
-                ContactName = accountSettings.ContactName,
-                Email = accountSettings.Email,
+                Name1 = from.Name,
+                Name2 = from.Name2,
+                Name3 = from.Name3,
+                AddressStreet = from.Street,
+                PostalCode = from.PostCode,
+                City = from.City,
+                Country = EnumUtils.ToEnum(ThreeLetterCountryCodeHelper.GetThreeLetterCountryCode(from.CountryIsoA2Code), Country.UNKNOWN),
+                ContactName = from.ContactName,
+                Email = from.Email,
             };
 
             Consignee consignee = GetConsignee(request);
@@ -329,7 +332,7 @@ namespace ShippingProAPICollection.Provider.DHL
                 case DHLProductType.V53WPAK:
                     return providerSettings.InternationalAccountNumber;
                 case DHLProductType.V62KP:
-                    if(string.IsNullOrWhiteSpace(providerSettings.WarenpostNationalAccountNumber))
+                    if (string.IsNullOrWhiteSpace(providerSettings.WarenpostNationalAccountNumber))
                         throw new Exception("Warenpost national Accountnumber not defined");
                     return providerSettings.WarenpostNationalAccountNumber;
                 default:
