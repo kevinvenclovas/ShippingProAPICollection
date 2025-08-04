@@ -374,13 +374,10 @@ namespace ShippingProAPICollection.Provider.DHL
                         throw new Exception("Warenpost national Accountnumber not defined");
                     return providerSettings.WarenpostNationalAccountNumber;
                 case DHLProductType.V66WPI:
+                case DHLProductType.V66WPI_V66PREM:
                     if (string.IsNullOrWhiteSpace(providerSettings.WarenpostInternationalAccountNumber))
                         throw new Exception("Warenpost international Accountnumber not defined");
                     return providerSettings.WarenpostInternationalAccountNumber;
-                case DHLProductType.V66WPI_V66PREM:
-                    if (string.IsNullOrWhiteSpace(providerSettings.WarenpostInternationalPremiumAccountNumber))
-                        throw new Exception("Warenpost international premium Accountnumber not defined");
-                    return providerSettings.WarenpostInternationalPremiumAccountNumber;
                 default:
                     throw new Exception("Accountnumber not defined");
             }
