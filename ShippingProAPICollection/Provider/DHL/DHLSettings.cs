@@ -1,8 +1,4 @@
-﻿using ShippingProAPICollection.Provider;
-using ShippingProAPICollection._Provider.DHL;
-using ShippingProAPICollection.Models.Entities;
-
-namespace ShippingProAPICollection.Provider.DHL
+﻿namespace ShippingProAPICollection.Provider.DHL
 {
     public class DHLSettings : ProviderSettings
     {
@@ -14,6 +10,7 @@ namespace ShippingProAPICollection.Provider.DHL
         public required string InternationalAccountNumber { get; set; }
         public string WarenpostNationalAccountNumber { get; set; } = string.Empty;
         public string WarenpostInternationalAccountNumber { get; set; } = string.Empty;
+        public string WarenpostInternationalPremiumAccountNumber { get; set; } = string.Empty;
         public required string Username { get; set; }
         public required string Password { get; set; }
         public required string LabelPrintFormat { get; set; }
