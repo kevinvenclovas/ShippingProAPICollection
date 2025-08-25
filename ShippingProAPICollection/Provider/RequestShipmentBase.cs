@@ -1,10 +1,10 @@
 ﻿using JsonSubTypes;
 using Newtonsoft.Json;
-using System.ComponentModel.DataAnnotations;
 using ShippingProAPICollection.Models.Error;
 using ShippingProAPICollection.Provider.DHL;
 using ShippingProAPICollection.Provider.DPD;
 using ShippingProAPICollection.Provider.GLS;
+using System.ComponentModel.DataAnnotations;
 
 namespace ShippingProAPICollection.Provider
 {
@@ -178,7 +178,7 @@ namespace ShippingProAPICollection.Provider
         {
             float packageWeight = Weight / LabelCount;
             var result = (float)Math.Round(packageWeight, 2);
-            return result < 1 ? 1 : result;
+            return result;
         }
 
         /// <summary>

@@ -260,6 +260,8 @@ namespace ShippingProAPICollection.Provider.DHL
                     }
                 };
 
+                request.VASServices.AddRange(DHLProductTypeExtensions.GetDependentServices(request.ServiceProduct));
+
                 shipment.Services = ResolveVASService(request);
 
                 shipmentOrderRequest.Shipments.Add(shipment);
@@ -382,5 +384,6 @@ namespace ShippingProAPICollection.Provider.DHL
                     throw new Exception("Accountnumber not defined");
             }
         }
+
     }
 }

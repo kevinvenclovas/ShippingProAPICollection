@@ -3,6 +3,7 @@ using ShippingProAPICollection.Models.Error;
 using ShippingProAPICollection.Models.Utils;
 using ShippingProAPICollection.Provider.DHL.Entities;
 using ShippingProAPICollection.Provider.DHL.Entities.VASService;
+using System.ComponentModel.DataAnnotations;
 
 namespace ShippingProAPICollection.Provider.DHL
 {

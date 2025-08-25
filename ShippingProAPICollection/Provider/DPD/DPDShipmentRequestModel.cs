@@ -2,6 +2,7 @@
 using ShippingProAPICollection.Models.Error;
 using ShippingProAPICollection.Models.Utils;
 using ShippingProAPICollection.Provider.DPD.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace ShippingProAPICollection.Provider.DPD
 {
