@@ -327,7 +327,7 @@ namespace ShippingProAPICollection.Provider.DPD
             if (dpdExeption.Message.ToString().Length > 0 && !dpdExeption.Message.ToString().Contains("Fault occured"))
             {
                 getCoreErrorMessage = dpdExeption.Message.ToString();
-                return new DPDException(ShippingErrorCode.DPD_LOGIN_ERROR, getCoreErrorMessage, request);
+                return new DPDException(ShippingErrorCode.DPD_SHIPMENT_REQUEST_ERROR, getCoreErrorMessage, request);
             }
             else
             {
@@ -337,11 +337,11 @@ namespace ShippingProAPICollection.Provider.DPD
                     if (pi != null)
                     {
                         object? name = (object?)(pi.GetValue(myObject, null));
-                        throw new DPDException(ShippingErrorCode.DPD_LOGIN_ERROR, name?.ToString() ?? "Unknow", request);
+                        throw new DPDException(ShippingErrorCode.DPD_SHIPMENT_REQUEST_ERROR, name?.ToString() ?? "Unknow", request);
                     }
                 }
 
-                return new DPDException(ShippingErrorCode.DPD_LOGIN_ERROR, "Unknow", request);
+                return new DPDException(ShippingErrorCode.DPD_SHIPMENT_REQUEST_ERROR, "Unknow", request);
             }
 
         }
