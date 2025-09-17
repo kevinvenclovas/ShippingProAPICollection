@@ -19,7 +19,6 @@ namespace ShippingProAPICollection.Provider.TRANSOFLEX
         }
 
         public override string ProviderType { get; } = ShippingProviderType.TRANSOFLEX.ToString();
-        public override float MaxPackageWeight { get; set; } = 32.0f;
 
         /// <summary>
         /// Typ der Sendung | NORMAL oder PICKUP

@@ -38,7 +38,7 @@ namespace ShippingProAPICollection.Provider.DPD
             ShipmentService_4_4Client shipmentClient = new ShipmentService_4_4Client(ShipmentService_4_4Client.EndpointConfiguration.ShipmentService_Public_4_4_SOAP, url);
 
             storeOrders requestBody = CreateRequestModel(DPDRequest);
-            
+
             authentication auth = new authentication()
             {
                 delisId = providerSettings.Username,
@@ -87,7 +87,7 @@ namespace ShippingProAPICollection.Provider.DPD
             }
 
             return labels;
-            
+
         }
 
         public async Task<ShippingCancelResult> CancelLabel(string cancelId, CancellationToken cancelToken = default)
@@ -119,6 +119,10 @@ namespace ShippingProAPICollection.Provider.DPD
             _cache.Remove("DPD_AUTH_TOKEN_" + providerSettings.ContractID);
         }
 
+        public float GetMaxPackageWeight()
+        {
+            return providerSettings.MaxPackageWeight;
+        }
         private storeOrders CreateRequestModel(DPDShipmentRequestModel request)
         {
             var order = new storeOrders();
@@ -197,7 +201,7 @@ namespace ShippingProAPICollection.Provider.DPD
             List<parcel> parcels = new List<parcel>();
 
             int grammfactor = 100;
-            
+
             for (int i = 0; i < request.Items.Count; i++)
             {
                 parcels.Add(
@@ -253,7 +257,7 @@ namespace ShippingProAPICollection.Provider.DPD
         /// <exception cref="ShippingProviderErrorCodeException"></exception>
         private async Task<string> LoginToDPD(CancellationToken cancelToken = default)
         {
-           
+
             string url = string.Format("https://public-{0}.dpd.com/services/LoginService/V2_0/", providerSettings.ApiDomain);
             LoginServiceClient loginClient = new LoginServiceClient(LoginServiceClient.EndpointConfiguration.LoginService_2_0_SOAP, url);
 

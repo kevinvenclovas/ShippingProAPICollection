@@ -12,5 +12,6 @@ namespace ShippingProAPICollection.Provider.TRANSOFLEX
         public required string Username { get; set; }
         public required string Password { get; set; }
         public required string CustomerNr { get; set; }
+        public override float MaxPackageWeight { get; set; } = 32.0f;
     }
 }

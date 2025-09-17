@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Caching.Memory;
 using ShippingProAPICollection.Models;
 using ShippingProAPICollection.Models.Entities;
+using ShippingProAPICollection.Models.Error;
 using ShippingProAPICollection.Provider;
 using ShippingProAPICollection.Provider.DHL;
 using ShippingProAPICollection.Provider.DPD;
@@ -39,7 +40,7 @@ namespace ShippingProAPICollection
                     return new TOFShipmentService(defaultShipFromAddress, providerSettings, _cache);
                 case CustomProviderSettings providerSettings:
                     return providerSettings.CreateProviderService(defaultShipFromAddress, _cache);
-                default:  throw new Exception("provider not available");
+                default: throw new Exception("provider not available");
             }
         }
 
@@ -49,6 +50,12 @@ namespace ShippingProAPICollection
 
             if (providerServices.TryGetValue(request.ContractID, out var service))
             {
+                // Validate package weight
+                foreach (var item in request.Items!)
+                {
+                    if (item.Weight > service.GetMaxPackageWeight()) throw new ShipmentRequestWeightException(0.1f, service.GetMaxPackageWeight(), item.Weight);
+                }
+
                 return await service.RequestLabel(request, ct);
             }
 
@@ -81,7 +88,7 @@ namespace ShippingProAPICollection
 
         public async Task<ShippingCancelResult> CancelLabel(string contractID, string cancelId, CancellationToken ct = default)
         {
-            
+
             if (providerServices.TryGetValue(contractID, out var service))
             {
                 return await service.CancelLabel(cancelId, ct);
@@ -92,7 +99,7 @@ namespace ShippingProAPICollection
 
         public async Task Confirm(string contractID, string confirmId, CancellationToken ct = default)
         {
-            
+
             if (providerServices.TryGetValue(contractID, out var service))
             {
                 await service.ConfirmShipment(confirmId, ct);
@@ -108,7 +115,7 @@ namespace ShippingProAPICollection
         {
             foreach (var item in providerServices.Where(x => x.Value.GetType() == typeof(DPDShipmentService)).Select(x => x.Value as DPDShipmentService))
             {
-                if(item != null) item.ResetDPDAutToken();
+                if (item != null) item.ResetDPDAutToken();
             }
         }
 

@@ -17,7 +17,6 @@ namespace ShippingProAPICollection.Provider
     public abstract class RequestShipmentBase
     {
         public abstract string ProviderType { get; }
-        public abstract float MaxPackageWeight { get; set; }
 
         public RequestShipmentBase(string contractID)
         {
@@ -157,11 +156,6 @@ namespace ShippingProAPICollection.Provider
         {
             if ((Items?.Count ?? 0) <= 0) throw new ShipmentRequestLabelCountException(0);
             if (Country.Length != 2) throw new ShipmentRequestNoValidStringLengthException("Country", 2, 2);
-
-            foreach (var item in Items!)
-            {
-                if (item.Weight > MaxPackageWeight) throw new ShipmentRequestWeightException(1, MaxPackageWeight, item.Weight);
-            }
         }
 
         /// <summary>

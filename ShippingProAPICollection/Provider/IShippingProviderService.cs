@@ -46,5 +46,7 @@ namespace ShippingProAPICollection.Provider
         /// <param name="confirmId"></param>
         /// <returns></returns>
         public Task ConfirmShipment(string confirmId, CancellationToken cancelToken);
+
+        public float GetMaxPackageWeight();
     }
 }

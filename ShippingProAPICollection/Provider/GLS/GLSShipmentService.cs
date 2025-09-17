@@ -30,6 +30,7 @@ namespace ShippingProAPICollection.Provider.GLS
 
         public async Task<List<RequestShippingLabelResponse>> RequestLabel(RequestShipmentBase request, CancellationToken cancelToken = default)
         {
+
             var GLSRequest = request as GLSShipmentRequestModel;
             if (GLSRequest == null) throw new Exception("Cannot convert request to GLSShipmentRequestModel");
 
@@ -121,7 +122,7 @@ namespace ShippingProAPICollection.Provider.GLS
             if (response.Data == null) throw new Exception("Reponse was null");
 
             if (response.Data.Success == true) return new ValidationReponse() { Success = true };
-           
+
             List<GLSValidationReponseIssue> reponseIssues = new List<GLSValidationReponseIssue>();
             Dictionary<string, ValidationIssue> validationErrors = new Dictionary<string, ValidationIssue>();
 
@@ -156,7 +157,7 @@ namespace ShippingProAPICollection.Provider.GLS
                         reponseIssues.Add(new GLSValidationReponseIssue() { ErrorCode = ShippingErrorCode.GLS_ARTICLE_DESTINATION_EXCLUSION_ERROR, Message = "GLS-Service und Produkt sind zur Lieferadresse nicht möglich" });
                         break;
                     case "COMMON":
-                        reponseIssues.Add(new GLSValidationReponseIssue() { ErrorCode = ShippingErrorCode.GLS_COMMON_ERROR, Message = $"GLS-Labeldruck einfacher Fehler aufgetreten: Location: {validationErrorKey.Value?.Location ?? "UNKNOW" } Message: {validationErrorKey.Value?.Parameters?[0] ?? "UNKNOW"} " });
+                        reponseIssues.Add(new GLSValidationReponseIssue() { ErrorCode = ShippingErrorCode.GLS_COMMON_ERROR, Message = $"GLS-Labeldruck einfacher Fehler aufgetreten: Location: {validationErrorKey.Value?.Location ?? "UNKNOW"} Message: {validationErrorKey.Value?.Parameters?[0] ?? "UNKNOW"} " });
                         break;
                     case "ARTICLES_VALID_FOR_COUNTRY":
                         reponseIssues.Add(new GLSValidationReponseIssue() { ErrorCode = ShippingErrorCode.GLS_ARTICLE_COMBINATIONS_ERROR, Message = $"Artikelkombination ist in diesem Land nicht verfügbar" });
@@ -222,6 +223,11 @@ namespace ShippingProAPICollection.Provider.GLS
         public async Task ConfirmShipment(string parcelId, CancellationToken cancelToken)
         {
             throw new GLSException(ShippingErrorCode.NOT_AVAILABLE, "Feature not available for GLS");
+        }
+
+        public float GetMaxPackageWeight()
+        {
+            return providerSettings.MaxPackageWeight;
         }
 
         /// <summary>
@@ -335,7 +341,7 @@ namespace ShippingProAPICollection.Provider.GLS
                         City = request.City,
                         Street = request.Street,
                         StreetNumber = request.StreetNumber ?? "-",
-                        EMail = (request.WithEmailNotification || !String.IsNullOrEmpty(request.AmazonOrderId))  ? request.EMail : null,
+                        EMail = (request.WithEmailNotification || !String.IsNullOrEmpty(request.AmazonOrderId)) ? request.EMail : null,
                         MobilePhoneNumber = request.Phone,
                     }
                 },
@@ -352,7 +358,7 @@ namespace ShippingProAPICollection.Provider.GLS
 
 
             return shipment;
-           
+
         }
 
         /// <summary>
@@ -391,9 +397,10 @@ namespace ShippingProAPICollection.Provider.GLS
 
             if (service != null)
                 services.Add(service);
-  
+
             return services.ToArray();
         }
+
 
     }
 }

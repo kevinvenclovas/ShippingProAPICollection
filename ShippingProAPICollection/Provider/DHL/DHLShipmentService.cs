@@ -217,6 +217,11 @@ namespace ShippingProAPICollection.Provider.DHL
             throw new DHLException(ShippingErrorCode.NOT_AVAILABLE, "Feature not available for DHL");
         }
 
+        public float GetMaxPackageWeight()
+        {
+            return providerSettings.MaxPackageWeight;
+        }
+
         /// <summary>
         /// Create the DHL request body informations
         /// </summary>
@@ -405,5 +410,7 @@ namespace ShippingProAPICollection.Provider.DHL
                     throw new Exception("Accountnumber not defined");
             }
         }
+
+
     }
 }

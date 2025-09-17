@@ -22,5 +22,6 @@ namespace ShippingProAPICollection.Provider.DHL
         /// en-US or de-DE
         /// </summary>
         public required string APILanguage { get; set; }
+        public override float MaxPackageWeight { get; set; } = 31.5f;
     }
 }

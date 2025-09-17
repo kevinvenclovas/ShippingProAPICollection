@@ -18,7 +18,6 @@ namespace ShippingProAPICollection.Provider.GLS
         }
 
         public override string ProviderType { get; } = ShippingProviderType.GLS.ToString();
-        public override float MaxPackageWeight { get; set; } = 31.5f;
 
         /// <summary>
         /// Mit Email Notification an den Kunden -> Email muss dafür angegeben werden |

@@ -23,5 +23,7 @@ namespace ShippingProAPICollection.Provider
         /// Contract id
         /// </summary>
         public string ContractID { get; set; } = null!;
+
+        public abstract float MaxPackageWeight { get; set; }
     }
 }

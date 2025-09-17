@@ -16,5 +16,6 @@ namespace ShippingProAPICollection.Provider.DPD
         /// en_EN , de_DE
         /// </summary>
         public required string APILanguage { get; set; }
+        public override float MaxPackageWeight { get; set; } = 31.5f;
     }
 }

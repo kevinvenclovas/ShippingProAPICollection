@@ -90,9 +90,10 @@ namespace ShippingProAPICollection.Provider.TRANSOFLEX
                 Packages = request.Items.Select(x => new Package() { Type = PackageType.C, Weight = x.Weight }).ToList()
             };
 
-            ShipmentRequest shipmentRequest = new ShipmentRequest() { 
+            ShipmentRequest shipmentRequest = new ShipmentRequest()
+            {
                 SessionToken = await GetAuthToken(),
-                Value = new RequestData() { Shipment = shipment } 
+                Value = new RequestData() { Shipment = shipment }
             };
 
             RestResponse<CreatedShipmentResponse> response = await CallApi<CreatedShipmentResponse>(
@@ -178,6 +179,11 @@ namespace ShippingProAPICollection.Provider.TRANSOFLEX
                 );
 
             HTTPReponseUtils.CheckHttpResponse<TOFException>(response.Content ?? "Unknow", cancelRequest, response);
+        }
+
+        public float GetMaxPackageWeight()
+        {
+            return providerSettings.MaxPackageWeight;
         }
 
         /// <summary>
@@ -318,7 +324,7 @@ namespace ShippingProAPICollection.Provider.TRANSOFLEX
             {
                 return await LoginToTOF();
             }
-            
+
             var login = loginStorage[providerSettings.ContractID];
             if (login.ExpireTime < DateTime.Now)
             {
@@ -340,7 +346,7 @@ namespace ShippingProAPICollection.Provider.TRANSOFLEX
         private async Task<byte[]> GetLabel(string avisoShipmentId, string parcelId)
         {
             GetLabelRequest request = new GetLabelRequest()
-            { 
+            {
                 SessionToken = await GetAuthToken(),
                 AvisoShipmentId = avisoShipmentId,
                 ParcelId = parcelId
@@ -417,7 +423,7 @@ namespace ShippingProAPICollection.Provider.TRANSOFLEX
             }
             SaveTOFLoginStorages();
         }
-        
+
         #endregion
 
     }
