@@ -125,7 +125,8 @@ namespace ShippingProAPICollection.NUnitTests
                 InvoiceReference = "RE-123456",
                 Phone = "0123456789",
                 ServiceType = DHLServiceType.POSTOFFICE,
-                PostOffice = new ShippingProAPICollection.Provider.DHL.Entities.DHLPostOfficeData() { 
+                PostOffice = new ShippingProAPICollection.Provider.DHL.Entities.DHLPostOfficeData()
+                {
                     City = "Ellwangen",
                     PostCode = "73479",
                     PostfilialeNumber = "564",
@@ -195,7 +196,8 @@ namespace ShippingProAPICollection.NUnitTests
             var request = new DHLShipmentRequestModel("DHL")
             {
                 ServiceProduct = DHLProductType.V01PAK,
-                Items = [new RequestShipmentItem() { Weight = 0.5f }],
+                Weight = 0.5f,
+                LabelCount = 1,
                 Adressline1 = "Max Mustermann",
                 Country = "DE",
                 City = "Ellwangen",
@@ -212,7 +214,7 @@ namespace ShippingProAPICollection.NUnitTests
                         "Mustermann",
                          MinimumAge.A16
                     )
-                ] 
+                ]
             };
             request.Validate();
 
