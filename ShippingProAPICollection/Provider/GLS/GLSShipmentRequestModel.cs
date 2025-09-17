@@ -18,7 +18,7 @@ namespace ShippingProAPICollection.Provider.GLS
         }
 
         public override string ProviderType { get; } = ShippingProviderType.GLS.ToString();
-        public override float MaxPackageWeight { get; } = 31.5f;
+        public override float MaxPackageWeight { get; set; } = 31.5f;
 
         /// <summary>
         /// Mit Email Notification an den Kunden -> Email muss dafür angegeben werden |
@@ -61,7 +61,7 @@ namespace ShippingProAPICollection.Provider.GLS
         /// </summary>
         /// <example>305-5872079-2948312</example>
         public string? AmazonOrderId { get; set; }
-        
+
         internal override bool IsExpress()
         {
             return ServiceProduct == GLSProductType.EXPRESS;
@@ -79,7 +79,7 @@ namespace ShippingProAPICollection.Provider.GLS
             if (!CustomerReference.MaxLenghtValidation(80)) throw new ShipmentRequestNoValidStringLengthException("CustomerReference", null, 80);
             if (!Street.RangeLenghtValidation(3, 40)) throw new ShipmentRequestNoValidStringLengthException("Street", 3, 40);
             if (!AmazonOrderId.MaxLenghtValidation(80)) throw new ShipmentRequestNoValidStringLengthException("AmazonOrderId", null, 80);
-            
+
             if (WithEmailNotification && !EMail.MaxLenghtValidation(80)) throw new ShipmentRequestNoValidStringLengthException("EMail", null, 80);
             if (!Note1.RangeLenghtValidation(0, 60)) throw new ShipmentRequestNoValidStringLengthException("Note1", null, 60);
             if (!Note2.RangeLenghtValidation(0, 60)) throw new ShipmentRequestNoValidStringLengthException("Note2", null, 60);

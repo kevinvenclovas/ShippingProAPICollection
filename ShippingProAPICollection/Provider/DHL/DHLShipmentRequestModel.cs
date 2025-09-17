@@ -19,7 +19,7 @@ namespace ShippingProAPICollection.Provider.DHL
         }
 
         public override string ProviderType { get; } = ShippingProviderType.DHL.ToString();
-        public override float MaxPackageWeight { get; } = 31.5f;
+        public override float MaxPackageWeight { get; set; } = 31.5f;
 
         /// <summary>
         /// Mit Email Notification an den Kunden -> E-Mail muss dafür angegeben werden |

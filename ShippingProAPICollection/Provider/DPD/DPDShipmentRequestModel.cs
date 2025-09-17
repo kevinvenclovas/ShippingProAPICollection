@@ -18,7 +18,7 @@ namespace ShippingProAPICollection.Provider.DPD
         }
 
         public override string ProviderType { get; } = ShippingProviderType.DPD.ToString();
-        public override float MaxPackageWeight { get; } = 31.5f;
+        public override float MaxPackageWeight { get; set; } = 31.5f;
 
         /// <summary>
         /// Mit Email Notification an den Kunden -> Email muss dafür angegeben werden |

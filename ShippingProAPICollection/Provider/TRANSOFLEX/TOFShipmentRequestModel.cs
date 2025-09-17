@@ -19,7 +19,7 @@ namespace ShippingProAPICollection.Provider.TRANSOFLEX
         }
 
         public override string ProviderType { get; } = ShippingProviderType.TRANSOFLEX.ToString();
-        public override float MaxPackageWeight { get; } = 32.0f;
+        public override float MaxPackageWeight { get; set; } = 32.0f;
 
         /// <summary>
         /// Typ der Sendung | NORMAL oder PICKUP
@@ -58,7 +58,7 @@ namespace ShippingProAPICollection.Provider.TRANSOFLEX
             if (!Adressline2.RangeLenghtValidation(0, 40)) throw new ShipmentRequestNoValidStringLengthException("Adressline2", 1, 40);
             if (!Adressline3.RangeLenghtValidation(0, 40)) throw new ShipmentRequestNoValidStringLengthException("Adressline3", 1, 40);
             if (!Street.RangeLenghtValidation(3, 40)) throw new ShipmentRequestNoValidStringLengthException("Street", 3, 40);
-            
+
             if (!ShipmentReference.MaxLenghtValidation(15)) throw new ShipmentRequestNoValidStringLengthException("ShipmentReference", null, 15);
             if (!Note1.RangeLenghtValidation(0, 15)) throw new ShipmentRequestNoValidStringLengthException("Note1", null, 15);
             if (!Note2.RangeLenghtValidation(0, 15)) throw new ShipmentRequestNoValidStringLengthException("Note2", null, 15);
