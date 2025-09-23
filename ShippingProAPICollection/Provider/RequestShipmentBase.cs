@@ -40,21 +40,22 @@ namespace ShippingProAPICollection.Provider
         /// First address line of reciever
         /// </summary>
         /// <example>Alfa GmbH</example>
-        public required string Adressline1 { get; set; }
+        public required string Addressline1
+        { get; set; }
 
         /// <summary>
         /// Adresszeile 2 des Empfängers |
         /// Second address line of reciever
         /// </summary>
         /// <example>Kevin Venclovas</example>
-        public string? Adressline2 { get; set; }
+        public string? Addressline2 { get; set; }
 
         /// <summary>
         /// Adresszeile 3 des Empfängers |
         /// Third address line of reciever
         /// </summary>
         /// <example>PO - IT</example>
-        public string? Adressline3 { get; set; }
+        public string? Addressline3 { get; set; }
 
         /// <summary>
         /// Länder Isocode A2 des Empfängers |

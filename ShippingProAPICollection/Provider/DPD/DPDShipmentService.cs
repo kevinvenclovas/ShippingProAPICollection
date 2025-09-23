@@ -174,8 +174,8 @@ namespace ShippingProAPICollection.Provider.DPD
             shipmentServiceData.generalShipmentData.recipient = new addressWithType()
             {
                 addressType = request.DeliveryAdressIsCommercialCustomer ? addressWithTypeAddressType.COM : addressWithTypeAddressType.PRV,
-                name1 = request.Adressline1,
-                name2 = request.Adressline2,
+                name1 = request.Addressline1,
+                name2 = request.Addressline2,
                 street = request.Street,
                 houseNo = request.StreetNumber,
                 country = request.Country,

@@ -22,7 +22,7 @@ namespace ShippingProAPICollection.NUnitTests
             {
                 ServiceProduct = DPDProductType.CL,
                 Items = [new RequestShipmentItem() { Weight = 0.5f }],
-                Adressline1 = "Max Mustermann",
+                Addressline1 = "Max Mustermann",
                 Country = "DE",
                 City = "Ellwangen",
                 Street = "Maxstraﬂe 10",
@@ -52,7 +52,7 @@ namespace ShippingProAPICollection.NUnitTests
             {
                 ServiceProduct = DPDProductType.CL,
                 Items = [new RequestShipmentItem() { Weight = 1f }, new RequestShipmentItem() { Weight = 1f }],
-                Adressline1 = "Max Mustermann",
+                Addressline1 = "Max Mustermann",
                 Country = "DE",
                 City = "Ellwangen",
                 Street = "Maxstraﬂe 10",
@@ -85,7 +85,7 @@ namespace ShippingProAPICollection.NUnitTests
             {
                 ServiceProduct = DPDProductType.CL,
                 Items = [new RequestShipmentItem() { Weight = 1f }],
-                Adressline1 = "Max Mustermann",
+                Addressline1 = "Max Mustermann",
                 Country = "DE",
                 City = "Ellwangen",
                 Street = "Maxstraﬂe 10",

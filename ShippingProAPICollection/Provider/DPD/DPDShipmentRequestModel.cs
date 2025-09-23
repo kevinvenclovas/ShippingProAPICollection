@@ -58,9 +58,9 @@ namespace ShippingProAPICollection.Provider.DPD
             base.Validate();
 
             if (!Note1.RangeLenghtValidation(0, 70)) throw new ShipmentRequestNoValidStringLengthException("Note1", null, 70);
-            if (!Adressline1.RangeLenghtValidation(1, 35)) throw new ShipmentRequestNoValidStringLengthException("Adressline1", 1, 35);
-            if (!Adressline2.RangeLenghtValidation(0, 35)) throw new ShipmentRequestNoValidStringLengthException("Adressline2", null, 35);
-            if (!Adressline3.RangeLenghtValidation(0, 35)) throw new ShipmentRequestNoValidStringLengthException("Adressline3", null, 35);
+            if (!Addressline1.RangeLenghtValidation(1, 35)) throw new ShipmentRequestNoValidStringLengthException("Adressline1", 1, 35);
+            if (!Addressline2.RangeLenghtValidation(0, 35)) throw new ShipmentRequestNoValidStringLengthException("Adressline2", null, 35);
+            if (!Addressline3.RangeLenghtValidation(0, 35)) throw new ShipmentRequestNoValidStringLengthException("Adressline3", null, 35);
             if (!InvoiceReference.MaxLenghtValidation(80)) throw new ShipmentRequestNoValidStringLengthException("InvoiceReference", null, 35);
             if (!CustomerReference.MaxLenghtValidation(80)) throw new ShipmentRequestNoValidStringLengthException("CustomerReference", null, 35);
             if (!Street.RangeLenghtValidation(0, 50)) throw new ShipmentRequestNoValidStringLengthException("Street", 1, 35);

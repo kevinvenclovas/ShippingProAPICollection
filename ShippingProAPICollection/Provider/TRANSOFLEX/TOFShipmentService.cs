@@ -51,9 +51,9 @@ namespace ShippingProAPICollection.Provider.TRANSOFLEX
                     {
                         City = request.City,
                         CountryCode = request.Country,
-                        Name1 = request.Adressline1,
-                        Name2 = request.Adressline2,
-                        Name3 = request.Adressline3,
+                        Name1 = request.Addressline1,
+                        Name2 = request.Addressline2,
+                        Name3 = request.Addressline3,
                         PostCode = request.PostCode,
                         Street = request.Street,
                         StreetNumber = request.StreetNumber,

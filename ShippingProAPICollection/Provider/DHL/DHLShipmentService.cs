@@ -355,25 +355,25 @@ namespace ShippingProAPICollection.Provider.DHL
             {
                 case DHLServiceType.NONE:
                 case DHLServiceType.DEPOSIT:
-                    consignee.AdditionalProperties.Add("name1", request.Adressline1);
+                    consignee.AdditionalProperties.Add("name1", request.Addressline1);
                     consignee.AdditionalProperties.Add("addressStreet", request.Street);
                     consignee.AdditionalProperties.Add("country", ThreeLetterCountryCodeHelper.GetThreeLetterCountryCode(request.Country));
 
-                    if (!String.IsNullOrEmpty(request.Adressline2)) consignee.AdditionalProperties.Add("name2", request.Adressline2);
-                    if (!String.IsNullOrEmpty(request.Adressline3)) consignee.AdditionalProperties.Add("name3", request.Adressline3);
+                    if (!String.IsNullOrEmpty(request.Addressline2)) consignee.AdditionalProperties.Add("name2", request.Addressline2);
+                    if (!String.IsNullOrEmpty(request.Addressline3)) consignee.AdditionalProperties.Add("name3", request.Addressline3);
                     if (!String.IsNullOrEmpty(request.Note1)) consignee.AdditionalProperties.Add("dispatchingInformation", request.Note1);
                     if (!String.IsNullOrEmpty(request.StreetNumber)) consignee.AdditionalProperties.Add("addressHouse", request.StreetNumber);
                     if (!String.IsNullOrEmpty(request.Phone)) consignee.AdditionalProperties.Add("phone", request.Phone);
                     break;
                 case DHLServiceType.LOCKER:
                     if (request.Locker == null) throw new ShipmentRequestNotNullException("Locker");
-                    consignee.AdditionalProperties.Add("name", request.Adressline1);
+                    consignee.AdditionalProperties.Add("name", request.Addressline1);
                     consignee.AdditionalProperties.Add("lockerID", request.Locker.PackstationNumber);
                     consignee.AdditionalProperties.Add("postNumber", request.Locker.PostNumber);
                     break;
                 case DHLServiceType.POSTOFFICE:
                     if (request.PostOffice == null) throw new ShipmentRequestNotNullException("PostOffice");
-                    consignee.AdditionalProperties.Add("name", request.Adressline1);
+                    consignee.AdditionalProperties.Add("name", request.Addressline1);
                     consignee.AdditionalProperties.Add("retailID", request.PostOffice.PostfilialeNumber);
                     consignee.AdditionalProperties.Add("postNumber", request.PostOffice.PostNumber);
                     break;

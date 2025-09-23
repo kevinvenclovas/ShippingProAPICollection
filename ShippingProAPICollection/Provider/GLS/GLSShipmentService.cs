@@ -333,9 +333,9 @@ namespace ShippingProAPICollection.Provider.GLS
                 {
                     Address = new Address()
                     {
-                        Name1 = request.Adressline1,
-                        Name2 = request.Adressline2,
-                        Name3 = request.Adressline3,
+                        Name1 = request.Addressline1,
+                        Name2 = request.Addressline2,
+                        Name3 = request.Addressline3,
                         CountryCode = request.Country,
                         ZIPCode = request.PostCode,
                         City = request.City,

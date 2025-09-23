@@ -22,7 +22,7 @@ namespace ShippingProAPICollection.NUnitTests
             {
                 ServiceProduct = GLSProductType.PARCEL,
                 Items = [new RequestShipmentItem() { Weight = 1f }],
-                Adressline1 = "Max Mustermann",
+                Addressline1 = "Max Mustermann",
                 Country = "DE",
                 City = "Ellwangen",
                 Street = "Maxstraﬂe 10",
@@ -56,7 +56,7 @@ namespace ShippingProAPICollection.NUnitTests
             {
                 ServiceProduct = GLSProductType.PARCEL,
                 Items = [new RequestShipmentItem() { Weight = 0.5f }, new RequestShipmentItem() { Weight = 0.5f }],
-                Adressline1 = "Max Mustermann",
+                Addressline1 = "Max Mustermann",
                 Country = "DE",
                 City = "Ellwangen",
                 Street = "Maxstraﬂe 10",
@@ -87,7 +87,7 @@ namespace ShippingProAPICollection.NUnitTests
             {
                 ServiceProduct = GLSProductType.PARCEL,
                 Items = [new RequestShipmentItem() { Weight = 1f }],
-                Adressline1 = "Max Mustermann",
+                Addressline1 = "Max Mustermann",
                 Country = "DE",
                 City = "Ellwangen",
                 Street = "Maxstraﬂe 10",
@@ -151,7 +151,7 @@ namespace ShippingProAPICollection.NUnitTests
             {
                 ServiceProduct = GLSProductType.PARCEL,
                 Items = [new RequestShipmentItem() { Weight = 1f }],
-                Adressline1 = "Max Mustermann",
+                Addressline1 = "Max Mustermann",
                 Country = "DE",
                 City = "Ellwangen",
                 Street = "Maxstraﬂe 10",
@@ -180,7 +180,7 @@ namespace ShippingProAPICollection.NUnitTests
             {
                 ServiceProduct = GLSProductType.PARCEL,
                 Items = [new RequestShipmentItem() { Weight = 0.5f }, new RequestShipmentItem() { Weight = 0.5f }],
-                Adressline1 = "Max Mustermann",
+                Addressline1 = "Max Mustermann",
                 Country = "DE",
                 City = "Ellwangen",
                 Street = "Maxstraﬂe 10",
@@ -215,7 +215,7 @@ namespace ShippingProAPICollection.NUnitTests
             {
                 ServiceProduct = GLSProductType.PARCEL,
                 Items = [new RequestShipmentItem() { Weight = 0.5f }, new RequestShipmentItem() { Weight = 0.5f }],  
-                Adressline1 = "Max Mustermann",
+                Addressline1 = "Max Mustermann",
                 Country = "DE",
                 City = "Ellwangen",
                 Street = "Maxstraﬂe 10",

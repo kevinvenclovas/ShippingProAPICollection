@@ -98,9 +98,9 @@ namespace ShippingProAPICollection.Provider.DHL
             if (!Note1.RangeLenghtValidation(0, 35)) throw new ShipmentRequestNoValidStringLengthException("Note1", null, 35);
             if (!Phone.RangeLenghtValidation(0, 20)) throw new ShipmentRequestNoValidStringLengthException("Phone", null, 20);
             if (!StreetNumber.RangeLenghtValidation(0, 20)) throw new ShipmentRequestNoValidStringLengthException("StreetNumber", null, 20);
-            if (!Adressline1.RangeLenghtValidation(1, 50)) throw new ShipmentRequestNoValidStringLengthException("Adressline1", 1, 50);
-            if (!Adressline2.RangeLenghtValidation(0, 50)) throw new ShipmentRequestNoValidStringLengthException("Adressline2", null, 50);
-            if (!Adressline3.RangeLenghtValidation(0, 50)) throw new ShipmentRequestNoValidStringLengthException("Adressline3", null, 50);
+            if (!Addressline1.RangeLenghtValidation(1, 50)) throw new ShipmentRequestNoValidStringLengthException("Adressline1", 1, 50);
+            if (!Addressline2.RangeLenghtValidation(0, 50)) throw new ShipmentRequestNoValidStringLengthException("Adressline2", null, 50);
+            if (!Addressline3.RangeLenghtValidation(0, 50)) throw new ShipmentRequestNoValidStringLengthException("Adressline3", null, 50);
             if (!Street.RangeLenghtValidation(1, 50)) throw new ShipmentRequestNoValidStringLengthException("Street", 1, 50);
             if (!City.RangeLenghtValidation(1, 40)) throw new ShipmentRequestNoValidStringLengthException("City", 1, 40);
             if (!InvoiceReference.MaxLenghtValidation(35)) throw new ShipmentRequestNoValidStringLengthException("InvoiceReference", null, 35);
