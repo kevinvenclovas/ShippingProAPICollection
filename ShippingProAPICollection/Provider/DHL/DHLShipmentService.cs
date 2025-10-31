@@ -340,6 +340,7 @@ namespace ShippingProAPICollection.Provider.DHL
             Consignee consignee = new Consignee();
             consignee.AdditionalProperties.Add("city", request.City);
             consignee.AdditionalProperties.Add("postalCode", request.PostCode);
+            consignee.AdditionalProperties.Add("country", ThreeLetterCountryCodeHelper.GetThreeLetterCountryCode(request.Country));
 
             if (request.WithEmailNotification && !string.IsNullOrEmpty(request.EMail))
             {
@@ -357,7 +358,6 @@ namespace ShippingProAPICollection.Provider.DHL
                 case DHLServiceType.DEPOSIT:
                     consignee.AdditionalProperties.Add("name1", request.Addressline1);
                     consignee.AdditionalProperties.Add("addressStreet", request.Street);
-                    consignee.AdditionalProperties.Add("country", ThreeLetterCountryCodeHelper.GetThreeLetterCountryCode(request.Country));
 
                     if (!String.IsNullOrEmpty(request.Addressline2)) consignee.AdditionalProperties.Add("name2", request.Addressline2);
                     if (!String.IsNullOrEmpty(request.Addressline3)) consignee.AdditionalProperties.Add("name3", request.Addressline3);
