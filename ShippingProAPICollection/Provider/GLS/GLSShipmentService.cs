@@ -370,7 +370,16 @@ namespace ShippingProAPICollection.Provider.GLS
         {
             var services = new List<ShipmentService>();
 
-            if (request.WithEmailNotification)
+            bool isExpressServiceType =
+                request.ServiceType == GLSServiceType.G24 ||
+                request.ServiceType == GLSServiceType.G8 ||
+                request.ServiceType == GLSServiceType.G9 ||
+                request.ServiceType == GLSServiceType.G10 ||
+                request.ServiceType == GLSServiceType.G12 ||
+                request.ServiceType == GLSServiceType.GSATURDAY10 ||
+                request.ServiceType == GLSServiceType.GSATURDAY12;
+
+            if (request.WithEmailNotification && !isExpressServiceType)
             {
                 services.Add(new ShipmentService { Service = new FlexDeliveryService() });
             }
