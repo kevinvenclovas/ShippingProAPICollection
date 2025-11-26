@@ -371,6 +371,7 @@ namespace ShippingProAPICollection.Provider.GLS
             var services = new List<ShipmentService>();
 
             bool isExpressServiceType =
+                request.ServiceProduct == GLSProductType.EXPRESS ||
                 request.ServiceType == GLSServiceType.G24 ||
                 request.ServiceType == GLSServiceType.G8 ||
                 request.ServiceType == GLSServiceType.G9 ||
