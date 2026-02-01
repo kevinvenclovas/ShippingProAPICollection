@@ -21,6 +21,13 @@ namespace ShippingProAPICollection.Provider.TRANSOFLEX
         public override string ProviderType { get; } = ShippingProviderType.TRANSOFLEX.ToString();
 
         /// <summary>
+        /// Adresszeile 3 des Empfängers |
+        /// Third address line of reciever
+        /// </summary>
+        /// <example>PO - IT</example>
+        public string? Addressline3 { get; set; }
+
+        /// <summary>
         /// Typ der Sendung | NORMAL oder PICKUP
         /// Type of the shipment | NORMAL or PICKUP
         /// </summary>

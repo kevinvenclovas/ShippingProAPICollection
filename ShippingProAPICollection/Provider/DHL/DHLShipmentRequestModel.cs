@@ -21,6 +21,13 @@ namespace ShippingProAPICollection.Provider.DHL
         public override string ProviderType { get; } = ShippingProviderType.DHL.ToString();
 
         /// <summary>
+        /// Adresszeile 3 des Empfängers |
+        /// Third address line of reciever
+        /// </summary>
+        /// <example>PO - IT</example>
+        public string? Addressline3 { get; set; }
+
+        /// <summary>
         /// Mit Email Notification an den Kunden -> E-Mail muss dafür angegeben werden |
         /// Should the shipping provider notify the customer on status changes? If TRUE the Email address musst be set
         /// </summary>
