@@ -141,6 +141,15 @@ namespace ShippingProAPICollection.Provider
         /// <example>Ware auf den Briefkasten</example>
         public string? Note1 { get; set; }
 
+
+        /// <summary>
+        /// Paket beinhaltet LQ Artikel |
+        /// Package contains LQ items
+        /// </summary>
+        /// <example>Ware auf den Briefkasten</example>
+        public bool ContainsLimitedQuantities { get; set; }
+
+
         /// <summary>
         /// Individuelle Absenderadresse |
         /// individual sender address
