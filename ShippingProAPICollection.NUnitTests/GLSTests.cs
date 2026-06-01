@@ -44,6 +44,39 @@ namespace ShippingProAPICollection.NUnitTests
         }
 
         /// <summary>
+        /// Create multiple return labels
+        /// </summary>
+        /// <returns></returns>
+        [Test]
+        public async Task CreateReturnShippingLabel()
+        {
+            ShippingProAPICollectionService shippingCollection = _serviceProvider.GetRequiredService<ShippingProAPICollectionService>();
+
+            var request = new GLSShipmentRequestModel("GLS")
+            {
+                ServiceProduct = GLSProductType.PARCEL,
+                Items = [new RequestShipmentItem() { Weight = 1f }, new RequestShipmentItem() { Weight = 1f }],
+                Addressline1 = "Max Mustermann",
+                Country = "DE",
+                City = "Ellwangen",
+                Street = "Maxstraße 10",
+                PostCode = "73479",
+                InvoiceReference = "RE-123456",
+                Phone = "0123456789",
+                ServiceType = GLSServiceType.SHOPRETURN,
+                AmazonOrderId = "305-5872079-2948312",
+                WithEmailNotification = true,
+                EMail = "TEST@marketplace.amazon.de"
+            };
+            request.Validate();
+
+            var result = (await shippingCollection.RequestLabel(request));
+
+            Assert.That(result.Count() == 2);
+            Assert.That(result.FirstOrDefault()?.Label.Length > 0);
+        }
+
+        /// <summary>
         /// Create two label with each 1 Kg
         /// </summary>
         /// <returns></returns>
@@ -214,7 +247,7 @@ namespace ShippingProAPICollection.NUnitTests
             var request = new GLSShipmentRequestModel("GLS")
             {
                 ServiceProduct = GLSProductType.PARCEL,
-                Items = [new RequestShipmentItem() { Weight = 0.5f }, new RequestShipmentItem() { Weight = 0.5f }],  
+                Items = [new RequestShipmentItem() { Weight = 0.5f }, new RequestShipmentItem() { Weight = 0.5f }],
                 Addressline1 = "Max Mustermann",
                 Country = "DE",
                 City = "Ellwangen",
@@ -230,6 +263,6 @@ namespace ShippingProAPICollection.NUnitTests
             var days = (await shippingCollection.GetEstimatedDeliveryDays(request));
 
         }
-        
+
     }
 }

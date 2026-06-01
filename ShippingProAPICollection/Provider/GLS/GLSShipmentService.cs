@@ -64,11 +64,23 @@ namespace ShippingProAPICollection.Provider.GLS
             {
                 for (int i = 0; i < response.Data.CreatedShipment.ParcelData.Count(); i++)
                 {
+                    byte[] labelresult = null!;
+
+                    if (GLSRequest.ServiceType == GLSServiceType.SHOPRETURN)
+                    {
+                        var labelDatas = response.Data.CreatedShipment.PrintData.SplitIntoLists(2)[i];
+                        labelresult = ByteUtils.MergePDFByteToOnePDF(labelDatas.Select(x => x.Data).ToList());
+                    }
+                    else
+                    {
+                        labelresult = response.Data.CreatedShipment.PrintData[i].Data;
+                    }
+
                     createdLabels.Add(new RequestShippingLabelResponse()
                     {
                         CancelId = response.Data.CreatedShipment.ParcelData[i].TrackID,
                         ParcelNumber = response.Data.CreatedShipment.ParcelData[i].ParcelNumber,
-                        Label = response.Data.CreatedShipment.PrintData[i].Data,
+                        Label = labelresult,
                         LabelType = GLSRequest.ServiceType == GLSServiceType.SHOPRETURN ? ShippingLabelType.SHOPRETURN : (request.IsExpress() ? ShippingLabelType.EXPRESS : ShippingLabelType.NORMAL),
                         Weight = request.Items[i].Weight
                     });
@@ -310,16 +322,30 @@ namespace ShippingProAPICollection.Provider.GLS
             }
 
             // Create shipment units
-            for (int i = 0; i < request.Items.Count; i++)
+            if (request.ServiceType != GLSServiceType.SHOPRETURN)
+            {
+                for (int i = 0; i < request.Items.Count; i++)
+                {
+                    units.Add(new ShipmentUnit()
+                    {
+                        Weight = Convert.ToDecimal(request.Items[i].Weight),
+                        Note1 = request.Note1 ?? "",
+                        Note2 = request.Note2 ?? "",
+                        ShipmentUnitReference = shipmentUnitReference.ToArray(),
+                    });
+                }
+            }
+            else
             {
                 units.Add(new ShipmentUnit()
                 {
-                    Weight = Convert.ToDecimal(request.Items[i].Weight),
+                    Weight = 1,
                     Note1 = request.Note1 ?? "",
                     Note2 = request.Note2 ?? "",
                     ShipmentUnitReference = shipmentUnitReference.ToArray(),
                 });
             }
+
 
             string? incotermCode = request.IncotermCode == null || request.IncotermCode != null && request.IncotermCode == 0 ? null : request.IncotermCode.ToString();
 
