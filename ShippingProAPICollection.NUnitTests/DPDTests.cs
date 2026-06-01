@@ -105,5 +105,36 @@ namespace ShippingProAPICollection.NUnitTests
             }
 
         }
+
+        // <summary>
+        /// Create one label with 0.5 Kg
+        /// </summary>
+        /// <returns></returns>
+        [Test]
+        public async Task CreateLQSingleShippingLabel()
+        {
+            ShippingProAPICollectionService shippingCollection = _serviceProvider.GetRequiredService<ShippingProAPICollectionService>();
+
+            var request = new DPDShipmentRequestModel("DPD")
+            {
+                ServiceProduct = DPDProductType.CL,
+                Items = [new RequestShipmentItem() { Weight = 0.5f }],
+                Addressline1 = "Max Mustermann",
+                Country = "DE",
+                City = "Ellwangen",
+                Street = "Maxstraße 10",
+                PostCode = "73479",
+                InvoiceReference = "RE-123456",
+                Phone = "0123456789",
+                ServiceType = DPDServiceType.NONE,
+                ContainsLimitedQuantities = true
+            };
+            request.Validate();
+
+            var result = (await shippingCollection.RequestLabel(request));
+
+            Assert.That(result.Count() == 1);
+            Assert.That(result.FirstOrDefault()?.Label.Length > 0);
+        }
     }
 }

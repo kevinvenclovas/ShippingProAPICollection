@@ -50,12 +50,6 @@ namespace ShippingProAPICollection.Provider
         /// <example>Kevin Venclovas</example>
         public string? Addressline2 { get; set; }
 
-        /// <summary>
-        /// Adresszeile 3 des Empfängers |
-        /// Third address line of reciever
-        /// </summary>
-        /// <example>PO - IT</example>
-        public string? Addressline3 { get; set; }
 
         /// <summary>
         /// Länder Isocode A2 des Empfängers |
@@ -146,6 +140,15 @@ namespace ShippingProAPICollection.Provider
         /// </summary>
         /// <example>Ware auf den Briefkasten</example>
         public string? Note1 { get; set; }
+
+
+        /// <summary>
+        /// Paket beinhaltet LQ Artikel |
+        /// Package contains LQ items
+        /// </summary>
+        /// <example>Ware auf den Briefkasten</example>
+        public bool ContainsLimitedQuantities { get; set; }
+
 
         /// <summary>
         /// Individuelle Absenderadresse |

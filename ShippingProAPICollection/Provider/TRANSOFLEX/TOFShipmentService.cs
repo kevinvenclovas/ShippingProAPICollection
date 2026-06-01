@@ -49,14 +49,14 @@ namespace ShippingProAPICollection.Provider.TRANSOFLEX
                 {
                     new Address()
                     {
-                        City = request.City,
-                        CountryCode = request.Country,
-                        Name1 = request.Addressline1,
-                        Name2 = request.Addressline2,
-                        Name3 = request.Addressline3,
-                        PostCode = request.PostCode,
-                        Street = request.Street,
-                        StreetNumber = request.StreetNumber,
+                        City = TOFRequest.City,
+                        CountryCode = TOFRequest.Country,
+                        Name1 = TOFRequest.Addressline1,
+                        Name2 = TOFRequest.Addressline2,
+                        Name3 = TOFRequest.Addressline3,
+                        PostCode = TOFRequest.PostCode,
+                        Street = TOFRequest.Street,
+                        StreetNumber = TOFRequest.StreetNumber,
                         Type = AddressType.RECIPIENT,
                         Service = new AddressService()
                     }
