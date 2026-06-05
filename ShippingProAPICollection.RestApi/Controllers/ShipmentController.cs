@@ -17,7 +17,7 @@ namespace ShippingProAPICollection.RestApi.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class ShipmentController(
-        ShippingProAPICollectionService shippingProAPICollectionService, 
+        ShippingProAPICollectionService shippingProAPICollectionService,
         ShippingProAPICollectionSettings shippingProAPICollectionSettings,
         ApplicationSettingService applicationSettingService
         ) : ControllerBase
@@ -41,7 +41,7 @@ namespace ShippingProAPICollection.RestApi.Controllers
             List<ShippingLabelReponse> resultLabels = requestedLabels.Select(x => new ShippingLabelReponse()
             {
                 CancelId = x.CancelId,
-                Label = x.Label,
+                Labels = x.Labels,
                 ParcelNumber = x.ParcelNumber,
                 TrackingURL = TrackingLinkHelper.CreateTrackingURL(x, request)
             }).ToList();

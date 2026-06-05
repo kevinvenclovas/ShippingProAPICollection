@@ -10,7 +10,7 @@
         /// <summary>
         /// Label data
         /// </summary>
-        public required byte[] Label { get; set; }
+        public required List<byte[]> Labels { get; set; }
 
         /// <summary>
         /// Id to cancel shipping label

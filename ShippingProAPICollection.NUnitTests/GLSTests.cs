@@ -3,7 +3,6 @@ using ShippingProAPICollection.Models.Entities;
 using ShippingProAPICollection.Provider;
 using ShippingProAPICollection.Provider.GLS;
 using ShippingProAPICollection.Provider.GLS.Entities;
-using ShippingProAPICollection.Provider.TRANSOFLEX;
 
 namespace ShippingProAPICollection.NUnitTests
 {
@@ -40,7 +39,7 @@ namespace ShippingProAPICollection.NUnitTests
             var result = (await shippingCollection.RequestLabel(request));
 
             Assert.That(result.Count() == 1);
-            Assert.That(result.FirstOrDefault()?.Label.Length > 0);
+            Assert.That(result.FirstOrDefault()?.Labels[0].Length > 0);
         }
 
         /// <summary>
@@ -73,7 +72,7 @@ namespace ShippingProAPICollection.NUnitTests
             var result = (await shippingCollection.RequestLabel(request));
 
             Assert.That(result.Count() == 2);
-            Assert.That(result.FirstOrDefault()?.Label.Length > 0);
+            Assert.That(result.FirstOrDefault()?.Labels[0].Length > 0);
         }
 
         /// <summary>
@@ -104,7 +103,7 @@ namespace ShippingProAPICollection.NUnitTests
             var result = (await shippingCollection.RequestLabel(request));
 
             Assert.That(result.Count() == 2);
-            Assert.That(result.FirstOrDefault()?.Label.Length > 0);
+            Assert.That(result.FirstOrDefault()?.Labels[0].Length > 0);
         }
 
         /// <summary>
@@ -135,41 +134,8 @@ namespace ShippingProAPICollection.NUnitTests
             var result = (await shippingCollection.RequestLabel(request));
 
             Assert.That(result.Count() == 1);
-            Assert.That(result.FirstOrDefault()?.Label.Length > 0);
+            Assert.That(result.FirstOrDefault()?.Labels[0].Length > 0);
         }
-
-        /// <summary>
-        /// Create label with return service
-        /// </summary>
-        /// <returns></returns>
-        /*
-         * No longer available for test user
-        [Test]
-        public async Task CreateShippingLabelWithReturnService()
-        {
-            ShippingProAPICollectionService shippingCollection = _serviceProvider.GetRequiredService<ShippingProAPICollectionService>();
-
-            var request = new GLSShipmentRequestModel("GLS")
-            {
-                ServiceProduct = GLSProductType.PARCEL,
-                Items = [new RequestShipmentItem() { Weight = 1f }],
-                Adressline1 = "Max Mustermann",
-                Country = "DE",
-                City = "Ellwangen",
-                Street = "Maxstraße 10",
-                PostCode = "73479",
-                InvoiceReference = "RE-123456",
-                Phone = "0123456789",
-                ServiceType = GLSServiceType.SHOPRETURN,
-            };
-            request.Validate();
-
-            var result = (await shippingCollection.RequestLabel(request));
-
-            Assert.That(result.Count() == 1);
-            Assert.That(result.FirstOrDefault()?.Label.Length > 0);
-        }
-        */
 
         /// <summary>
         /// Create label with return service

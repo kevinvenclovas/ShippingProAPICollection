@@ -120,7 +120,7 @@ namespace ShippingProAPICollection.Provider.TRANSOFLEX
                     {
                         CancelId = response.Data.AvisoShipmentId,
                         ParcelNumber = response.Data.ParcelIds[i],
-                        Label = await GetLabel(response.Data.AvisoShipmentId, response.Data.ParcelIds[i]),
+                        Labels = await GetLabel(response.Data.AvisoShipmentId, response.Data.ParcelIds[i]),
                         LabelType = TOFRequest.ShipmentType == TOFShipmentType.PICKUP ? ShippingLabelType.SHOPRETURN : ShippingLabelType.NORMAL,
                         Weight = request.Items[i].Weight
                     });
@@ -343,7 +343,7 @@ namespace ShippingProAPICollection.Provider.TRANSOFLEX
         /// <param name="parcelId"></param>
         /// <returns></returns>
         /// <exception cref="TOFException"></exception>
-        private async Task<byte[]> GetLabel(string avisoShipmentId, string parcelId)
+        private async Task<List<byte[]>> GetLabel(string avisoShipmentId, string parcelId)
         {
             GetLabelRequest request = new GetLabelRequest()
             {
@@ -376,7 +376,7 @@ namespace ShippingProAPICollection.Provider.TRANSOFLEX
             var pdfBytes = await client.DownloadDataAsync(clientRequest);
 
             if (pdfBytes == null) throw new TOFException(ShippingErrorCode.TOF_DOWNLOAD_PDF_ERROR, "PDF konnte nicht gedownloaded werden", request);
-            return pdfBytes;
+            return [pdfBytes];
         }
 
 

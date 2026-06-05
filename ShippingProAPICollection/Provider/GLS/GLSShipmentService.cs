@@ -64,23 +64,23 @@ namespace ShippingProAPICollection.Provider.GLS
             {
                 for (int i = 0; i < response.Data.CreatedShipment.ParcelData.Count(); i++)
                 {
-                    byte[] labelresult = null!;
+                    List<byte[]> labelresult = null!;
 
                     if (GLSRequest.ServiceType == GLSServiceType.SHOPRETURN)
                     {
                         var labelDatas = response.Data.CreatedShipment.PrintData.SplitIntoLists(2)[i];
-                        labelresult = ByteUtils.MergePDFByteToOnePDF(labelDatas.Select(x => x.Data).ToList());
+                        labelresult = labelDatas.Select(x => x.Data).ToList();
                     }
                     else
                     {
-                        labelresult = response.Data.CreatedShipment.PrintData[i].Data;
+                        labelresult = [response.Data.CreatedShipment.PrintData[i].Data];
                     }
 
                     createdLabels.Add(new RequestShippingLabelResponse()
                     {
                         CancelId = response.Data.CreatedShipment.ParcelData[i].TrackID,
                         ParcelNumber = response.Data.CreatedShipment.ParcelData[i].ParcelNumber,
-                        Label = labelresult,
+                        Labels = labelresult,
                         LabelType = GLSRequest.ServiceType == GLSServiceType.SHOPRETURN ? ShippingLabelType.SHOPRETURN : (request.IsExpress() ? ShippingLabelType.EXPRESS : ShippingLabelType.NORMAL),
                         Weight = request.Items[i].Weight
                     });

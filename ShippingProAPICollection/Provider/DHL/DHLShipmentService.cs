@@ -87,7 +87,7 @@ namespace ShippingProAPICollection.Provider.DHL
 
                         labels.Add(new RequestShippingLabelResponse()
                         {
-                            Label = Convert.FromBase64String(c.Label.B64),
+                            Labels = [Convert.FromBase64String(c.Label.B64)],
                             ParcelNumber = c.ShipmentNo,
                             CancelId = c.ShipmentNo,
                             LabelType = request.IsExpress() ? ShippingLabelType.EXPRESS : ShippingLabelType.NORMAL,

@@ -17,10 +17,11 @@ namespace ShippingProAPICollection.Models
         public required string ParcelNumber { get; set; }
 
         /// <summary>
-        /// Label als PDF in byte[] Format |
-        /// Shippinglabel in byte[] format
+        /// Label als PDF in List<byte[]> Format |
+        /// Shippinglabel in List<byte[]> format
+        /// Some services return multiple labels for one Parcelnumber, like GLS return service
         /// </summary> 
-        public required byte[] Label { get; set; }
+        public required List<byte[]> Labels { get; set; }
 
         /// <summary>
         /// Gewicht des Paketes in Kg

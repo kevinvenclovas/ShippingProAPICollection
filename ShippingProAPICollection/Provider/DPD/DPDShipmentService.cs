@@ -77,7 +77,7 @@ namespace ShippingProAPICollection.Provider.DPD
                         {
                             ParcelNumber = parcelInfo.parcelLabelNumber,
                             CancelId = parcelInfo.parcelLabelNumber,
-                            Label = ByteUtils.MergePDFByteToOnePDF(parcelInfo.output.Select(x => x.content).ToList()),
+                            Labels = parcelInfo.output.Select(x => x.content).ToList(),
                             LabelType = DPDRequest.ServiceType == DPDServiceType.SHOPRETURN ? ShippingLabelType.SHOPRETURN : (request.IsExpress() ? ShippingLabelType.EXPRESS : ShippingLabelType.NORMAL),
                             Weight = request.Items[i].Weight,
                             AdditionalValues = new Dictionary<string, object> { ["REQUEST_ID"] = shipment.mpsId }

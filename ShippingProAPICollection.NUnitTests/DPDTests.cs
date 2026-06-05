@@ -8,7 +8,7 @@ namespace ShippingProAPICollection.NUnitTests
 {
     public class DPDTests : TestBase
     {
-       
+
         /// <summary>
         /// Create one label with 0.5 Kg
         /// </summary>
@@ -36,7 +36,7 @@ namespace ShippingProAPICollection.NUnitTests
             var result = (await shippingCollection.RequestLabel(request));
 
             Assert.That(result.Count() == 1);
-            Assert.That(result.FirstOrDefault()?.Label.Length > 0);
+            Assert.That(result.FirstOrDefault()?.Labels[0].Length > 0);
         }
 
         /// <summary>
@@ -65,13 +65,11 @@ namespace ShippingProAPICollection.NUnitTests
 
             var result = (await shippingCollection.RequestLabel(request));
 
-            File.WriteAllBytes("merged.pdf", result.FirstOrDefault()?.Label);
-
             Assert.That(result.Count() == 2);
-            Assert.That(result.FirstOrDefault()?.Label.Length > 0);
+            Assert.That(result.FirstOrDefault()?.Labels[0].Length > 0);
         }
 
-        
+
         /// <summary>
         /// Create 2 labels with deposit service and cancel both
         /// </summary>
@@ -134,7 +132,7 @@ namespace ShippingProAPICollection.NUnitTests
             var result = (await shippingCollection.RequestLabel(request));
 
             Assert.That(result.Count() == 1);
-            Assert.That(result.FirstOrDefault()?.Label.Length > 0);
+            Assert.That(result.FirstOrDefault()?.Labels[0].Length > 0);
         }
     }
 }

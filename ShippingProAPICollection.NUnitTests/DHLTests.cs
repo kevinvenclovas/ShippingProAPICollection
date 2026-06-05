@@ -37,7 +37,7 @@ namespace ShippingProAPICollection.NUnitTests
             var result = (await shippingCollection.RequestLabel(request));
 
             Assert.That(result.Count() == 1);
-            Assert.That(result.FirstOrDefault()?.Label.Length > 0);
+            Assert.That(result.FirstOrDefault()?.Labels[0].Length > 0);
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace ShippingProAPICollection.NUnitTests
             var result = (await shippingCollection.RequestLabel(request));
 
             Assert.That(result.Count() == 2);
-            Assert.That(result.FirstOrDefault()?.Label.Length > 0);
+            Assert.That(result.FirstOrDefault()?.Labels[0].Length > 0);
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace ShippingProAPICollection.NUnitTests
             var result = (await shippingCollection.RequestLabel(request));
 
             Assert.That(result.Count() == 1);
-            Assert.That(result.FirstOrDefault()?.Label.Length > 0);
+            Assert.That(result.FirstOrDefault()?.Labels[0].Length > 0);
         }
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace ShippingProAPICollection.NUnitTests
             var result = (await shippingCollection.RequestLabel(request));
 
             Assert.That(result.Count() == 1);
-            Assert.That(result.FirstOrDefault()?.Label.Length > 0);
+            Assert.That(result.FirstOrDefault()?.Labels[0].Length > 0);
         }
 
         /// <summary>
@@ -216,7 +216,7 @@ namespace ShippingProAPICollection.NUnitTests
             var result = (await shippingCollection.RequestLabel(request));
 
             Assert.That(result.Count() == 1);
-            Assert.That(result.FirstOrDefault()?.Label.Length > 0);
+            Assert.That(result.FirstOrDefault()?.Labels[0].Length > 0);
         }
 
         /// <summary>
@@ -248,7 +248,7 @@ namespace ShippingProAPICollection.NUnitTests
             var result = (await shippingCollection.RequestLabel(request));
 
             Assert.That(result.Count() == 1);
-            Assert.That(result.FirstOrDefault()?.Label.Length > 0);
+            Assert.That(result.FirstOrDefault()?.Labels[0].Length > 0);
         }
 
         /// <summary>
@@ -285,7 +285,7 @@ namespace ShippingProAPICollection.NUnitTests
             var result = (await shippingCollection.RequestLabel(request));
 
             Assert.That(result.Count() == 1);
-            Assert.That(result.FirstOrDefault()?.Label.Length > 0);
+            Assert.That(result.FirstOrDefault()?.Labels[0].Length > 0);
         }
     }
 }
