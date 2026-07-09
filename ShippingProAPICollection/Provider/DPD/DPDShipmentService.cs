@@ -215,6 +215,7 @@ namespace ShippingProAPICollection.Provider.DPD
                         returns = request.ServiceType == DPDServiceType.SHOPRETURN,
                         returnsSpecified = request.ServiceType == DPDServiceType.SHOPRETURN,
                         hazardousLimitedQuantities = request.ContainsLimitedQuantities,
+                        hazardousLimitedQuantitiesSpecified = request.ContainsLimitedQuantities,  
                     }
                 );
 
